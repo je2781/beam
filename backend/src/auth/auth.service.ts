@@ -1,11 +1,11 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Injectable, InternalServerErrorException, } from "@nestjs/common";
 import { AuthDto } from "./dto";
 import * as argon from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { Repository, TypeORMError } from "typeorm";
 import { User } from "typeorm/user.entity";
-import crypto from "crypto";
+import * as crypto from 'crypto';
 
 import { Response } from "express";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -57,7 +57,15 @@ export class AuthService {
 
       return this.userRepository.save(newUser);
     } catch (err) {
-      throw new ForbiddenException("Credential already taken");
+      console.error('Signup error:', err);
+
+      // MySQL unique constraint violation
+      if (err.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException("Credential already taken");
+      }
+  
+      throw new InternalServerErrorException("Something went wrong");
+
     }
   }
 

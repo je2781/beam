@@ -8,7 +8,8 @@ import { TransferDto } from "./dto";
 import { User } from "typeorm/user.entity";
 import { TransactionDto } from "src/transaction/dto/trans.dto";
 import { Transaction } from "typeorm/transaction.entity";
-import crypto from "crypto";
+import * as crypto from 'crypto';
+
 import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()

@@ -1,23 +1,23 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, Timestamp, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Timestamp, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
 export class Transaction {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({length: 36})
   id: string;
 
   @Column({ length: 500 })
   trans_type: string;
 
-  @Column('int')
+  @Column({default: 0})
   amount: number;
 
   @ManyToOne(() => User, (user) => user.transactions, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' }) 
   user: User;
 
-  @Column('text')
+  @Column({default: ''})
   status: string;
 
   @Column({ type: 'timestamp' })

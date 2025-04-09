@@ -1,10 +1,10 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, Timestamp, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Timestamp, ManyToOne, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { User } from './user.entity';
 
 @Entity()
 export class Wallet {
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({length: 36})
   id: string;
 
   @Column({default: 0})
