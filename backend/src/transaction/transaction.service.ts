@@ -2,7 +2,7 @@
 import { Injectable} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Transaction } from 'typeorm/transaction.entity';
+import { Transaction } from 'src/transaction/transaction.entity';
 
 @Injectable()
 export class TransactionService {
@@ -11,11 +11,14 @@ export class TransactionService {
     private transRepository: Repository<Transaction>,
   ) {}
 
-  async getTransactions(userId: string): Promise<Transaction[]> {
+  async getTransactions(userId: string){
     const trans = await this.transRepository.findBy({
         id: userId
     });
 
-    return trans;
+    return {
+      message: 'success',
+      ...trans
+    };
   }
 }

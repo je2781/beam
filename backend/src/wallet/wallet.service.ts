@@ -2,13 +2,12 @@ import {
   Injectable,
   NotFoundException,
   ForbiddenException,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { TransferDto } from "./dto";
-import { User } from "typeorm/user.entity";
+import { User } from "src/user/user.entity";
 import { TransactionDto } from "src/transaction/dto/trans.dto";
-import { Transaction } from "typeorm/transaction.entity";
-import * as crypto from 'crypto';
+import { Transaction } from "src/transaction/transaction.entity";
 
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -21,20 +20,23 @@ export class WalletService {
     private transRepository: Repository<Transaction>
   ) {}
 
-  async getBalance(userId: string): Promise<number> {
+  async getBalance(userId: string) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: {wallet: true}
+      relations: { wallet: true },
     });
 
     if (!user) {
       throw new ForbiddenException("credentials incorrect");
     }
 
-    return user.wallet.balance;
+    return {
+      message: "success",
+      wallet_balance: user.wallet.balance,
+    };
   }
 
-  async fund(userId: string, dto: TransactionDto): Promise<number> {
+  async fund(userId: string, dto: TransactionDto) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
     });
@@ -46,40 +48,41 @@ export class WalletService {
     user.wallet.balance = user.wallet.balance + dto.amount;
 
     //creating transaction entry
-    const newTransaction = await this.transRepository.create({
+    const newTransaction = new Transaction({
       ...dto,
-      id: (await crypto.randomBytes(6)).toString("hex"),
     });
     //adding new transaction to user repo
     user.transactions.push(newTransaction);
 
     const savedUser = await this.userRepository.save(user);
 
-    return savedUser.wallet.balance;
+    return {
+      message: "success",
+      wallet_balance: savedUser.wallet.balance,
+    };
   }
 
-  async withdrawal(userId: string, dto: TransactionDto): Promise<number> {
+  async withdrawal(userId: string, dto: TransactionDto) {
     const user = await this.userRepository.findOneBy({
       id: userId,
     });
 
     if (!user) {
-      throw new ForbiddenException("credentials incorrect");
+      throw new UnauthorizedException("credentials incorrect");
     }
     const balance = user.wallet.balance - dto.amount;
-    
+
     //checking funds
     if (balance < 0) {
-        throw new ForbiddenException("insuffient funds for withdrawal");
+      throw new ForbiddenException("insuffient funds for withdrawal");
     }
-    
+
     //updating wallet
     user.wallet.balance = balance;
 
     //creating transaction entry
-    const newTransaction = await this.transRepository.create({
+    const newTransaction = new Transaction({
       ...dto,
-      id: (await crypto.randomBytes(6)).toString("hex"),
     });
 
     //adding new transaction to user repo
@@ -87,20 +90,23 @@ export class WalletService {
 
     const savedUser = await this.userRepository.save(user);
 
-    return savedUser.wallet.balance;
+    return {
+      message: "success",
+      wallet_balance: savedUser.wallet.balance,
+    };
   }
 
-  async transfer(dto: TransferDto, userId: string) {
+  async transfer(dto: Transaction, userId: string) {
     //retrieving creditor details
     const creditor = await this.userRepository.findOneBy({
       id: userId,
     });
 
     if (!creditor) {
-      throw new ForbiddenException("credentials incorrect");
+      throw new UnauthorizedException("credentials incorrect");
     }
 
-    const balance = creditor.wallet.balance - dto.transaction.amount;
+    const balance = creditor.wallet.balance - dto.amount;
 
     //checking funds
     if (balance < 0) {
@@ -114,22 +120,17 @@ export class WalletService {
     });
 
     if (!debtor) {
-      throw new NotFoundException("User doesn't exist");
+      throw new UnauthorizedException("User doesn't exist");
     }
     //current balance of debtor
-    debtor.wallet.balance = debtor.wallet.balance + dto.transaction.amount;
+    debtor.wallet.balance = debtor.wallet.balance + dto.amount;
 
     //updating debtor
     await this.userRepository.save(debtor);
 
-    //trimming down to transaction dto
-    delete dto.email;
-    delete dto.note;
-
     //creating transaction entry
-    const newTransaction = await this.transRepository.create({
+    const newTransaction = new Transaction({
       ...dto,
-      id: (await crypto.randomBytes(6)).toString("hex"),
     });
 
     //adding new transaction to creditor
@@ -137,6 +138,9 @@ export class WalletService {
 
     const savedCreditor = await this.userRepository.save(creditor);
 
-    return savedCreditor.wallet.balance;
+    return {
+      message: "success",
+      wallet_balanc: savedCreditor.wallet.balance,
+    };
   }
 }

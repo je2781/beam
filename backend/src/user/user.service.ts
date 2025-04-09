@@ -1,7 +1,7 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { User } from "typeorm/user.entity";
+import { User } from "src/user/user.entity";
 
 @Injectable()
 export class UserService {
@@ -10,16 +10,19 @@ export class UserService {
     private userRepository: Repository<User>
   ) {}
 
-  async getUser(userId: string): Promise<User> {
+  async getUser(userId: string) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: { wallet: true },
     });
 
     if (!user) {
-      throw new ForbiddenException("credentials incorrect");
+      throw new UnauthorizedException("credentials incorrect");
     }
 
-    return user;
+    return {
+        message: 'success',
+        user
+    };
   }
 }

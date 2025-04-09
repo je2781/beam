@@ -8,17 +8,17 @@ import {
 import { useRouter } from "next/navigation";
 import useWindowWidth from "@/helpers/getWindowWidth";
 import { AddFundsModal, TransferModal } from "../layout/Modal";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import Image from "next/image";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { detectIssuer } from "@/helpers/helpers";
 
 import visaLogo from "../../../public/visa.png";
 import mastercardLogo from "../../../public/mastercard.png";
 
 // Import Swiper styles
 import "swiper/css";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { detectIssuer } from "@/helpers/helpers";
 
 export default function Content({ data }: any) {
   const positions = [
@@ -41,6 +41,7 @@ export default function Content({ data }: any) {
   const [isAddFundsModalOpen, setIsAddFundsModalOpen] = React.useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = React.useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = React.useState(false);
+  const [activeIndex, setActiveIndex] = React.useState(0);
   const [selectedOption, setSelectedOption] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
   const [issuer, setIssuer] = React.useState("MasterCard");
@@ -53,11 +54,12 @@ export default function Content({ data }: any) {
   const windowWidth = useWindowWidth();
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const swiperRef = React.useRef<any>(null);
+  const swiperRef = React.useRef<SwiperRef>(null);
 
   const goToSlide = (index: number) => {
     if (swiperRef.current) {
-      swiperRef.current.slideTo(index); // jump to a specific slide
+      swiperRef.current.swiper.slideTo(index); // jump to a specific slide
+      setActiveIndex(index);
     }
   };
 
@@ -127,9 +129,6 @@ export default function Content({ data }: any) {
     setIsAddFundsModalOpen(true);
   };
 
-  const showDetailsModalHandler = () => {
-    hideModalHandler("add-funds", setIsAddFundsModalOpen);
-  };
 
   const showTransferModalHandler = () => {
     // setSelectedTransId(transId);
@@ -179,9 +178,7 @@ export default function Content({ data }: any) {
       </header>
       <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
 
-      {/*   template for small screens   */}
-
-      {/*   template for small screens   */}
+    
       <div className="flex lg:flex-row flex-col gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0">
         <div className="flex flex-col gap-y-5 xl:w-[37%] lg:w-[23%] w-full">
           <article className="flex flex-col w-full h-fit bg-wallet-summary-bg pt-7 pb-10">
@@ -234,14 +231,18 @@ export default function Content({ data }: any) {
           <div className="flex flex-col gap-y-3 w-full text-[10px] font-medium">
             <div className="inline-flex flex-row w-full gap-x-3">
               <button
+              type='button'
                 onClick={showAddFundsModalHandler}
                 id="toggle-add-funds"
+                data-testid='toggle-add-funds'
                 className="w-[50%] shadow-lg bg-secondary-400 px-5 py-2 rounded-md cursor-pointer"
               >
                 Add Funds
               </button>
               <button
                 id="toggle-transfer"
+                type="button"
+                data-testid='withdraw'
                 onClick={showTransferModalHandler}
                 className="w-[50%] text-primary-400 border border-primary-100 rounded-md cursor-pointer"
               >
@@ -529,13 +530,14 @@ export default function Content({ data }: any) {
             trans={data.transactions}
           />
         </div>
+        <p data-testid="slide-index" className="hidden">Current slide: {activeIndex}</p>
 
         {isAddFundsModalOpen && (
           <AddFundsModal>
             <div className="w-full h-full">
               <Swiper
                 slidesPerView={1}
-                onSwiper={(swiper) => (swiperRef.current = swiper)}
+                onSwiper={(swiper) => (swiperRef.current!.swiper = swiper)}
                 className="w-full h-full"
               >
                 <SwiperSlide>
@@ -655,11 +657,15 @@ export default function Content({ data }: any) {
                         setIsLoading(true);
 
                         const res = await axios.post(
-                          `${process.env.NEXT_SERVER_DOMAIN}/wallet/fund`,
+                          `${process.env.NNEXT_PUBLIC_SERVER_DOMAIN}/wallet/fund`,
                           {
                             card_no: cardNo,
                             amount,
                             cvv,
+                            email,
+                            trans_type: 'deposit',
+                            status: 'pending',
+                            date: new Date().toISOString(),
                           }
                         );
                         if (res.data.message !== "success") {
@@ -789,11 +795,14 @@ export default function Content({ data }: any) {
                     setIsLoading(true);
 
                     const res = await axios.post(
-                      `${process.env.NEXT_SERVER_DOMAIN}/wallet/transfer`,
+                      `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/transfer`,
                       {
                         email,
                         amount,
                         note,
+                        trans_type: 'transfer',
+                        status: 'approved',
+                        date: new Date().toISOString(),
                       }
                     );
                     if (res.data.message !== "success") {

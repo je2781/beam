@@ -7,6 +7,9 @@ import Image, { StaticImageData } from "next/image";
 import Logo from "../../public/logo.png";
 import Switch from "@/components/ui/Switch";
 import React from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import useAuth from "@/store/useAuth";
 
 export function SideBarList(
   router: AppRouterInstance,
@@ -15,6 +18,7 @@ export function SideBarList(
   hide?: boolean,
   setHide?: React.Dispatch<React.SetStateAction<boolean>>
 ) {
+
   return (
     <div className="flex flex-col items-start lg:gap-y-9 font-inter w-full">
       <header className="lg:inline-flex hidden justify-start items-center w-full flex-row gap-x-3 border border-primary-200 h-[60px] pl-6 pb-10 border-t-0 border-l-0 border-r-0">
@@ -42,37 +46,53 @@ export function SideBarList(
                       <li
                         key={nestedIndex}
                         data-testid="sidebar-item"
-                        className={`w-full cursor-pointer flex flex-row items-center group`}
-                        onClick={() =>
-                          router.push(
-                            `/${Object.keys(nestedlistItem)[0]
-                              .replace(" ", "")
-                              .toLowerCase()}`
-                          )
-                        }
+                        className={`w-full cursor-pointer flex flex-row items-center group py-2 flex flex-row lg:gap-x-3 gap-x-3 md:gap-x-1 items-center w-[98.5%] lg:pl-7 pl-[17px]`}
+                        onClick={async () => {
+                          if (Object.keys(nestedlistItem)[0] === "Logout") {
+                            try {
+                              const res = await axios.get(
+                                `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/logout`
+                              );
+
+                              if (res.data.message === "logout successful") {
+                                if(typeof window !== 'undefined'){
+                                  window.localStorage.removeItem('access_token');
+                                }
+                                router.replace("/login");
+                              } else {
+                                throw new Error("session logout failed");
+                              }
+                            } catch (error) {
+                              const e = error as Error;
+                              return toast.error(e.message);
+                            }
+                          } else {
+                            router.push(
+                              `/${Object.keys(nestedlistItem)[0]
+                                .replace(" ", "")
+                                .toLowerCase()}`
+                            );
+                          }
+                        }}
                       >
-                        <div
-                          className={`py-2 flex flex-row lg:gap-x-3 gap-x-3 md:gap-x-1 items-center w-[98.5%] lg:pl-7 pl-[17px]`}
+                        <i
+                          className={`fa-solid ${
+                            Object.values(nestedlistItem)[0]
+                          } xl:text-lg lg:text-[14px] w-[8%] md:w-[5%] lg:w-[13%] group-hover:text-secondary-400 ${
+                            isSelected
+                              ? "text-secondary-400"
+                              : "text-primary-100"
+                          }`}
+                        ></i>
+                        <h4
+                          className={`w-[92%] md:w-[95%] lg:w-[87%] group-hover:text-secondary-400 ${
+                            isSelected
+                              ? "text-secondary-400"
+                              : "text-primary-100"
+                          }`}
                         >
-                          <i
-                            className={`fa-solid ${
-                              Object.values(nestedlistItem)[0]
-                            } xl:text-lg lg:text-[14px] w-[8%] md:w-[5%] lg:w-[13%] group-hover:text-secondary-400 ${
-                              isSelected
-                                ? "text-secondary-400"
-                                : "text-primary-100"
-                            }`}
-                          ></i>
-                          <h4
-                            className={`w-[92%] md:w-[95%] lg:w-[87%] group-hover:text-secondary-400 ${
-                              isSelected
-                                ? "text-secondary-400"
-                                : "text-primary-100"
-                            }`}
-                          >
-                            {Object.keys(nestedlistItem)[0]}
-                          </h4>
-                        </div>
+                          {Object.keys(nestedlistItem)[0]}
+                        </h4>
                       </li>
                     );
                   }
@@ -164,7 +184,7 @@ export function detailsModalHeader() {
 export function addFundsModalHeader() {
   return (
     <h3 className="font-inter font-semibold text-lg text-black absolute left-6 top-5">
-    Payment Option
-  </h3>
+      Payment Option
+    </h3>
   );
 }

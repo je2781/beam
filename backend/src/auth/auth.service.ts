@@ -1,15 +1,19 @@
-import { ConflictException, ForbiddenException, Injectable, InternalServerErrorException, } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { AuthDto } from "./dto";
-import * as argon from "argon2";
+import * as argon2 from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-import { Repository, TypeORMError } from "typeorm";
-import { User } from "typeorm/user.entity";
-import * as crypto from 'crypto';
+import { Repository } from "typeorm";
+import { User } from "src/user/user.entity";
+import ms from "ms";
 
 import { Response } from "express";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Wallet } from "typeorm/wallet.entity";
+import { Wallet } from "src/wallet/wallet.entity";
 
 @Injectable({})
 export class AuthService {
@@ -17,79 +21,97 @@ export class AuthService {
     private jwt: JwtService,
     private config: ConfigService,
     @InjectRepository(User)
-    private userRepository: Repository<User>,
-    @InjectRepository(Wallet)
-    private walletRepository: Repository<Wallet>
+    private userRepository: Repository<User>
   ) {}
-  async login(dto: AuthDto, res: Response) {
-    const user = await this.userRepository.findOneBy({
-      email: dto.email,
-    });
+  async login(user: User, res: Response) {
+    const remainingMilliseconds = 36000000; // 10hr
+    const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
 
-    if (!user) {
-      throw new ForbiddenException("Credential incorrect");
-    }
-
-    const isMatch = await argon.verify(user.hash!, dto.password);
-
-    if (!isMatch) {
-      throw new ForbiddenException("Credential incorrect");
-    }
-
-    // delete user.hash;
-
-    return this.signToken(user.id, user.email, res);
-  }
-
-  async signup(dto: AuthDto) {
-    try {
-      const hash = await argon.hash(dto.password);
-      const newUser = await this.userRepository.create({
-        hash: hash,
-        email: dto.email,
-        full_name: dto.full_name,
-        id: (await crypto.randomBytes(6)).toString("hex"),
-      });
-
-      newUser.wallet = await this.walletRepository.create({
-        id: (await crypto.randomBytes(6)).toString("hex"),
-      }); // Create and attach wallet
-
-      return this.userRepository.save(newUser);
-    } catch (err) {
-      console.error('Signup error:', err);
-
-      // MySQL unique constraint violation
-      if (err.code === 'ER_DUP_ENTRY') {
-        throw new ConflictException("Credential already taken");
-      }
-  
-      throw new InternalServerErrorException("Something went wrong");
-
-    }
-  }
-
-  async signToken(userId: string, email: string, response: Response) {
     const payload = {
-      sub: userId,
-      email,
+      sub: user.id,
+      email: user.email,
     };
 
     const secret = this.config.get("JWT_SECRET");
 
     const token = await this.jwt.signAsync(payload, {
-      expiresIn: 900,
       secret: secret,
     });
 
-    response.cookie("access_token", token, {
-      httpOnly: true, // Prevents JS access to the cookie
-      secure: process.env.NODE_ENV === "production", // Only over HTTPS in production
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    res.cookie("Authentication", token, {
+      secure: true,
+      httpOnly: true,
+      expires: expiryDate,
     });
 
-    return {
-      message: "success",
-    };
+    return { payload };
+  }
+
+  async verifyUser(dto: AuthDto) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { email: dto.email },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException("Credentials are not valid.");
+      }
+
+      const isMatch = await argon2.verify(user.hash!, dto.password);
+
+      if (!isMatch) {
+        throw new UnauthorizedException();
+      }
+
+      // delete user.hash;
+
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async signup(dto: AuthDto) {
+    try {
+      // Check if the user already exists
+      const existingUser = await this.userRepository.findOne({
+        where: { email: dto.email },
+      });
+
+      if (existingUser) {
+        throw new BadRequestException("Email already in use"); // Better user feedback
+      }
+
+      const hash = await argon2.hash(dto.password);
+      const newUser = new User({
+        hash: hash,
+        email: dto.email,
+        full_name: dto.full_name,
+      });
+
+      newUser.wallet = new Wallet({}); // Create and attach wallet
+
+      const savedUser = await this.userRepository.save(newUser);
+
+      return savedUser;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async logout(userId: string, res: Response) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException("Credentials are not valid.");
+      }
+
+      res.cookie("Authentication", null);
+    } catch (error) {
+      throw error;
+    }
   }
 }

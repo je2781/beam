@@ -3,9 +3,9 @@ import { GetUser } from "src/auth/decorator";
 import { WalletService } from "./wallet.service";
 import { TransactionDto } from "src/transaction/dto/trans.dto";
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
-import { TransferDto } from "./dto";
-import { Wallet } from "typeorm/wallet.entity";
+import { Wallet } from "src/wallet/wallet.entity";
 import { JwtGaurd } from "src/auth/guard";
+import { Transaction } from "src/transaction/transaction.entity";
 
 @ApiTags('wallet') // Groups endpoints under "wallet" in Swagger UI
 @UseGuards(JwtGaurd)
@@ -36,8 +36,8 @@ export class WalletController{
     @Patch('transfer')
     @ApiOperation({ summary: 'Transfering funds to another user' })
     @ApiResponse({ status: 201, description: 'Transfer completed', type: Wallet})
-    @ApiBody({ type: TransferDto })
-    transfer(@GetUser('id') userId: string, @Body() dto: TransferDto){
+    @ApiBody({ type: Transaction })
+    transfer(@GetUser('id') userId: string, @Body() dto: Transaction){
         return this.walletService.transfer(dto, userId);
     }
 

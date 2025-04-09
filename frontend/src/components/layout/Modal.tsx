@@ -95,7 +95,7 @@ const TransferModalOverlay: React.FC<TransferModalOverlayProps> = (props) => {
     >
       {props.children}
       <h3 className="font-inter font-semibold text-lg text-black absolute left-6 top-5">
-        Withdrawal Details
+        Transfer Details
       </h3>
       <i
         className="fa-solid fa-xmark text-xl cursor-pointer text-black absolute top-6 right-6"

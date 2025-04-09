@@ -22,39 +22,25 @@ jest.mock("../../../components/layout/Sidebar", () => {
   };
 });
 // Mock the users content
-jest.mock("../../../components/dashboard/UsersContent", () => {
-  return function MockUsersPage() {
-    return <div data-testid="users-page">UsersPage Component</div>;
+jest.mock("../../../components/dashboard/Content", () => {
+  return function MockContentComponent() {
+    return <div data-testid="wallet-page">Content Component</div>;
   };
 });
 
-// Mock user details
-jest.mock("../../../components/dashboard/UserDetails", () => {
-  return function MockUserDetails() {
-    return <div data-testid="user-details">UserDetails Component</div>;
-  };
-});
+
 
 describe("Dashbaord", () => {
 
-  it("renders the users page when path is 'users'", () => {
-    (usePathname as jest.Mock).mockReturnValue("/users");
+  it("renders the wallet page when path is 'wallet'", () => {
+    (usePathname as jest.Mock).mockReturnValue("/wallet");
 
     render(<Dashboard/>);
 
     //checking if users page component is rendered on dashboard
-    expect(screen.getByTestId("users-page")).toBeInTheDocument();
+    expect(screen.getByTestId("wallet-page")).toBeInTheDocument();
     expect(screen.getByTestId("sidebar")).toBeInTheDocument();
     expect(screen.getByTestId("header")).toBeInTheDocument();
   });
 
-  it("renders the user details page when path is not 'users'", () => {
-    (usePathname as jest.Mock).mockReturnValue("/users/3");
-
-    render(<Dashboard/>);
-    //checking if user details page component is rendered on dashboard
-    expect(screen.getByTestId("user-details")).toBeInTheDocument();
-    expect(screen.getByTestId("sidebar")).toBeInTheDocument();
-    expect(screen.getByTestId("header")).toBeInTheDocument();
-  });
 });

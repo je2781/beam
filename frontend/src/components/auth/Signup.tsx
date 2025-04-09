@@ -38,13 +38,14 @@ export default function Login() {
       setIsLoading(true);
 
       const res = await axios.post(
-        `${process.env.NEXT_SERVER_DOMAIN}/auth/register`
+        `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/register`,
+        { full_name: user.fullName, email: user.email, password: user.password }
       );
 
-      if (res.data) {
+      if (res.data.message === 'success') {
         router.push("/login");
       } else {
-        throw new Error("Registration failed!");
+        throw new Error(res.data.message);
       }
     } catch (error) {
       const e = error as Error;
@@ -166,12 +167,14 @@ export default function Login() {
           <div className="flex flex-row items-center font-normal text-sm w-full lg:w-[75%] xl:w-[70%] md:w-[85%]">
             <span className="border border-primary-150 border-l-0 border-r-0 border-b-0 w-[35%]"></span>
 
-            <h3 className="mx-2 w-[30%] text-center text-auth">OR SIGNIN WITH</h3>
+            <h3 className="mx-2 w-[30%] text-center text-auth">
+              OR SIGNIN WITH
+            </h3>
             <span className="border border-primary-150 border-l-0 border-r-0 border-b-0 w-[35%]"></span>
           </div>
           <div className="flex flex-row items-center justify-center gap-x-3 font-normal w-full lg:w-[75%] xl:w-[70%] md:w-[85%]">
             <button className="rounded-3xl px-12 py-2 border border-primary-300">
-              <Image src={Google} width={24} height={24} alt="google login"/>
+              <Image src={Google} width={24} height={24} alt="google login" />
             </button>
             <button className="rounded-3xl px-12 py-2 border border-primary-300">
               <i className="fa-brands fa-apple text-[22px]"></i>

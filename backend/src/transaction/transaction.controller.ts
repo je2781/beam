@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from "@ne
 import { GetUser } from "src/auth/decorator";
 import { TransactionService } from "./transaction.service";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Transaction } from "typeorm/transaction.entity";
+import { Transaction } from "src/transaction/transaction.entity";
 import { JwtGaurd } from "src/auth/guard";
 
 @ApiTags('transactions') 

@@ -5,9 +5,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
-import Image from "next/image";
-import Looper from "../../../public/looper_bg.png";
-import Logo from "../../../public/logo.png";
 import Intro from "./Intro";
 import useAuth from "@/store/useAuth";
 
@@ -16,7 +13,7 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const { setAuthStatus } = useAuth();
+  const {setAuthStatus} = useAuth();
 
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -36,17 +33,24 @@ export default function Login() {
       setIsLoading(true);
 
       const res = await axios.post(
-        `${process.env.NEXT_SERVER_DOMAIN}/auth/login`
+        `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/login`,{
+          email: user.email,
+          password: user.password
+        }
       );
 
       if (res.data.message === "success") {
         toast.success("Login successful!", {
           duration: 2000,
         });
-        //updating auth status
-        setAuthStatus(true);
 
-        router.push("/");
+        if(typeof window !== 'undefined'){
+          window.localStorage.setItem('access_token', JSON.stringify(res.data.access_token));
+        }
+        
+        router.push("/wallet");
+        
+
       } else {
         throw new Error("Authentication failed!");
       }
@@ -65,6 +69,7 @@ export default function Login() {
           e.preventDefault();
           onLogin();
         }}
+        test-id='login-form'
         className="flex flex-col gap-y-6 bg-transparent lg:w-[75%] xl:w-[70%] h-full w-full items-center font-inter p-6 lg:px-0 "
       >
         <header className="mb-3 inline-flex flex-col lg:items-start items-center lg:w-[75%] xl:w-[70%] w-full">
@@ -107,6 +112,8 @@ export default function Login() {
             />
             <span
               className="cursor-pointer"
+              aria-label="show"
+              role='menuitem'
               onClick={() => setIsVisible((prevState) => !prevState)}
             >
               <i className="fa-solid fa-eye-slash text-lg text-primary-700/60"></i>
@@ -136,7 +143,7 @@ export default function Login() {
           </button>
           <h4 className="text-base text-primary-400 w-full lg:w-[75%] xl:w-[70%] md:w-[85%] text-center">
             Dont&apos;t have an account?{" "}
-            <Link href="/register" className="text-primary-800 font-bold">
+            <Link href="/signup" className="text-primary-800 font-bold">
               Signup
             </Link>
           </h4>
