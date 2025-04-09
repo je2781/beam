@@ -1,0 +1,47 @@
+[
+  {
+    "organization": "Lendsqr",
+    "username": "Adedeji",
+    "user_id": "LSQFf587g90",
+    "bank_name": "Fidelity",
+    "acct_no": 18937729,
+    "tier": "basic",
+    "profile": {
+      "personal": {
+        "email": "adedeji@lendsqr.com",
+        "mobile": "08078934222",
+        "full_name": "John Adedeji",
+        "bvn": 48490029300,
+        "gender": "male",
+        "marital_status": "single",
+        "dependents": "0",
+        "residence_type": "parent's apartment"
+      },
+      "history": {
+        "education_level": "bsc",
+        "employment_status": "employed",
+        "employment_sector": "banking",
+        "employment_duration": "2 years",
+        "office_email": "deji@lendsqr.com",
+        "savings": 5000,
+        "income": 300000,
+        "interest": 40000
+      },
+      "socials": {
+        "twitter": "@deji_123",
+        "facebook": "@deji_123",
+        "instagram": "@deji_123"
+      },
+      "guarantor": [
+        {
+          "full_name": "Chris Oka",
+          "mobile": "09729028302",
+          "email": "chris@gmail.com",
+          "relationship": "brother"
+        }
+      ],
+      "date_joined": "2019-05-10T09:30:00.000Z",
+      "status": "inactive"
+    }
+  }
+]
