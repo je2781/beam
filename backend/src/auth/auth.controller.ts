@@ -43,7 +43,7 @@ export class AuthController {
     const { token } = await this.authService.login(user);
 
     response.cookie("access_token", token, {
-      secure: false,
+      secure: this.config.get('NODE_ENV') === 'production',
       sameSite: "lax",
       httpOnly: true,
       path: '/',

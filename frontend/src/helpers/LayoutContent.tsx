@@ -18,7 +18,6 @@ export function SideBarList(
   hide?: boolean,
   setHide?: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-
   return (
     <div className="flex flex-col items-start lg:gap-y-9 font-inter w-full">
       <header className="lg:inline-flex hidden justify-start items-center w-full flex-row gap-x-3 border border-primary-200 h-[60px] pl-6 pb-10 border-t-0 border-l-0 border-r-0">
@@ -51,13 +50,15 @@ export function SideBarList(
                           if (Object.keys(nestedlistItem)[0] === "Logout") {
                             try {
                               const res = await axios.post(
-                                `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/logout`
+                                `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/logout`,
+                                {
+                                  withCredentials: true,
+                                }
                               );
 
                               if (res.data.message === "logout successful") {
-          
                                 router.replace("/login");
-                              } 
+                              }
                             } catch (error) {
                               return toast.error("session logout failed");
                             }

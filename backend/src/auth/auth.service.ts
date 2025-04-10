@@ -97,7 +97,13 @@ export class AuthService {
   async logout(res: Response) {
     try {
 
-      res.clearCookie('access_token');
+      res.clearCookie('access_token', {
+        httpOnly: true,
+        secure: this.config.get('NODE_ENV') === 'production',
+        sameSite: 'lax',
+        path: '/', // Important: match the same path as when you set the cookie
+      });
+    
 
       return {
         message: 'logout successful'
