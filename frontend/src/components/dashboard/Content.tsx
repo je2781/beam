@@ -67,29 +67,32 @@ export default function Content({ data }: any) {
 
   //retrieving ui details
   React.useEffect(() => {
-    async function getTransactions(){
+    async function getTransactions() {
       try {
-        const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,
-        {
-          withCredentials: true,
-        });
-        if(result.data.transactions.length > 0){
-          setTrans(result.data.transactions);
-        }
+        const result = await axios.get(
+          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,
+          {
+            withCredentials: true,
+          }
+        );
+        setTrans(result.data.transactions);
       } catch (error) {
-        return toast.error('failed to retrieve transactions');
+        return toast.error("failed to retrieve transactions");
       }
     }
-    async function getWalletBalance(){
+    async function getWalletBalance() {
       try {
-        const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/balance`,{
-          withCredentials: true,
-        });
-        if(result.data.message === 'success'){
+        const result = await axios.get(
+          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/balance`,
+          {
+            withCredentials: true,
+          }
+        );
+        if (result.data.message === "success") {
           setBalance(result.data.wallet_balance);
         }
       } catch (error) {
-        return toast.error('failed to retrieve balance');
+        return toast.error("failed to retrieve balance");
       }
     }
 
@@ -225,10 +228,11 @@ export default function Content({ data }: any) {
               <hr className="border border-wallet-summary-hr border-l-0 border-r-0 border-t-0 mb-3" />
               <h3 className="font-semibold text-xl text-primary-800">
                 &#8358;
-                {balance ?? (200000.0).toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                {balance ??
+                  (200000.0).toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
               </h3>
               <hr className="border border-wallet-summary-hr border-l-0 border-r-0 border-t-0 mt-3 mb-2" />
 
@@ -276,7 +280,7 @@ export default function Content({ data }: any) {
                 id="toggle-withdraw"
                 type="button"
                 data-testid="withdraw"
-                onClick={() => showTransferModalHandler('Withdraw')}
+                onClick={() => showTransferModalHandler("Withdraw")}
                 className="w-[50%] text-primary-400 border border-primary-100 rounded-md cursor-pointer"
               >
                 Withdrawal
@@ -284,7 +288,7 @@ export default function Content({ data }: any) {
             </div>
             <div className="inline-flex xl:flex-row flex-row lg:flex-col gap-y-3 w-full gap-x-3">
               <button
-                onClick={() => showTransferModalHandler('Transfer')}
+                onClick={() => showTransferModalHandler("Transfer")}
                 className="xl:w-[33.3%] w-[33.3%] text-primary-400 border border-primary-100 px-5 py-2 rounded-md lg:w-full cursor-pointer"
               >
                 Transfer
@@ -339,223 +343,236 @@ export default function Content({ data }: any) {
               </div>
             </div>
           </div>
-          <div className="w-full h-full font-inter relative">
-            <div className="w-full absolute top-[17px]">
-              <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
-            </div>
-            <div>
-              {positions.map((position, index) => (
-                <div
-                  key={index}
-                  className={`w-full absolute`}
-                  style={{ top: position.top }}
-                >
-                  <div className="h-8 border border-primary-100 border-l-0 border-r-0 border-t-0"></div>
+          <div className="w-full h-full font-inter flex flex-col justify-center">
+            {trans.length > 0 && (
+              <>
+                <div className="w-full absolute top-[17px]">
+                  <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
                 </div>
-              ))}
-            </div>
+                <div>
+                  {positions.map((position, index) => (
+                    <div
+                      key={index}
+                      className={`w-full absolute`}
+                      style={{ top: position.top }}
+                    >
+                      <div className="h-8 border border-primary-100 border-l-0 border-r-0 border-t-0"></div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
             <div className="w-full -ml-5">
-              <Swiper
-                spaceBetween={windowWidth < 768 ? -21 : 30}
-                slidesPerView={windowWidth < 768 ? 3 : 4}
-                autoHeight
-                className="w-full h-full" // add some horizontal padding
-                centeredSlides={false} // make sure it's off
-              >
-                <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
-                  <article className="flex flex-col gap-y-3 p-6 h-full w-full">
-                    <header className="w-full">
-                      <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
-                        {articleHeaderTemplate("w-full", "Transaction ID")}
+              {trans.length === 0 ? (
+                <div className="w-full h-full flex flex-col justify-center items-center font-inter gap-y-2">
+                  <i className="fa-regular fa-face-sad-tear text-5xl text-secondary-400"></i>
+                  <h2 className="text-primary-800 text-sm">
+                    Start a transaction..
+                  </h2>
+                </div>
+              ) : (
+                <Swiper
+                  spaceBetween={windowWidth < 768 ? -21 : 30}
+                  slidesPerView={windowWidth < 768 ? 3 : 4}
+                  autoHeight
+                  className="w-full h-full" // add some horizontal padding
+                  centeredSlides={false} // make sure it's off
+                >
+                  <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
+                    <article className="flex flex-col gap-y-3 p-6 h-full w-full">
+                      <header className="w-full">
+                        <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
+                          {articleHeaderTemplate("w-full", "Transaction ID")}
+                        </ul>
+                      </header>
+                      <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
+                        {visibleTrans.map((trans, i) => {
+                          return (
+                            <ul
+                              key={i}
+                              className={`flex flex-row items-center w-full py-4`}
+                            >
+                              <li className="w-full">
+                                <h5 className="text-start">{trans.trans_id}</h5>
+                              </li>
+                            </ul>
+                          );
+                        })}
                       </ul>
-                    </header>
-                    <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
-                      {visibleTrans.map((trans, i) => {
-                        return (
-                          <ul
-                            key={i}
-                            className={`flex flex-row items-center w-full py-4`}
-                          >
-                            <li className="w-full">
-                              <h5 className="text-start">{trans.trans_id}</h5>
-                            </li>
-                          </ul>
-                        );
-                      })}
-                    </ul>
-                  </article>
-                </SwiperSlide>
-                <SwiperSlide className="md:!w-[24%] !w-[44%] !h-[620px]">
-                  <article className="flex flex-col gap-y-3 p-6 h-full w-full">
-                    <header className="w-full">
-                      <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
-                        {articleHeaderTemplate(
-                          "w-full",
-                          `${
-                            windowWidth < 567
-                              ? "Trans Type"
-                              : "Transaction Type"
-                          }`
-                        )}
+                    </article>
+                  </SwiperSlide>
+                  <SwiperSlide className="md:!w-[24%] !w-[44%] !h-[620px]">
+                    <article className="flex flex-col gap-y-3 p-6 h-full w-full">
+                      <header className="w-full">
+                        <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
+                          {articleHeaderTemplate(
+                            "w-full",
+                            `${
+                              windowWidth < 567
+                                ? "Trans Type"
+                                : "Transaction Type"
+                            }`
+                          )}
+                        </ul>
+                      </header>
+                      <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
+                        {visibleTrans.map((trans, i) => {
+                          return (
+                            <ul
+                              key={i}
+                              className={`flex flex-row items-center w-full py-4`}
+                            >
+                              <li className="w-full">
+                                <h5 className="text-start">
+                                  {trans.trans_type.split(" ").length > 1
+                                    ? trans.trans_type
+                                        .split(" ")[0][0]
+                                        .toUpperCase() +
+                                      trans.trans_type.split(" ")[0].slice(1) +
+                                      " " +
+                                      (trans.trans_type
+                                        .split(" ")[1][0]
+                                        .toUpperCase() +
+                                        trans.trans_type.split(" ")[1].slice(1))
+                                    : trans.trans_type[0].toUpperCase() +
+                                      trans.trans_type.slice(1)}
+                                </h5>
+                              </li>
+                            </ul>
+                          );
+                        })}
                       </ul>
-                    </header>
-                    <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
-                      {visibleTrans.map((trans, i) => {
-                        return (
-                          <ul
-                            key={i}
-                            className={`flex flex-row items-center w-full py-4`}
-                          >
-                            <li className="w-full">
-                              <h5 className="text-start">
-                                {trans.trans_type.split(" ").length > 1
-                                  ? trans.trans_type
-                                      .split(" ")[0][0]
-                                      .toUpperCase() +
-                                    trans.trans_type.split(" ")[0].slice(1) +
-                                    " " +
-                                    (trans.trans_type
-                                      .split(" ")[1][0]
-                                      .toUpperCase() +
-                                      trans.trans_type.split(" ")[1].slice(1))
-                                  : trans.trans_type[0].toUpperCase() +
-                                    trans.trans_type.slice(1)}
-                              </h5>
-                            </li>
-                          </ul>
-                        );
-                      })}
-                    </ul>
-                  </article>
-                </SwiperSlide>
-                <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
-                  <article className="flex flex-col gap-y-3 p-6 h-full w-full">
-                    <header className="w-full">
-                      <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
-                        {articleHeaderTemplate("w-full", "Amount (₦)")}
+                    </article>
+                  </SwiperSlide>
+                  <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
+                    <article className="flex flex-col gap-y-3 p-6 h-full w-full">
+                      <header className="w-full">
+                        <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
+                          {articleHeaderTemplate("w-full", "Amount (₦)")}
+                        </ul>
+                      </header>
+                      <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
+                        {visibleTrans.map((trans, i) => {
+                          return (
+                            <ul
+                              key={i}
+                              className={`flex flex-row items-center w-full py-4`}
+                            >
+                              <li className="w-full">
+                                <h5 className="text-start">
+                                  &#8358;
+                                  {trans.amount.toLocaleString("en-US", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}
+                                </h5>
+                              </li>
+                            </ul>
+                          );
+                        })}
                       </ul>
-                    </header>
-                    <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
-                      {visibleTrans.map((trans, i) => {
-                        return (
-                          <ul
-                            key={i}
-                            className={`flex flex-row items-center w-full py-4`}
-                          >
-                            <li className="w-full">
-                              <h5 className="text-start">
-                                &#8358;
-                                {trans.amount.toLocaleString("en-US", {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })}
-                              </h5>
-                            </li>
-                          </ul>
-                        );
-                      })}
-                    </ul>
-                  </article>
-                </SwiperSlide>
-                <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
-                  <article className="flex flex-col gap-y-3 p-6 h-full w-full">
-                    <header className="w-full">
-                      <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
-                        {articleHeaderTemplate("w-full", `Status`)}
+                    </article>
+                  </SwiperSlide>
+                  <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
+                    <article className="flex flex-col gap-y-3 p-6 h-full w-full">
+                      <header className="w-full">
+                        <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
+                          {articleHeaderTemplate("w-full", `Status`)}
+                        </ul>
+                      </header>
+                      <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
+                        {visibleTrans.map((trans, i) => {
+                          return (
+                            <ul
+                              key={i}
+                              className={`flex flex-row items-center w-full py-4`}
+                            >
+                              <li className="w-full inline-flex flex-row gap-x-2 items-center">
+                                <i
+                                  className={`${
+                                    trans.status === "approved"
+                                      ? "text-status-success"
+                                      : "text-status-deduct"
+                                  } text-[8px] fa-solid fa-circle`}
+                                ></i>
+                                <h5 className="text-start">
+                                  {trans.status[0].toUpperCase() +
+                                    trans.status.slice(1)}
+                                </h5>
+                              </li>
+                            </ul>
+                          );
+                        })}
                       </ul>
-                    </header>
-                    <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
-                      {visibleTrans.map((trans, i) => {
-                        return (
-                          <ul
-                            key={i}
-                            className={`flex flex-row items-center w-full py-4`}
-                          >
-                            <li className="w-full inline-flex flex-row gap-x-2 items-center">
-                              <i
-                                className={`${
-                                  trans.status === "approved"
-                                    ? "text-status-success"
-                                    : "text-status-deduct"
-                                } text-[8px] fa-solid fa-circle`}
-                              ></i>
-                              <h5 className="text-start">
-                                {trans.status[0].toUpperCase() +
-                                  trans.status.slice(1)}
-                              </h5>
-                            </li>
-                          </ul>
-                        );
-                      })}
-                    </ul>
-                  </article>
-                </SwiperSlide>
-                <SwiperSlide className="md:!w-[22%] !w-[36%] !h-[620px]">
-                  <article className="flex flex-col gap-y-3 p-6 h-full w-full">
-                    <header className="w-full">
-                      <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
-                        {articleHeaderTemplate("w-full", "Date")}
+                    </article>
+                  </SwiperSlide>
+                  <SwiperSlide className="md:!w-[22%] !w-[36%] !h-[620px]">
+                    <article className="flex flex-col gap-y-3 p-6 h-full w-full">
+                      <header className="w-full">
+                        <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
+                          {articleHeaderTemplate("w-full", "Date")}
+                        </ul>
+                      </header>
+                      <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
+                        {visibleTrans.map((trans, i) => {
+                          return (
+                            <ul
+                              key={i}
+                              className={`flex flex-row items-center w-full py-4`}
+                            >
+                              <li className="w-full">
+                                <h5 className="text-start">
+                                  {" "}
+                                  {
+                                    new Date(trans.date)
+                                      .toISOString()
+                                      .split("T")[0]
+                                  }
+                                </h5>
+                              </li>
+                            </ul>
+                          );
+                        })}
                       </ul>
-                    </header>
-                    <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">
-                      {visibleTrans.map((trans, i) => {
-                        return (
-                          <ul
-                            key={i}
-                            className={`flex flex-row items-center w-full py-4`}
-                          >
-                            <li className="w-full">
-                              <h5 className="text-start">
-                                {" "}
-                                {
-                                  new Date(trans.date)
-                                    .toISOString()
-                                    .split("T")[0]
-                                }
-                              </h5>
-                            </li>
-                          </ul>
-                        );
-                      })}
-                    </ul>
-                  </article>
-                </SwiperSlide>
-                <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
-                  <article className="flex flex-col gap-y-3 p-6 h-full w-full">
-                    <header className="w-full">
-                      <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
-                        {articleHeaderTemplate("w-full", "Action")}
-                      </ul>
-                    </header>
+                    </article>
+                  </SwiperSlide>
+                  <SwiperSlide className="md:!w-[22%] !w-[40%] !h-[620px]">
+                    <article className="flex flex-col gap-y-3 p-6 h-full w-full">
+                      <header className="w-full">
+                        <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
+                          {articleHeaderTemplate("w-full", "Action")}
+                        </ul>
+                      </header>
 
-                    <ul className="font-medium text-wallet-history-view text-[11px]">
-                      {visibleTrans.map((_, i) => {
-                        return (
-                          <ul
-                            key={i}
-                            className={`flex flex-row items-center w-full py-[10.9px]`}
-                          >
-                            <li className="w-full">
-                              <button
-                                onClick={() =>
-                                  selectedTransId &&
-                                  openDetailsPage(selectedTransId)
-                                }
-                                className="border border-primary-100 rounded-md px-4 py-1 cursor-pointer"
-                              >
-                                View
-                              </button>
-                            </li>
-                          </ul>
-                        );
-                      })}
-                    </ul>
-                  </article>
-                </SwiperSlide>
-              </Swiper>
+                      <ul className="font-medium text-wallet-history-view text-[11px]">
+                        {visibleTrans.map((_, i) => {
+                          return (
+                            <ul
+                              key={i}
+                              className={`flex flex-row items-center w-full py-[10.9px]`}
+                            >
+                              <li className="w-full">
+                                <button
+                                  onClick={() =>
+                                    selectedTransId &&
+                                    openDetailsPage(selectedTransId)
+                                  }
+                                  className="border border-primary-100 rounded-md px-4 py-1 cursor-pointer"
+                                >
+                                  View
+                                </button>
+                              </li>
+                            </ul>
+                          );
+                        })}
+                      </ul>
+                    </article>
+                  </SwiperSlide>
+                </Swiper>
+              )}
             </div>
           </div>
-          <PaginationComponent
+          {trans.length > 0 && <PaginationComponent
             count={count}
             itemsPerPage={ITEMS_PER_PAGE}
             currentPage={currentPage}
@@ -564,7 +581,7 @@ export default function Content({ data }: any) {
             setVisibleTrans={setVisibleTrans}
             setCount={setCount}
             trans={trans}
-          />
+          />}
         </div>
         <p data-testid="slide-index" className="hidden">
           Current slide: {activeIndex}
