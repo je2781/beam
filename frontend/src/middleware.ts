@@ -11,17 +11,12 @@ export function middleware(request: NextRequest) {
 
   const token = request.cookies.get("access_token")?.value;
 
-  if (!token && isPublicPath) {
-    return NextResponse.redirect(new URL('/login', request.url), {
-      status: 302,
-    });
-  }
 
-  if (isPublicPath && token) {
-    return NextResponse.redirect(new URL("/wallet", request.nextUrl), {
-      status: 302,
-    });
-  }
+  // if (isPublicPath && token) {
+  //   return NextResponse.redirect(new URL("/wallet", request.nextUrl), {
+  //     status: 302,
+  //   });
+  // }
 
   if (!isPublicPath && !token) {
     return NextResponse.redirect(new URL("/login", request.nextUrl), {

@@ -53,7 +53,7 @@ export default function Content({ data }: any) {
   const [transferModalHeader, setTransferModalHeader] = React.useState(
     "Withdraw"
   );
-  const [trans, setTrans] = React.useState<any[]>(data.transactions);
+  const [trans, setTrans] = React.useState<any[]>([]);
   const [balance, setBalance] = React.useState<number | null>(null);
   const windowWidth = useWindowWidth();
   const router = useRouter();

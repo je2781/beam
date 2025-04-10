@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -69,7 +70,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: "ending current session" })
   @ApiResponse({ status: 201, description: "Logout successful", type: User })
-  @Post("logout")
+  @Delete("logout")
   logout(@Res({ passthrough: true }) res: Response) {
     return this.authService.logout(res);
   }

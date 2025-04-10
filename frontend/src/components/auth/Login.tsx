@@ -14,8 +14,6 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const {setAuthStatus} = useAuth();
-
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -47,7 +45,6 @@ export default function Login() {
         toast.success("Login successful!", {
           duration: 2000,
         });
-        
         router.push("/wallet");
         
       } 
