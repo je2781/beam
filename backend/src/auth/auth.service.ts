@@ -38,7 +38,8 @@ export class AuthService {
     });
 
     res.cookie("access_token", token, {
-      secure: true,
+      secure: this.config.get("NODE_ENV") === 'production',
+      sameSite: 'strict',
       httpOnly: true,
       expires: expiryDate,
     });
