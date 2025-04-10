@@ -45,8 +45,8 @@ export class AuthController {
     const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
 
     response.cookie("access_token", token, {
-      secure: false,
-      sameSite: "strict",
+      secure: this.config.getOrThrow("NODE_ENV") === "production",
+      sameSite: "lax",
       httpOnly: true,
       path: '/',
       expires: expiryDate,

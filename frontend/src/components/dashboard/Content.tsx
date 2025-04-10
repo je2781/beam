@@ -71,7 +71,11 @@ export default function Content({ data }: any) {
       try {
         const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,
         {
-          withCredentials: true
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        
           
         });
         if(result.data.transactions.length > 0){
@@ -84,7 +88,11 @@ export default function Content({ data }: any) {
     async function getWalletBalance(){
       try {
         const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/balance`,{
-          withCredentials: true
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        
         });
         if(result.data.message === 'success'){
           setBalance(result.data.wallet_balance);
