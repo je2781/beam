@@ -71,7 +71,7 @@ export default function Login() {
           <h3
             className={`text-auth inline-flex items-center font-normal lg:text-lg text-sm mt-3 lg:text-start text-center`}
           >
-            <span>Already have an account?{" "}</span>
+            <span>Already have an account?&nbsp;&nbsp;</span>
             <Link className="btn underline-offset-1 underline" href="/login">
               Login
             </Link>
