@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import Intro from "./Intro";
+import Cookies from "js-cookie";
 import useAuth from "@/store/useAuth";
 
 export default function Login() {
@@ -39,7 +40,7 @@ export default function Login() {
         }
       );
 
-      if (res.data.payload) {
+      if (res.data.message === 'success') {
         toast.success("Login successful!", {
           duration: 2000,
         });

@@ -22,11 +22,8 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>
   ) {}
-  async login(user: User, res: Response) {
+  async login(user: User) {
     try {
-      const remainingMilliseconds = 36000000; // 10hr
-    const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
-
     const payload = {
       sub: user.id,
       email: user.email,
@@ -36,16 +33,10 @@ export class AuthService {
 
     const token = this.jwt.sign(payload, {
       secret: secret,
+    
     });
 
-    res.cookie("access_token", token, {
-      secure: this.config.get("NODE_ENV") === 'production',
-      sameSite: 'strict',
-      httpOnly: true,
-      expires: expiryDate,
-    });
-
-    return {...payload, token };
+    return {token };
     } catch (error) {
       throw error;
     }
@@ -106,9 +97,7 @@ export class AuthService {
   async logout(res: Response) {
     try {
 
-      res.cookie("access_token", '', {
-        maxAge: 0
-      });
+      res.clearCookie('access_token');
 
       return {
         message: 'logout successful'
