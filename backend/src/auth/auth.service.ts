@@ -102,7 +102,7 @@ export class AuthService {
   async logout(res: Response) {
     try {
 
-      res.cookie("access_token", undefined, {
+      res.cookie("access_token", '', {
         maxAge: 0
       });
 
