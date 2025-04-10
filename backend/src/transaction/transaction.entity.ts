@@ -28,12 +28,4 @@ export class Transaction extends AbstractEntity<Transaction> {
   @Column()
   date: Date;
 
-  // Extra properties can be defined as methods or getter properties
-  get email(): string {
-    return `${this.email}`;
-  }
-
-  get note(): string {
-    return `${this.note}`;
-  }
 }

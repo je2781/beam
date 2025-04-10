@@ -47,7 +47,8 @@ export default function Login() {
       } 
     } catch (error) {
       setIsLoading(false);
-      return toast.error('Registration failed');
+      const e = error as Error;
+      return toast.error('Email already in use');
     }
   }
 
@@ -68,10 +69,10 @@ export default function Login() {
             Create an Account
           </h1>
           <h3
-            className={`text-auth font-normal lg:text-lg text-sm mt-3 lg:text-start text-center`}
+            className={`text-auth inline-flex items-center font-normal lg:text-lg text-sm mt-3 lg:text-start text-center`}
           >
-            Already have an account?{" "}
-            <Link className="btn underline-offset-2 underline" href="/login">
+            <span>Already have an account?{" "}</span>
+            <Link className="btn underline-offset-1 underline" href="/login">
               Login
             </Link>
           </h3>

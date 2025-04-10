@@ -49,7 +49,8 @@ export default function Login() {
       } 
     } catch (error) {
       setIsLoading(false);
-      return toast.error('Credential Invalid');
+      const e = error as Error;
+      return toast.error('credentials are invalid');
     }
   }
 
@@ -123,7 +124,6 @@ export default function Login() {
         <div className="inline-flex flex-col lg:items-start md:items-center gap-y-6 w-full lg:w-[75%] xl:w-[70%] md:w-[85%] mt-3">
           <button
             disabled={buttonDisabled}
-            onClick={onLogin}
             type="submit"
             className={`py-3 font-bold text-base text-white rounded-3xl w-full lg:w-[75%] xl:w-[70%] md:w-[85%] ${
               buttonDisabled

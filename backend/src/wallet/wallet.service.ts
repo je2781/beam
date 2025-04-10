@@ -49,6 +49,7 @@ export class WalletService {
     //creating transaction entry
     const newTransaction = new Transaction({
       ...dto,
+      date: new Date(dto.date)
     });
     //adding new transaction to user repo
     user.transactions.push(newTransaction);
@@ -82,6 +83,7 @@ export class WalletService {
     //creating transaction entry
     const newTransaction = new Transaction({
       ...dto,
+      date: new Date(dto.date)
     });
 
     //adding new transaction to user repo
@@ -95,7 +97,7 @@ export class WalletService {
     };
   }
 
-  async transfer(dto: Transaction, userId: string) {
+  async transfer(dto: TransactionDto, userId: string) {
     //retrieving creditor details
     const creditor = await this.userRepository.findOneBy({
       id: userId,
@@ -130,6 +132,7 @@ export class WalletService {
     //creating transaction entry
     const newTransaction = new Transaction({
       ...dto,
+      date: new Date(dto.date)
     });
 
     //adding new transaction to creditor

@@ -6,9 +6,9 @@ export class TransactionDto{
     @ApiProperty({ example: 'withdrawal', description: 'The type of transaction taking place' })
     trans_type: string;
 
-    @IsDate()
+    @IsString()
     @ApiProperty({ example: '2023-05-10T09:31:00Z', description: 'The date the transaction occured' })
-    date: Date;
+    date: string;
 
     @IsString()
     @ApiProperty({ example: 'pending', description: 'The status of the transaction' })
@@ -18,5 +18,15 @@ export class TransactionDto{
     @IsNegative()
     @ApiProperty({ example: 500, description: 'The amount used during transaction' })
     amount: number;
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty({ example: 'test@test.com', description: 'The email of teh debtor' })
+    email?: string;
+
+    @IsNumber()
+    @IsOptional()
+    @ApiProperty({ example: 'hi there!', description: 'exra information rgarding the transfer' })
+    note?: string;
 
 }

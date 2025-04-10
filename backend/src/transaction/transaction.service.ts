@@ -18,7 +18,7 @@ export class TransactionService {
 
     return {
       message: 'success',
-      ...trans
+      transactions: trans
     };
   }
 }

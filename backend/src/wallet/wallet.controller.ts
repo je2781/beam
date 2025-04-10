@@ -36,8 +36,8 @@ export class WalletController{
     @Patch('transfer')
     @ApiOperation({ summary: 'Transfering funds to another user' })
     @ApiResponse({ status: 201, description: 'Transfer completed', type: Wallet})
-    @ApiBody({ type: Transaction })
-    transfer(@GetUser('id') userId: string, @Body() dto: Transaction){
+    @ApiBody({ type: TransactionDto })
+    transfer(@GetUser('id') userId: string, @Body() dto: TransactionDto){
         return this.walletService.transfer(dto, userId);
     }
 

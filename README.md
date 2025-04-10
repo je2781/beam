@@ -23,7 +23,7 @@ Run (npm run dev) from the main directory to compile for development. To test ru
 
 ## How to run the app (backend)
 
-Run (docker compose up) from the main directory to compile for development/build for production. To test run (npm run test:e2e). 
+Run (docker compose up mysql nestjs) from the main directory to compile for development. To test run (npm run test:e2e). Note have docker desktop installed and open before compiling for the backend. __And make sure only test-sql container is running__ 
 
 
 

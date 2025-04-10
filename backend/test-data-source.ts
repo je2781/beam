@@ -1,22 +1,18 @@
-import * as dotenv from 'dotenv';
-dotenv.config({ path: '.env' });
-
+// test/test-data-source.ts
 import { DataSource } from 'typeorm';
 import { Wallet } from './src/wallet/wallet.entity';
 import { Transaction } from './src/transaction/transaction.entity';
 import { User } from './src/user/user.entity';
 
-const AppDataSource = new DataSource({
+export const testDataSource = new DataSource({
   type: 'mysql',
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB_NAME,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
+  host: 'test-db',
+  port: 3308,
+  username: 'test_user',
+  password: 'test_pass',
+  database: 'myapp_test',
   connectTimeout: 30000,
   migrations: ['migrations/**'],
   migrationsTableName: 'migrations',
   entities: [User, Transaction, Wallet],
 });
-
-export default AppDataSource;

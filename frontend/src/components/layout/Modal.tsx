@@ -72,11 +72,11 @@ export const AddFundsModal: React.FC<AddFundsModalProps> = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <BackDrop onClick={() => {}} />,
+        <BackDrop onClick={props.onClose} />,
         document.getElementById("backdrop-root")!
       )}
       {ReactDOM.createPortal(
-        <AddFundsModalOverlay>
+        <AddFundsModalOverlay onClick={props.onClose}>
           {props.children}
         </AddFundsModalOverlay>,
         document.getElementById("add-funds-modal")!

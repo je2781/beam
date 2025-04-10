@@ -9,10 +9,11 @@ import { useRouter } from "next/navigation";
 import useWindowWidth from "@/helpers/getWindowWidth";
 import { AddFundsModal, TransferModal } from "../layout/Modal";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import { Swiper as SwiperType } from 'swiper';
 import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { detectIssuer, goToSlide } from "@/helpers/helpers";
+import { detectIssuer} from "@/helpers/helpers";
 
 import visaLogo from "../../../public/visa.png";
 import mastercardLogo from "../../../public/mastercard.png";
@@ -54,7 +55,13 @@ export default function Content({ data }: any) {
   const windowWidth = useWindowWidth();
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const swiperRef = React.useRef<SwiperRef>(null);;
+  const swiperRef = React.useRef<SwiperType>(null);
+
+  const goToSlide = (index: number) => {
+      swiperRef.current?.slideTo(index); // jump to a specific slide
+      setActiveIndex(index);
+    
+  }
 
   React.useEffect(() => {
     if (selectedOption.length > 0) {
@@ -526,11 +533,11 @@ export default function Content({ data }: any) {
         <p data-testid="slide-index" className="hidden">Current slide: {activeIndex}</p>
 
         {isAddFundsModalOpen && (
-          <AddFundsModal>
+          <AddFundsModal onClose={() => {}}>
             <div className="w-full h-full">
               <Swiper
                 slidesPerView={1}
-                onSwiper={(swiper) => (swiperRef.current!.swiper = swiper)}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
                 className="w-full h-full"
               >
                 <SwiperSlide>
@@ -634,7 +641,7 @@ export default function Content({ data }: any) {
                         type="button"
                         className="cursor-pointer mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
                         onClick={() => {
-                          goToSlide(1, swiperRef, setActiveIndex);
+                          goToSlide(1);
                         }}
                       >
                         Continue
@@ -661,8 +668,9 @@ export default function Content({ data }: any) {
                             date: new Date().toISOString(),
                           }
                         );
-                        if (res.data.message !== "success") {
-                          throw new Error(res.data.message);
+                        
+                        if (res.data.message === "success") {
+                          hideModalHandler("add-funds", setIsAddFundsModalOpen);
                         }
                       } catch (error) {
                         const e = error as Error;
@@ -726,7 +734,7 @@ export default function Content({ data }: any) {
                         type="submit"
                         className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
                       >
-                        Pay Now
+                        {isLoading ? 'Processing' : 'Pay Now'}
                       </button>
                     </div>
                   </form>

@@ -6,13 +6,13 @@ import { AbstractEntity } from '../typeorm/abstract.entity';
 @Entity()
 export class User extends AbstractEntity<User> {
   @Column()
-  full_name: string;
+  full_name?: string;
 
   @Column({ unique: true}) // Make email unique
   email: string;
 
   @Column() // Ensure this is nullable
-  hash?: string; // Store hashed password, so no `?`
+  hash: string; // Store hashed password, so no `?`
 
   @OneToOne(() => Wallet, (wallet) => wallet.user, { cascade: true })
   wallet: Wallet;

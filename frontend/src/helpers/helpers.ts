@@ -1,5 +1,4 @@
 import localFont from "next/font/local";
-import { SwiperRef } from "swiper/react";
 
 export const dashboardItems = [
   {
@@ -82,9 +81,4 @@ export const detectIssuer = (number) => {
   return "Unknown";
 };
 
-export  const goToSlide = (index: number, swiperRef: React.RefObject<SwiperRef | null>, setActiveIndex: React.Dispatch<React.SetStateAction<number>>) => {
-  if (swiperRef.current) {
-    swiperRef.current.swiper.slideTo(index); // jump to a specific slide
-    setActiveIndex(index)
-  }
-}
+

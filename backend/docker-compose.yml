@@ -4,13 +4,23 @@ services:
     ports:
       - ${DB_PORT}:3306
     restart: always
+    env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
     volumes:
-      - mysql-data:/var/lib/mysql
+      - /var/lib/mysql
+  test-db:
+    image: mysql
+    ports:
+      - 3308:3308
+    restart: always
+    environment:
+      MYSQL_DATABASE: myapp_test
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_pass
   nestjs:
     build: .
     container_name: nestjs
@@ -28,7 +38,5 @@ services:
       - .:/app
     command: npm run start:dev
 
-volumes:
-  mysql-data:
 
 

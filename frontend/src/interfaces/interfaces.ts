@@ -23,12 +23,12 @@ export interface TransferModalOverlayProps {
 }
 
 export interface AddFundsModalProps {
-  onClose?: () => void;
+  onClose: () => void;
   children: React.ReactNode;
 }
 
 export interface AddFundsModalOverlayProps {
-  onClick?: () => void;
+  onClick: () => void;
   children: React.ReactNode;
 }
 

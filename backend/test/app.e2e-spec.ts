@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
-import * as pactum from 'pactum';
+import * as pactum from "pactum";
 import { AppModule } from "./../src/app.module";
 import { AuthDto } from "../src/auth/dto";
 import { EditUserDto } from "../src/user/dto";
@@ -29,15 +29,17 @@ describe("AppController (e2e)", () => {
   });
 
   afterEach(async () => {
-    await userService.deleteUser("test300@test.com");
     await app.close();
+  });
+  afterAll(async () => {
+    await userService.deleteUser("test300@test.com");
   });
 
   describe("Auth", () => {
     const signupDto: AuthDto = {
       email: "test300@test.com",
-      password: "server1",
       full_name: "John Doe",
+      password: "server1",
     };
 
     describe("Signup", () => {
@@ -89,8 +91,15 @@ describe("AppController (e2e)", () => {
         return pactum
           .spec()
           .get("/users/me")
-          .withHeaders({ Authorization: "Bearer $S{userAt}" })
-          .expectStatus(200);
+          .withHeaders({ Authorization: `Bearer $S{userAt}` })
+          .expectStatus(200)
+          .expectJsonLike({
+            user: {
+              email: "test300@test.com",
+              full_name: "John Doe",
+            },
+            message: "success",
+          });
       });
     });
   });
@@ -100,9 +109,9 @@ describe("AppController (e2e)", () => {
       return pactum
         .spec()
         .get("/transactions")
-        .withHeaders({ Authorization: "Bearer $S{userAt}" })
+        .withHeaders({ Authorization: `Bearer $S{userAt}` })
         .expectStatus(200)
-        .expectBody([]);
+        .expectJson({ transactions: [], message: "success" });
     });
   });
 });

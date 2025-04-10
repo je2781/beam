@@ -18,7 +18,6 @@ export class UserService {
     try {
       const user = await this.userRepository.findOne({
         where: { id: userId },
-        relations: { wallet: true },
       });
   
       if (!user) {
@@ -26,8 +25,7 @@ export class UserService {
       }
   
       return {
-        message: "success",
-        user,
+        ...user
       };
     } catch (error) {
       throw error;
