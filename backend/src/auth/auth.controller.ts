@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -33,7 +32,7 @@ export class AuthController {
   @ApiResponse({
     status: 201,
     description: "Authentication successful",
-    type: User,
+    type: Object,
   })
   @ApiBody({ type: User })
   @Post("login")
@@ -59,7 +58,7 @@ export class AuthController {
   @ApiResponse({
     status: 201,
     description: "Registration successful",
-    type: User,
+    type: User
   })
   @ApiBody({ type: AuthDto })
   @Post("register")
@@ -67,10 +66,10 @@ export class AuthController {
     return this.authService.signup(dto);
   }
 
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: "ending current session" })
-  @ApiResponse({ status: 201, description: "Logout successful", type: User })
-  @Delete("logout")
+  @ApiResponse({ status: 200, description: "Logout successful" , type: Object})
+  @Get("logout")
   logout(@Res({ passthrough: true }) res: Response) {
     return this.authService.logout(res);
   }

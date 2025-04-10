@@ -18,7 +18,7 @@ export class WalletController{
     @HttpCode(HttpStatus.OK)
     @Get('balance')
     @ApiOperation({ summary: 'get user wallet balance' })
-    @ApiResponse({ status: 200, description: 'Balance retrieved successfully.', type: Wallet })
+    @ApiResponse({ status: 200, description: 'Balance retrieved successfully.', type: Object })
     getBalance(@GetUser('id') userId: string){
         return this.walletService.getBalance(userId);
     }
@@ -26,16 +26,16 @@ export class WalletController{
     @HttpCode(HttpStatus.OK)
     @Post('fund')
     @ApiOperation({ summary: 'Depositing funds' })
-    @ApiResponse({ status: 201, description: 'Funds have been deposited', type: Wallet})
+    @ApiResponse({ status: 201, description: 'Funds have been deposited', type: Object})
     @ApiBody({ type: TransactionDto })
     fund(@GetUser('id') userId: string, @Body() trans: TransactionDto){
         return this.walletService.fund(userId,  trans);
     }
 
     @HttpCode(HttpStatus.OK)
-    @Patch('transfer')
+    @Post('transfer')
     @ApiOperation({ summary: 'Transfering funds to another user' })
-    @ApiResponse({ status: 201, description: 'Transfer completed', type: Wallet})
+    @ApiResponse({ status: 201, description: 'Transfer completed', type: Object})
     @ApiBody({ type: TransactionDto })
     transfer(@GetUser('id') userId: string, @Body() dto: TransactionDto){
         return this.walletService.transfer(dto, userId);
@@ -44,7 +44,7 @@ export class WalletController{
     @HttpCode(HttpStatus.OK)
     @Post('withdraw')
     @ApiOperation({ summary: 'Withdrawing funds' })
-    @ApiResponse({ status: 201, description: 'Funds deducted', type: Wallet})
+    @ApiResponse({ status: 201, description: 'Funds deducted', type: Object})
     @ApiBody({ type: TransactionDto })
     withdrawal(@GetUser('id') userId: string, @Body() trans: TransactionDto){
         return this.walletService.withdrawal(userId, trans);

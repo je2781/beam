@@ -16,7 +16,7 @@ export class TransactionController{
     @HttpCode(HttpStatus.OK)
     @Get()
     @ApiOperation({ summary: 'getting transactions' })
-    @ApiResponse({ status: 200, description: 'Transactions retrieved', type: Transaction})
+    @ApiResponse({ status: 200, description: 'Transactions retrieved', type: Array})
     getTransactions(@GetUser('id') userId: string){
         return this.transService.getTransactions(userId);
     }
