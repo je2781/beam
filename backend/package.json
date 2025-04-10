@@ -26,6 +26,7 @@
     "typeorm:create-migration": "npm run typeorm -- migration:create ./migrations/$npm_config_name",
     "typeorm:run-migrations": "npm run typeorm -- migration:run -d ./typeorm.config.ts",
     "typeorm:test:run-migrations": "npm run typeorm -- migration:run -d ./test-data-source.ts",
+    "typeorm:test:revert-migrations": "npm run typeorm migration:revert -d ./test-data-source.ts",
     "typeorm:revert-migrations": "npm run typeorm migration:revert -d ./typeorm.config.ts",
     "pretest:e2e": "npm run db:test:restart",
     "test:e2e": "jest --watch --no-cache --config ./test/jest-e2e.json"

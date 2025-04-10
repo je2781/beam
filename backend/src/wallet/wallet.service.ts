@@ -26,7 +26,7 @@ export class WalletService {
     });
 
     if (!user) {
-      throw new ForbiddenException("credentials incorrect");
+      throw new UnauthorizedException("credentials incorrect");
     }
 
     return {
@@ -41,7 +41,7 @@ export class WalletService {
     });
 
     if (!user) {
-      throw new ForbiddenException("credentials incorrect");
+      throw new UnauthorizedException("credentials incorrect");
     }
     //updating wallet
     user.wallet.balance = user.wallet.balance + dto.amount;
