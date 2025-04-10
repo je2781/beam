@@ -50,6 +50,9 @@ export default function Content({ data }: any) {
   const [cvv, setCVV] = React.useState("");
   const [cardNo, setCardNo] = React.useState("");
   const [exp, setExp] = React.useState("");
+  const [transferModalHeader, setTransferModalHeader] = React.useState(
+    "Withdraw"
+  );
   const windowWidth = useWindowWidth();
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -61,12 +64,12 @@ export default function Content({ data }: any) {
   };
 
   React.useEffect(() => {
-    if (selectedOption.length > 0) {
+    if (selectedOption.length > 0 || amount > 0) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
     }
-  }, [setButtonDisabled, selectedOption]);
+  }, [setButtonDisabled, selectedOption, amount]);
 
   //limiting the max number of items shown per page
   const ITEMS_PER_PAGE = 9;
@@ -126,8 +129,9 @@ export default function Content({ data }: any) {
     setIsAddFundsModalOpen(true);
   };
 
-  const showTransferModalHandler = () => {
+  const showTransferModalHandler = (title: string) => {
     // setSelectedTransId(transId);
+    setTransferModalHeader(title);
     setIsTransferModalOpen(true);
   };
 
@@ -167,7 +171,7 @@ export default function Content({ data }: any) {
   return (
     <main
       role="main"
-      className="xl:pl-[284px] font-inter lg:pl-[192px] xl:pr-12 lg:pr-3 lg:pt-[135px] lg:pb-12 pb-8 pt-[145px] px-5 lg:px-0 min-h-screen flex flex-col gap-y-8"
+      className="xl:pl-[274px] font-inter lg:pl-[192px] xl:pr-12 lg:pr-3 lg:pt-[135px] lg:pb-12 pb-8 pt-[145px] px-5 lg:px-0 min-h-screen flex flex-col gap-y-8"
     >
       <header className="font-bold text-2xl text-primary-850 text-center lg:text-start">
         {data.sectionName[0].toUpperCase() + data.sectionName.slice(1)}
@@ -175,7 +179,7 @@ export default function Content({ data }: any) {
       <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
 
       <div className="flex lg:flex-row flex-col gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0">
-        <div className="flex flex-col gap-y-5 xl:w-[37%] lg:w-[23%] w-full">
+        <div className="flex flex-col gap-y-5 xl:w-[36%] lg:w-[23%] w-full">
           <article className="flex flex-col w-full h-fit bg-wallet-summary-bg pt-7 pb-10">
             <div className="inline-flex flex-col gap-y-4 xl:px-6 px-6 lg:px-4">
               <div className="inline-flex flex-row items-center justify-between">
@@ -235,18 +239,21 @@ export default function Content({ data }: any) {
                 Add Funds
               </button>
               <button
-                id="toggle-transfer"
+                id="toggle-withdraw"
                 type="button"
                 data-testid="withdraw"
-                onClick={showTransferModalHandler}
+                onClick={() => showTransferModalHandler('Withdraw')}
                 className="w-[50%] text-primary-400 border border-primary-100 rounded-md cursor-pointer"
               >
                 Withdrawal
               </button>
             </div>
             <div className="inline-flex xl:flex-row flex-row lg:flex-col gap-y-3 w-full gap-x-3">
-              <button className="xl:w-[33.3%] w-[33.3%] text-primary-400 border border-primary-100 px-5 py-2 rounded-md lg:w-full cursor-pointer">
-                PND Amount
+              <button
+                onClick={() => showTransferModalHandler('Transfer')}
+                className="xl:w-[33.3%] w-[33.3%] text-primary-400 border border-primary-100 px-5 py-2 rounded-md lg:w-full cursor-pointer"
+              >
+                Transfer
               </button>
               <button className="xl:w-[33.3%] w-[33.3%] text-primary-400 border border-primary-100 px-5 py-2 rounded-md lg:w-full cursor-pointer">
                 Place Lien
@@ -258,7 +265,7 @@ export default function Content({ data }: any) {
           </div>
         </div>
         <div className="border-2 border-primary-200 border-b-0 w-2 border-r-0 border-t-0 rotate-180 h-full mx-3" />
-        <div className="flex flex-col md:items-start items-center xl:w-[63%] lg:w-[77%] w-full h-[500px] gap-y-2">
+        <div className="flex flex-col md:items-start items-center xl:w-[64%] lg:w-[77%] w-full h-[500px] gap-y-2">
           <div className="flex flex-col gap-y-5 w-full">
             <h3 className="text-wallet-history-header-color font-semibold text-[16px]">
               Transaction History
@@ -635,8 +642,13 @@ export default function Content({ data }: any) {
                         </div>
                       </div>
                       <button
+                        disabled={buttonDisabled}
                         type="button"
-                        className="cursor-pointer mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
+                        className={`${
+                          buttonDisabled
+                            ? "cursor-not-allowed"
+                            : "cursor-pointer hover:ring-1 ring-secondary-400"
+                        }  mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md px-5 py-3 bg-secondary-400`}
                         onClick={() => {
                           goToSlide(1);
                         }}
@@ -752,7 +764,10 @@ export default function Content({ data }: any) {
         )}
 
         {isTransferModalOpen && (
-          <TransferModal onClose={() => {}}>
+          <TransferModal
+            title={transferModalHeader}
+            onClose={() => hideModalHandler("transfer", setIsTransferModalOpen)}
+          >
             <div className="w-full h-full">
               <Swiper
                 slidesPerView={1}
@@ -760,17 +775,19 @@ export default function Content({ data }: any) {
                 className="w-full h-full"
               >
                 <SwiperSlide>
-                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full py-8 px-6">
-                    <div className="flex flex-col items-start w-full">
-                      <label>Email</label>
-                      <input
-                        type="text"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Email"
-                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                      />
-                    </div>
+                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full py-8 px-6">
+                    {transferModalHeader === "Transfer" && (
+                      <div className="flex flex-col items-start w-full">
+                        <label>Email</label>
+                        <input
+                          type="text"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="Email"
+                          className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        />
+                      </div>
+                    )}
                     <div className="flex flex-col items-start w-full">
                       <label>Amount</label>
                       <div className="inline-block relative w-full">
@@ -800,51 +817,31 @@ export default function Content({ data }: any) {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-start w-full">
-                      <label>Note</label>
-                      <textarea
-                        onChange={(e) => setNote(e.target.value)}
-                        value={note}
-                        placeholder="Give a description to classify the transfer.."
-                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                      ></textarea>
-                    </div>
-                    <div
-                      onClick={async () => {
-                        try {
-                          setIsLoading(true);
-
-                          const res = await axios.post(
-                            `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/transfer`,
-                            {
-                              email,
-                              amount,
-                              note,
-                              trans_type: "transfer",
-                              status: "approved",
-                              date: new Date().toISOString(),
-                            }
-                          );
-                          if (res.data.message !== "success") {
-                            throw new Error(res.data.message);
-                          }
-                        } catch (error) {
-                          const e = error as Error;
-                          setIsLoading(false);
-                          return toast.error(e.message);
-                        }
+                    {transferModalHeader === "Transfer" && (
+                      <div className="flex flex-col items-start w-full">
+                        <label>Note</label>
+                        <textarea
+                          onChange={(e) => setNote(e.target.value)}
+                          value={note}
+                          placeholder="Give a description to classify the transfer.."
+                          className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        ></textarea>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      disabled={buttonDisabled}
+                      onClick={() => {
+                        goToSlide(1);
                       }}
-                      className="w-full mt-9"
+                      className={`${
+                        buttonDisabled
+                          ? "cursor-not-allowed"
+                          : "cursor-pointer hover:ring-1 ring-secondary-400"
+                      } w-full mt-9 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md px-7 py-3 bg-secondary-400`}
                     >
-                      <button
-                        onClick={() => {
-                          goToSlide(1);
-                        }}
-                        className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-7 py-3 bg-secondary-400"
-                      >
-                        Continue
-                      </button>
-                    </div>
+                      Continue
+                    </button>
                   </form>
                 </SwiperSlide>
                 <SwiperSlide>
@@ -853,23 +850,26 @@ export default function Content({ data }: any) {
                       e.preventDefault();
                       try {
                         setIsLoading(true);
-
+                        const operation =
+                          amount > 0 && note.length === 0 && email.length === 0
+                            ? "withdraw"
+                            : "transfer";
                         const res = await axios.post(
-                          `${process.env.NNEXT_PUBLIC_SERVER_DOMAIN}/wallet/transfer`,
+                          `${process.env.NNEXT_PUBLIC_SERVER_DOMAIN}/wallet/${operation}`,
                           {
                             card_no: cardNo,
                             amount,
                             note,
                             cvv,
                             email,
-                            trans_type: "transfer",
+                            trans_type: operation,
                             status: "approved",
                             date: new Date().toISOString(),
                           }
                         );
 
                         if (res.data.message === "success") {
-                          hideModalHandler("add-funds", setIsAddFundsModalOpen);
+                          hideModalHandler(operation, setIsTransferModalOpen);
                         }
                       } catch (error) {
                         const e = error as Error;

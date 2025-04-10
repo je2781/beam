@@ -12,12 +12,14 @@ export interface PaginationProps {
 export interface TransferModalProps {
   onClose: () => void;
   styleClasses?: string;
+  title: string;
   children: React.ReactNode;
 }
 
 export interface TransferModalOverlayProps {
   onClick: () => void;
   styleClasses?: string;
+  title: string;
   children: React.ReactNode;
   
 }

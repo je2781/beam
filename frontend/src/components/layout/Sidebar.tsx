@@ -16,7 +16,7 @@ export default function Sidebar({
   return (
     <nav
       id="sidebar"
-      className="fixed left-0 top-0 bg-primary-850 h-[100vh] overflow-y-auto py-10 px-1 xl:w-[255px] lg:w-[176px] hidden
+      className="fixed left-0 top-0 bg-primary-850 h-[100vh] overflow-y-auto py-10 px-1 xl:w-[245px] lg:w-[176px] hidden
         shadow-md lg:flex flex-col justify-between scrollbar-hidden hover:scrollbar-hover z-20"
     >
       <ul
