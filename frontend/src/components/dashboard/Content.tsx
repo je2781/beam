@@ -80,8 +80,7 @@ export default function Content({ data }: any) {
           setTrans(result.data.transactions);
         }
       } catch (error) {
-        const e = error as Error;
-        return toast.error(e.message);
+        return toast.error('failed to rete=rieve transactions');
       }
     }
     async function getWalletBalance(){
@@ -96,8 +95,7 @@ export default function Content({ data }: any) {
           setBalance(result.data.wallet_balance);
         }
       } catch (error) {
-        const e = error as Error;
-        return toast.error(e.message);
+        return toast.error('failed to retrieve balance');
       }
     }
 
