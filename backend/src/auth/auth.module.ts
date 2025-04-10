@@ -9,6 +9,7 @@ import { JwtStrategy } from "./strategy";
 import { PassportModule } from "@nestjs/passport";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { LocalStrategy } from "./strategy/local.strategy";
+import { UserModule } from "../user/user.module";
 
 @Module({
   imports: [
@@ -23,6 +24,8 @@ import { LocalStrategy } from "./strategy/local.strategy";
       }),
       inject: [ConfigService],
     }),
+    ConfigModule,
+    UserModule,
     TypeOrmModule.forFeature([User, Wallet])
   ],
   controllers: [AuthController],
