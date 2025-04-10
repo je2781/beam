@@ -70,10 +70,10 @@ export default function Content({ data }: any) {
   React.useEffect(() => {
     async function getTransactions(){
       try {
-        
+        const token = Cookies.get('access_token') && Cookies.get('access_token')!.length > 0 ? Cookies.get('access_token') : ''
         const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,{
           headers: {
-            Authorization: `Bearer ${Cookies.get('access_token') ?? ''}`
+            Authorization: `Bearer ${token}`
           }
         });
         if(result.data.transactions.length > 0){
@@ -85,10 +85,10 @@ export default function Content({ data }: any) {
     }
     async function getWalletBalance(){
       try {
-        
+        const token = Cookies.get('access_token') !== undefined && Cookies.get('access_token')!.length > 0 ? Cookies.get('access_token') : ''
         const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/balance`,{
           headers: {
-            Authorization:  `Bearer ${Cookies.get('access_token') ?? ''}`
+            Authorization:  `Bearer ${token}`
           }
         });
         if(result.data.message === 'success'){
