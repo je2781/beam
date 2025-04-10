@@ -2,18 +2,16 @@
 
 import React from "react";
 import PaginationComponent from "../layout/Pagination";
-import {
-  articleHeaderTemplate,
-} from "@/helpers/LayoutContent";
+import { articleHeaderTemplate } from "@/helpers/LayoutContent";
 import { useRouter } from "next/navigation";
 import useWindowWidth from "@/helpers/getWindowWidth";
 import { AddFundsModal, TransferModal } from "../layout/Modal";
 import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { Swiper as SwiperType } from 'swiper';
+import { Swiper as SwiperType } from "swiper";
 import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { detectIssuer} from "@/helpers/helpers";
+import { detectIssuer } from "@/helpers/helpers";
 
 import visaLogo from "../../../public/visa.png";
 import mastercardLogo from "../../../public/mastercard.png";
@@ -58,10 +56,9 @@ export default function Content({ data }: any) {
   const swiperRef = React.useRef<SwiperType>(null);
 
   const goToSlide = (index: number) => {
-      swiperRef.current?.slideTo(index); // jump to a specific slide
-      setActiveIndex(index);
-    
-  }
+    swiperRef.current?.slideTo(index); // jump to a specific slide
+    setActiveIndex(index);
+  };
 
   React.useEffect(() => {
     if (selectedOption.length > 0) {
@@ -129,7 +126,6 @@ export default function Content({ data }: any) {
     setIsAddFundsModalOpen(true);
   };
 
-
   const showTransferModalHandler = () => {
     // setSelectedTransId(transId);
     setIsTransferModalOpen(true);
@@ -178,7 +174,6 @@ export default function Content({ data }: any) {
       </header>
       <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
 
-    
       <div className="flex lg:flex-row flex-col gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0">
         <div className="flex flex-col gap-y-5 xl:w-[37%] lg:w-[23%] w-full">
           <article className="flex flex-col w-full h-fit bg-wallet-summary-bg pt-7 pb-10">
@@ -231,10 +226,10 @@ export default function Content({ data }: any) {
           <div className="flex flex-col gap-y-3 w-full text-[10px] font-medium">
             <div className="inline-flex flex-row w-full gap-x-3">
               <button
-              type='button'
+                type="button"
                 onClick={showAddFundsModalHandler}
                 id="toggle-add-funds"
-                data-testid='toggle-add-funds'
+                data-testid="toggle-add-funds"
                 className="w-[50%] shadow-lg bg-secondary-400 px-5 py-2 rounded-md cursor-pointer"
               >
                 Add Funds
@@ -242,7 +237,7 @@ export default function Content({ data }: any) {
               <button
                 id="toggle-transfer"
                 type="button"
-                data-testid='withdraw'
+                data-testid="withdraw"
                 onClick={showTransferModalHandler}
                 className="w-[50%] text-primary-400 border border-primary-100 rounded-md cursor-pointer"
               >
@@ -530,7 +525,9 @@ export default function Content({ data }: any) {
             trans={data.transactions}
           />
         </div>
-        <p data-testid="slide-index" className="hidden">Current slide: {activeIndex}</p>
+        <p data-testid="slide-index" className="hidden">
+          Current slide: {activeIndex}
+        </p>
 
         {isAddFundsModalOpen && (
           <AddFundsModal onClose={() => {}}>
@@ -662,13 +659,12 @@ export default function Content({ data }: any) {
                             card_no: cardNo,
                             amount,
                             cvv,
-                            email,
-                            trans_type: 'deposit',
-                            status: 'pending',
+                            trans_type: "deposit",
+                            status: "pending",
                             date: new Date().toISOString(),
                           }
                         );
-                        
+
                         if (res.data.message === "success") {
                           hideModalHandler("add-funds", setIsAddFundsModalOpen);
                         }
@@ -680,7 +676,6 @@ export default function Content({ data }: any) {
                     }}
                     className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
                   >
-                
                     <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
                       <h3 className="font-semibold text-[24px] text-black">
                         Payment Details
@@ -689,7 +684,7 @@ export default function Content({ data }: any) {
                         Please confirm the margin details
                       </h4>
                     </div>
-                      <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
+                    <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
                     <div className="flex flex-col items-start w-full px-6 mt-3">
                       <label>Card Details</label>
                       <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
@@ -705,9 +700,21 @@ export default function Content({ data }: any) {
                           placeholder="5399"
                           className="w-full placeholder:primary-200 focus:outline-none bg-transparent placeholder:font-inter placeholder:font-normal px-3 py-2"
                         />
-                        {issuer === 'MasterCard'
-                        ? <Image width={28} height={24} src={mastercardLogo} alt='card' />
-                      : <Image width={28} height={24} src={visaLogo} alt='card' />}
+                        {issuer === "MasterCard" ? (
+                          <Image
+                            width={28}
+                            height={24}
+                            src={mastercardLogo}
+                            alt="card"
+                          />
+                        ) : (
+                          <Image
+                            width={28}
+                            height={24}
+                            src={visaLogo}
+                            alt="card"
+                          />
+                        )}
                       </div>
                     </div>
                     <div className="flex flex-col items-start w-full px-6">
@@ -734,11 +741,10 @@ export default function Content({ data }: any) {
                         type="submit"
                         className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
                       >
-                        {isLoading ? 'Processing' : 'Pay Now'}
+                        {isLoading ? "Processing" : "Pay Now"}
                       </button>
                     </div>
                   </form>
-      
                 </SwiperSlide>
               </Swiper>
             </div>
@@ -746,82 +752,205 @@ export default function Content({ data }: any) {
         )}
 
         {isTransferModalOpen && (
-          <TransferModal
-            onClose={() => hideModalHandler("transfer", setIsTransferModalOpen)}
-          >
-            <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full py-8 px-6">
-              <div className="flex flex-col items-start w-full">
-                <label>Email</label>
-                <input
-                  type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email"
-                  className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                />
-              </div>
-              <div className="flex flex-col items-start w-full">
-                <label>Amount</label>
-                <div className="inline-block relative w-full">
-                  <select
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                    className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                  >
-                    <option value={100}>{(100).toLocaleString()}</option>
-                    <option value={300}>{(300).toLocaleString()}</option>
-                    <option value={500}>{(500).toLocaleString()}</option>
-                    <option value={1000}>{(1000).toLocaleString()}</option>
-                    <option value={5000}>{(5000).toLocaleString()}</option>
-                    <option value={10000}>{(10000).toLocaleString()}</option>
-                    <option value={100000}>{(100000).toLocaleString()}</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                    {/* Replace with your angle-down icon */}
-                    <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col items-start w-full">
-                <label>Note</label>
-                <textarea
-                  onChange={(e) => setNote(e.target.value)}
-                  value={note}
-                  placeholder="Give a description to classify the transfer.."
-                  className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                ></textarea>
-              </div>
-              <div
-                onClick={async () => {
-                  try {
-                    setIsLoading(true);
-
-                    const res = await axios.post(
-                      `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/transfer`,
-                      {
-                        email,
-                        amount,
-                        note,
-                        trans_type: 'transfer',
-                        status: 'approved',
-                        date: new Date().toISOString(),
-                      }
-                    );
-                    if (res.data.message !== "success") {
-                      throw new Error(res.data.message);
-                    }
-                  } catch (error) {
-                    const e = error as Error;
-                    setIsLoading(false);
-                    return toast.error(e.message);
-                  }
-                }}
-                className="w-full mt-9"
+          <TransferModal onClose={() => {}}>
+            <div className="w-full h-full">
+              <Swiper
+                slidesPerView={1}
+                onSwiper={(swiper) => (swiperRef.current = swiper)}
+                className="w-full h-full"
               >
-                <button className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-7 py-3 bg-secondary-400">
-                  Continue
-                </button>
-              </div>
-            </form>
+                <SwiperSlide>
+                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full py-8 px-6">
+                    <div className="flex flex-col items-start w-full">
+                      <label>Email</label>
+                      <input
+                        type="text"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                      />
+                    </div>
+                    <div className="flex flex-col items-start w-full">
+                      <label>Amount</label>
+                      <div className="inline-block relative w-full">
+                        <select
+                          onChange={(e) => setAmount(Number(e.target.value))}
+                          className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        >
+                          <option value={100}>{(100).toLocaleString()}</option>
+                          <option value={300}>{(300).toLocaleString()}</option>
+                          <option value={500}>{(500).toLocaleString()}</option>
+                          <option value={1000}>
+                            {(1000).toLocaleString()}
+                          </option>
+                          <option value={5000}>
+                            {(5000).toLocaleString()}
+                          </option>
+                          <option value={10000}>
+                            {(10000).toLocaleString()}
+                          </option>
+                          <option value={100000}>
+                            {(100000).toLocaleString()}
+                          </option>
+                        </select>
+                        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                          {/* Replace with your angle-down icon */}
+                          <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start w-full">
+                      <label>Note</label>
+                      <textarea
+                        onChange={(e) => setNote(e.target.value)}
+                        value={note}
+                        placeholder="Give a description to classify the transfer.."
+                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                      ></textarea>
+                    </div>
+                    <div
+                      onClick={async () => {
+                        try {
+                          setIsLoading(true);
+
+                          const res = await axios.post(
+                            `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/transfer`,
+                            {
+                              email,
+                              amount,
+                              note,
+                              trans_type: "transfer",
+                              status: "approved",
+                              date: new Date().toISOString(),
+                            }
+                          );
+                          if (res.data.message !== "success") {
+                            throw new Error(res.data.message);
+                          }
+                        } catch (error) {
+                          const e = error as Error;
+                          setIsLoading(false);
+                          return toast.error(e.message);
+                        }
+                      }}
+                      className="w-full mt-9"
+                    >
+                      <button
+                        onClick={() => {
+                          goToSlide(1);
+                        }}
+                        className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-7 py-3 bg-secondary-400"
+                      >
+                        Continue
+                      </button>
+                    </div>
+                  </form>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      try {
+                        setIsLoading(true);
+
+                        const res = await axios.post(
+                          `${process.env.NNEXT_PUBLIC_SERVER_DOMAIN}/wallet/transfer`,
+                          {
+                            card_no: cardNo,
+                            amount,
+                            note,
+                            cvv,
+                            email,
+                            trans_type: "transfer",
+                            status: "approved",
+                            date: new Date().toISOString(),
+                          }
+                        );
+
+                        if (res.data.message === "success") {
+                          hideModalHandler("add-funds", setIsAddFundsModalOpen);
+                        }
+                      } catch (error) {
+                        const e = error as Error;
+                        setIsLoading(false);
+                        return toast.error(e.message);
+                      }
+                    }}
+                    className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
+                  >
+                    <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
+                      <h3 className="font-semibold text-[24px] text-black">
+                        Payment Details
+                      </h3>
+                      <h4 className="font-normal text-[18px] text-auth">
+                        Please confirm the margin details
+                      </h4>
+                    </div>
+                    <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
+                    <div className="flex flex-col items-start w-full px-6 mt-3">
+                      <label>Card Details</label>
+                      <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
+                        <input
+                          type="text"
+                          value={cardNo}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ""); // Remove non-digit characters
+                            setCardNo(value);
+                            const detectedIssuer = detectIssuer(value);
+                            setIssuer(detectedIssuer);
+                          }}
+                          placeholder="5399"
+                          className="w-full placeholder:primary-200 focus:outline-none bg-transparent placeholder:font-inter placeholder:font-normal px-3 py-2"
+                        />
+                        {issuer === "MasterCard" ? (
+                          <Image
+                            width={28}
+                            height={24}
+                            src={mastercardLogo}
+                            alt="card"
+                          />
+                        ) : (
+                          <Image
+                            width={28}
+                            height={24}
+                            src={visaLogo}
+                            alt="card"
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start w-full px-6">
+                      <label>Expiry date</label>
+                      <input
+                        type="date"
+                        value={exp}
+                        onChange={(e) => setExp(e.target.value)}
+                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                      />
+                    </div>
+                    <div className="flex flex-col items-start w-full px-6">
+                      <label>CVV</label>
+                      <input
+                        type="text"
+                        onChange={(e) => setCVV(e.target.value)}
+                        value={cvv}
+                        placeholder="546"
+                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                      />
+                    </div>
+                    <div className="inline-block w-full px-6 mt-5">
+                      <button
+                        type="submit"
+                        className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
+                      >
+                        {isLoading ? "Processing" : "Pay Now"}
+                      </button>
+                    </div>
+                  </form>
+                </SwiperSlide>
+              </Swiper>
+            </div>
           </TransferModal>
         )}
       </div>
