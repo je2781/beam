@@ -18,7 +18,7 @@ export class AuthController{
     @HttpCode(HttpStatus.OK)
     @ApiOperation({ summary: 'logging in' })
     @ApiResponse({ status: 201, description: 'Authentication successful', type: User})
-    @ApiBody({ type: AuthDto })
+    @ApiBody({ type: User })
     @Post('login')
     signin(
         @GetUser() user: User,
