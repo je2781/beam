@@ -53,6 +53,8 @@ export default function Content({ data }: any) {
   const [transferModalHeader, setTransferModalHeader] = React.useState(
     "Withdraw"
   );
+  const [trans, setTrans] = React.useState<any[]>(data.transactions);
+  const [balance, setBalance] = React.useState<number | null>(null);
   const windowWidth = useWindowWidth();
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -62,6 +64,45 @@ export default function Content({ data }: any) {
     swiperRef.current?.slideTo(index); // jump to a specific slide
     setActiveIndex(index);
   };
+
+  //retrieving ui details
+  React.useEffect(() => {
+    async function getTransactions(){
+      try {
+        
+        const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,{
+          headers: {
+            Authorization: `Bearer ${data.token}`
+          }
+        });
+        if(result.data.transactions.length > 0){
+          setTrans(result.data.transactions);
+        }
+      } catch (error) {
+        const e = error as Error;
+        return toast.error(e.message);
+      }
+    }
+    async function getWalletBalance(){
+      try {
+        
+        const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/balance`,{
+          headers: {
+            Authorization:  `Bearer ${data.token}`
+          }
+        });
+        if(result.data.message === 'success'){
+          setBalance(result.data.wallet_balance);
+        }
+      } catch (error) {
+        const e = error as Error;
+        return toast.error(e.message);
+      }
+    }
+
+    getTransactions();
+    getWalletBalance();
+  }, []);
 
   React.useEffect(() => {
     if (selectedOption.length > 0 || amount > 0) {
@@ -75,7 +116,7 @@ export default function Content({ data }: any) {
   const ITEMS_PER_PAGE = 9;
   const [count, setCount] = React.useState<number>(ITEMS_PER_PAGE);
   const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>(
-    data.transactions.slice(
+    trans.slice(
       (currentPage - 1) * ITEMS_PER_PAGE,
       ITEMS_PER_PAGE * currentPage
     )
@@ -191,7 +232,7 @@ export default function Content({ data }: any) {
               <hr className="border border-wallet-summary-hr border-l-0 border-r-0 border-t-0 mb-3" />
               <h3 className="font-semibold text-xl text-primary-800">
                 &#8358;
-                {(200000.0).toLocaleString("en-US", {
+                {balance ?? (200000.0).toLocaleString("en-US", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
@@ -526,10 +567,10 @@ export default function Content({ data }: any) {
             itemsPerPage={ITEMS_PER_PAGE}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            totalItems={data.transactions.length}
+            totalItems={trans.length}
             setVisibleTrans={setVisibleTrans}
             setCount={setCount}
-            trans={data.transactions}
+            trans={trans}
           />
         </div>
         <p data-testid="slide-index" className="hidden">

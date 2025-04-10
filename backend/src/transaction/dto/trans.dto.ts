@@ -21,12 +21,12 @@ export class TransactionDto{
 
     @IsString()
     @IsOptional()
-    @ApiProperty({ example: 'test@test.com', description: 'The email of teh debtor' })
+    @ApiProperty({ example: 'test@test.com', description: 'The email of the debtor' })
     email?: string;
 
     @IsNumber()
     @IsOptional()
-    @ApiProperty({ example: 'hi there!', description: 'exra information rgarding the transfer' })
+    @ApiProperty({ example: 'hi there!', description: 'extra information regarding the transfer' })
     note?: string;
 
 }
