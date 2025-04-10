@@ -45,7 +45,7 @@ export class AuthService {
       expires: expiryDate,
     });
 
-    return { payload };
+    return {...payload, token };
     } catch (error) {
       throw error;
     }
