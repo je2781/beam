@@ -14,7 +14,7 @@ export class AuthController{
 
     }
 
-    // @UseGuards(LocalAuthGuard)
+    @UseGuards(LocalAuthGuard)
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'logging in' })
     @ApiResponse({ status: 201, description: 'Authentication successful', type: User})
