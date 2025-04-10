@@ -12,7 +12,7 @@ import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { detectIssuer } from "@/helpers/helpers";
+import { detectIssuer, goToSlide } from "@/helpers/helpers";
 
 import visaLogo from "../../../public/visa.png";
 import mastercardLogo from "../../../public/mastercard.png";
@@ -54,14 +54,7 @@ export default function Content({ data }: any) {
   const windowWidth = useWindowWidth();
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const swiperRef = React.useRef<SwiperRef>(null);
-
-  const goToSlide = (index: number) => {
-    if (swiperRef.current) {
-      swiperRef.current.swiper.slideTo(index); // jump to a specific slide
-      setActiveIndex(index);
-    }
-  };
+  const swiperRef = React.useRef<SwiperRef>(null);;
 
   React.useEffect(() => {
     if (selectedOption.length > 0) {
@@ -641,7 +634,7 @@ export default function Content({ data }: any) {
                         type="button"
                         className="cursor-pointer mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
                         onClick={() => {
-                          goToSlide(1);
+                          goToSlide(1, swiperRef, setActiveIndex);
                         }}
                       >
                         Continue

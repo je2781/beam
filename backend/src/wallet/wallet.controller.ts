@@ -1,11 +1,11 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post, Req, UseGuards } from "@nestjs/common";
-import { GetUser } from "src/auth/decorator";
+import { GetUser } from "../auth/decorator";
 import { WalletService } from "./wallet.service";
-import { TransactionDto } from "src/transaction/dto/trans.dto";
+import { TransactionDto } from "../transaction/dto/trans.dto";
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
-import { Wallet } from "src/wallet/wallet.entity";
-import { JwtGaurd } from "src/auth/guard";
-import { Transaction } from "src/transaction/transaction.entity";
+import { Wallet } from "./wallet.entity";
+import { JwtGaurd } from "../auth/guard";
+import { Transaction } from "../transaction/transaction.entity";
 
 @ApiTags('wallet') // Groups endpoints under "wallet" in Swagger UI
 @UseGuards(JwtGaurd)

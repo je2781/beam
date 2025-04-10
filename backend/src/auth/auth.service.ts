@@ -8,12 +8,11 @@ import * as argon2 from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { Repository } from "typeorm";
-import { User } from "src/user/user.entity";
-import ms from "ms";
+import { User } from "../user/user.entity";
 
 import { Response } from "express";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Wallet } from "src/wallet/wallet.entity";
+import { Wallet } from "../wallet/wallet.entity";
 
 @Injectable({})
 export class AuthService {
@@ -38,7 +37,7 @@ export class AuthService {
       secret: secret,
     });
 
-    res.cookie("Authentication", token, {
+    res.cookie("access_token", token, {
       secure: true,
       httpOnly: true,
       expires: expiryDate,
@@ -99,17 +98,16 @@ export class AuthService {
     }
   }
 
-  async logout(userId: string, res: Response) {
+  async logout(res: Response) {
     try {
-      const user = await this.userRepository.findOne({
-        where: { id: userId },
+
+      res.cookie("access_token", undefined, {
+        maxAge: 0
       });
 
-      if (!user) {
-        throw new UnauthorizedException("Credentials are not valid.");
+      return {
+        message: 'logout successful'
       }
-
-      res.cookie("Authentication", null);
     } catch (error) {
       throw error;
     }

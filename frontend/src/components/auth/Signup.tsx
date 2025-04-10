@@ -42,15 +42,12 @@ export default function Login() {
         { full_name: user.fullName, email: user.email, password: user.password }
       );
 
-      if (res.data.message === 'success') {
+      if (res.data.id) {
         router.push("/login");
-      } else {
-        throw new Error(res.data.message);
-      }
+      } 
     } catch (error) {
-      const e = error as Error;
       setIsLoading(false);
-      return toast.error(e.message);
+      return toast.error('Registration failed');
     }
   }
 

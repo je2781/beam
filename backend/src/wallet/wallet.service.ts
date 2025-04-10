@@ -1,13 +1,12 @@
 import {
   Injectable,
-  NotFoundException,
   ForbiddenException,
   UnauthorizedException,
 } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { User } from "src/user/user.entity";
-import { TransactionDto } from "src/transaction/dto/trans.dto";
-import { Transaction } from "src/transaction/transaction.entity";
+import { User } from "../user/user.entity";
+import { TransactionDto } from "../transaction/dto/trans.dto";
+import { Transaction } from "../transaction/transaction.entity";
 
 import { InjectRepository } from "@nestjs/typeorm";
 

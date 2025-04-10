@@ -3,7 +3,7 @@ import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto";
 import { Response } from "express";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { User } from "src/user/user.entity";
+import { User } from "../user/user.entity";
 import { GetUser } from "./decorator";
 import { LocalAuthGuard } from "./guard/local.guard";
 
@@ -35,10 +35,10 @@ export class AuthController{
         return this.authService.signup(dto);
     }
 
-    @Get('logout')
+    @Post('logout')
     @ApiOperation({ summary: 'ending current session' })
     @ApiResponse({ status: 200, description: 'Logout successful', type: User})
-    logout(@GetUser('id') userId: string, @Res({ passthrough: true }) res: Response){
-        return this.authService.logout(userId, res);
+    logout(@Res({ passthrough: true }) res: Response){
+        return this.authService.logout(res);
     }
 }

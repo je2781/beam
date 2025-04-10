@@ -2,7 +2,7 @@ import { Body, Controller, Get, Patch, Req, UseGuards } from "@nestjs/common";
 import { GetUser } from "../auth/decorator";
 import { JwtGaurd } from "../auth/guard";
 import { UserService } from "./user.service";
-import { User } from "src/user/user.entity";
+import { User } from "./user.entity";
 
 @UseGuards(JwtGaurd)
 @Controller("users")

@@ -1,9 +1,9 @@
 import { Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from "@nestjs/common";
-import { GetUser } from "src/auth/decorator";
+import { GetUser } from "../auth/decorator";
 import { TransactionService } from "./transaction.service";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { Transaction } from "src/transaction/transaction.entity";
-import { JwtGaurd } from "src/auth/guard";
+import { Transaction } from "../transaction/transaction.entity";
+import { JwtGaurd } from "../auth/guard";
 
 @ApiTags('transactions') 
 @UseGuards(JwtGaurd)

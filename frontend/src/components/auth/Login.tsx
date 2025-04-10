@@ -39,25 +39,17 @@ export default function Login() {
         }
       );
 
-      if (res.data.message === "success") {
+      if (res.data.payload.email) {
         toast.success("Login successful!", {
           duration: 2000,
         });
-
-        if(typeof window !== 'undefined'){
-          window.localStorage.setItem('access_token', JSON.stringify(res.data.access_token));
-        }
         
         router.push("/wallet");
         
-
-      } else {
-        throw new Error("Authentication failed!");
-      }
+      } 
     } catch (error) {
-      const e = error as Error;
       setIsLoading(false);
-      return toast.error(e.message);
+      return toast.error('Credential Invalid');
     }
   }
 

@@ -3,29 +3,44 @@ import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ExtractJwt, Strategy } from "passport-jwt";
+import { Request } from "express";
 import { Repository } from "typeorm";
-import { Request } from 'express';
-import { User } from "src/user/user.entity";
+import { User } from "../../user/user.entity";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(config: ConfigService, @InjectRepository(User) private userRepository: Repository<User>) {
+  constructor(
+    config: ConfigService,
+    @InjectRepository(User) private userRepository: Repository<User>
+  ) {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => request.cookies.Authentication,
-      ]),
+      jwtFromRequest: JwtStrategy.extractFromHeaderOrCookie,
       secretOrKey: config.get("JWT_SECRET"),
-      
     });
   }
 
+  private static extractFromHeaderOrCookie(req: Request): string | null {
+    // Try Authorization header first
+    const authHeader = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+    if (authHeader) return authHeader;
+
+    // Fallback to cookie
+    if (req.cookies && req.cookies['access_token']) {
+      return req.cookies['access_token'];
+    }
+
+    return null;
+  }
 
   async validate(payload: { sub: string; email: string }) {
     const user = await this.userRepository.findOne({
-      where: {id: payload.sub},
+      where: { id: payload.sub },
     });
 
-    delete user?.hash;
+    if (user) {
+      delete user.hash;
+    }
+
     return user;
   }
 }

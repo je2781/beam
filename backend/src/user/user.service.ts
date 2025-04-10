@@ -1,7 +1,11 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { User } from "src/user/user.entity";
+import { User } from "../user/user.entity";
 
 @Injectable()
 export class UserService {
@@ -11,18 +15,33 @@ export class UserService {
   ) {}
 
   async getUser(userId: string) {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-      relations: { wallet: true },
-    });
-
-    if (!user) {
-      throw new UnauthorizedException("credentials incorrect");
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+        relations: { wallet: true },
+      });
+  
+      if (!user) {
+        throw new UnauthorizedException("credentials incorrect");
+      }
+  
+      return {
+        message: "success",
+        user,
+      };
+    } catch (error) {
+      throw error;
     }
+  }
 
-    return {
-        message: 'success',
-        user
-    };
+  async deleteUser(email: string) {
+    try {
+      
+      await this.userRepository.delete({
+        email,
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -23,7 +23,7 @@ services:
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
     ports:
-      - ${PORT}:3001
+      - ${PORT}:8080
     volumes:
       - .:/app
     command: npm run start:dev

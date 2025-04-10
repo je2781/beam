@@ -50,21 +50,16 @@ export function SideBarList(
                         onClick={async () => {
                           if (Object.keys(nestedlistItem)[0] === "Logout") {
                             try {
-                              const res = await axios.get(
+                              const res = await axios.post(
                                 `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/logout`
                               );
 
                               if (res.data.message === "logout successful") {
-                                if(typeof window !== 'undefined'){
-                                  window.localStorage.removeItem('access_token');
-                                }
+          
                                 router.replace("/login");
-                              } else {
-                                throw new Error("session logout failed");
-                              }
+                              } 
                             } catch (error) {
-                              const e = error as Error;
-                              return toast.error(e.message);
+                              return toast.error("session logout failed");
                             }
                           } else {
                             router.push(
@@ -102,8 +97,8 @@ export function SideBarList(
         ))}
       </ul>
       <div className="flex flex-row w-full justify-center mt-8">
-        <footer className="rounded-lg bg-white p-3 inline-flex flex-row items-center justify-center gap-x-4 w-[90%]">
-          <h3 className="text-primary-800 font-normal text-[10px]">
+        <footer className="rounded-lg bg-white p-3 lg:pr-1 xl:p-3 inline-flex flex-row items-center justify-center gap-x-6 lg:gap-x-4 w-[90%]">
+          <h3 className="text-primary-800 font-normal xl:text-[10px] text-[10px] lg:text-[8px]">
             Switch to dark mode
           </h3>
           <Switch

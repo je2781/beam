@@ -11,11 +11,9 @@ type SwitchProps = {
 };
 
 export default function Switch({
-  className,
   id,
   value,
   hide,
-  switchLabel,
   onHide,
 }: SwitchProps) {
   return (
