@@ -572,16 +572,18 @@ export default function Content({ data }: any) {
               )}
             </div>
           </div>
-          {trans.length > 0 && <PaginationComponent
-            count={count}
-            itemsPerPage={ITEMS_PER_PAGE}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalItems={trans.length}
-            setVisibleTrans={setVisibleTrans}
-            setCount={setCount}
-            trans={trans}
-          />}
+          {trans.length > 0 && (
+            <PaginationComponent
+              count={count}
+              itemsPerPage={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalItems={trans.length}
+              setVisibleTrans={setVisibleTrans}
+              setCount={setCount}
+              trans={trans}
+            />
+          )}
         </div>
         <p data-testid="slide-index" className="hidden">
           Current slide: {activeIndex}
@@ -725,6 +727,9 @@ export default function Content({ data }: any) {
                             trans_type: "deposit",
                             status: "pending",
                             date: new Date().toISOString(),
+                          },
+                          {
+                            withCredentials: true
                           }
                         );
 
@@ -916,6 +921,9 @@ export default function Content({ data }: any) {
                             trans_type: operation,
                             status: "approved",
                             date: new Date().toISOString(),
+                          },
+                          {
+                            withCredentials: true
                           }
                         );
 
