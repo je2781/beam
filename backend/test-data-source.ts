@@ -4,9 +4,9 @@ import { Wallet } from './src/wallet/wallet.entity';
 import { Transaction } from './src/transaction/transaction.entity';
 import { User } from './src/user/user.entity';
 
-export const testDataSource = new DataSource({
+const testDataSource = new DataSource({
   type: 'mysql',
-  host: 'test-db',
+  host: 'localhost',
   port: 3308,
   username: 'test_user',
   password: 'test_pass',
@@ -16,3 +16,5 @@ export const testDataSource = new DataSource({
   migrationsTableName: 'migrations',
   entities: [User, Transaction, Wallet],
 });
+
+export default testDataSource;
