@@ -38,6 +38,9 @@ export default function Login() {
           email: user.email,
           password: user.password
         },
+        {
+          withCredentials: true // ⬅️ critical
+        }
       );
 
       if (res.data.message === 'success') {

@@ -41,15 +41,12 @@ export class AuthController {
   ) {
     const { token } = await this.authService.login(user);
 
-    const remainingMilliseconds = 36000000; // 10hr
-    const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
-
     response.cookie("access_token", token, {
-      secure: this.config.getOrThrow("NODE_ENV") === "production",
+      secure: false,
       sameSite: "lax",
       httpOnly: true,
       path: '/',
-      expires: expiryDate,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
     });
 
     return { message: 'success' };
