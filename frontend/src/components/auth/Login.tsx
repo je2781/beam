@@ -39,7 +39,7 @@ export default function Login() {
         }
       );
 
-      if (res.data.payload.email) {
+      if (res.data.payload) {
         toast.success("Login successful!", {
           duration: 2000,
         });

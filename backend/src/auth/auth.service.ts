@@ -23,7 +23,8 @@ export class AuthService {
     private userRepository: Repository<User>
   ) {}
   async login(user: User, res: Response) {
-    const remainingMilliseconds = 36000000; // 10hr
+    try {
+      const remainingMilliseconds = 36000000; // 10hr
     const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
 
     const payload = {
@@ -45,6 +46,9 @@ export class AuthService {
     });
 
     return { payload };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async verifyUser(dto: AuthDto) {
@@ -63,7 +67,7 @@ export class AuthService {
         throw new UnauthorizedException();
       }
 
-      // delete user.hash;
+      delete user.hash;
 
       return user;
     } catch (error) {
