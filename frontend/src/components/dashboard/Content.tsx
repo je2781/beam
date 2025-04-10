@@ -6,12 +6,11 @@ import { articleHeaderTemplate } from "@/helpers/LayoutContent";
 import { useRouter } from "next/navigation";
 import useWindowWidth from "@/helpers/getWindowWidth";
 import { AddFundsModal, TransferModal } from "../layout/Modal";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper";
 import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Cookies from 'js-cookie';
 import { detectIssuer } from "@/helpers/helpers";
 
 import visaLogo from "../../../public/visa.png";
@@ -70,11 +69,10 @@ export default function Content({ data }: any) {
   React.useEffect(() => {
     async function getTransactions(){
       try {
-        const token = Cookies.get('access_token') && Cookies.get('access_token')!.length > 0 ? Cookies.get('access_token') : ''
-        const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,{
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,
+        {
+          withCredentials: true
+          
         });
         if(result.data.transactions.length > 0){
           setTrans(result.data.transactions);
@@ -85,11 +83,8 @@ export default function Content({ data }: any) {
     }
     async function getWalletBalance(){
       try {
-        const token = Cookies.get('access_token') !== undefined && Cookies.get('access_token')!.length > 0 ? Cookies.get('access_token') : ''
         const result = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/balance`,{
-          headers: {
-            Authorization:  `Bearer ${token}`
-          }
+          withCredentials: true
         });
         if(result.data.message === 'success'){
           setBalance(result.data.wallet_balance);

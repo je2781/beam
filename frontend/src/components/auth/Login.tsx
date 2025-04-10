@@ -37,7 +37,7 @@ export default function Login() {
         `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/login`,{
           email: user.email,
           password: user.password
-        }
+        },
       );
 
       if (res.data.message === 'success') {
