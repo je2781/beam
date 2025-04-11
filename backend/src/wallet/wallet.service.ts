@@ -45,7 +45,11 @@ export class WalletService {
       throw new UnauthorizedException("credentials incorrect");
     }
     //updating wallet
-    user.wallet.balance = user.wallet.balance + dto.amount;
+    await this.userRepository.update(user, {
+      wallet: {
+        balance: user.wallet.balance + dto.amount,
+      },
+    });
 
     //creating bank entry if user doesnt have one
     if (!user.bank) {
@@ -56,7 +60,9 @@ export class WalletService {
       });
 
       //adding new bank to user repo
-      user.bank = newBank;
+      await this.userRepository.update(user, {
+        bank: newBank,
+      });
     }
 
     //removing bank details
@@ -68,13 +74,15 @@ export class WalletService {
       date: new Date(dto.date),
     });
     //adding new transaction to user repo
-    user.transactions.push(newTransaction);
+    // user.transactions.push(newTransaction);
 
-    const savedUser = await this.userRepository.save(user);
+    await this.userRepository.update(user, {
+      transactions: [...user.transactions, newTransaction],
+    });
 
     return {
       message: "success",
-      wallet_balance: savedUser.wallet.balance,
+      wallet_balance: user.wallet.balance,
     };
   }
 
@@ -86,6 +94,7 @@ export class WalletService {
     if (!user) {
       throw new UnauthorizedException("credentials incorrect");
     }
+
     const balance = user.wallet.balance - dto.amount;
 
     //checking funds
@@ -94,7 +103,11 @@ export class WalletService {
     }
 
     //updating wallet
-    user.wallet.balance = balance;
+    await this.userRepository.update(user, {
+      wallet: {
+        balance: balance,
+      },
+    });
 
     //creating bank entry if user doesnt have one
     if (!user.bank) {
@@ -105,7 +118,9 @@ export class WalletService {
       });
 
       //adding new bank to user repo
-      user.bank = newBank;
+      await this.userRepository.update(user, {
+        bank: newBank,
+      });
     }
 
     //removing bank details
@@ -118,13 +133,13 @@ export class WalletService {
     });
 
     //adding new transaction to user repo
-    user.transactions.push(newTransaction);
-
-    const savedUser = await this.userRepository.save(user);
+    const savedUser = await this.userRepository.update(user, {
+      transactions: [...user.transactions, newTransaction],
+    });
 
     return {
       message: "success",
-      wallet_balance: savedUser.wallet.balance,
+      wallet_balance: user.wallet.balance,
     };
   }
 
@@ -145,7 +160,11 @@ export class WalletService {
       throw new ForbiddenException("insuffient funds for transfer");
     }
     //updating creditor wallet
-    creditor.wallet.balance = balance;
+    await this.userRepository.update(creditor, {
+      wallet: {
+        balance: balance,
+      },
+    });
 
     //creating bank entry if creditor doesnt have one
     if (!creditor.bank) {
@@ -156,12 +175,15 @@ export class WalletService {
       });
 
       //adding new bank to creditor repo
-      creditor.bank = newBank;
+      await this.userRepository.update(creditor, {
+        bank: newBank,
+      });
     }
 
     //removing bank details
     delete dto.bank;
 
+    //retrieving debtor details
     const debtor = await this.userRepository.findOneBy({
       email: dto.email,
     });
@@ -169,11 +191,12 @@ export class WalletService {
     if (!debtor) {
       throw new UnauthorizedException("Your debtor doesn't exist");
     }
-    //current balance of debtor
-    debtor.wallet.balance = debtor.wallet.balance + dto.amount;
-
     //updating debtor
-    await this.userRepository.save(debtor);
+    await this.userRepository.update(debtor, {
+      wallet: {
+        balance: debtor.wallet.balance + dto.amount,
+      },
+    });
 
     //creating transaction entry
     const newTransaction = new Transaction({
@@ -182,13 +205,13 @@ export class WalletService {
     });
 
     //adding new transaction to creditor
-    creditor.transactions.push(newTransaction);
-
-    const savedCreditor = await this.userRepository.save(creditor);
+    const savedCreditor = await this.userRepository.update(creditor, {
+      transactions: [...creditor.transactions, newTransaction],
+    });
 
     return {
       message: "success",
-      wallet_balanc: savedCreditor.wallet.balance,
+      wallet_balanc: creditor.wallet.balance,
     };
   }
 }

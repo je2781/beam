@@ -42,18 +42,12 @@ export default function Login() {
         { full_name: user.fullName, email: user.email, password: user.password }
       );
 
-      //checking for class validator errors
-      if (Array.isArray(res.data.message)) {
-        throw new Error(`${res.data.message[0]}`);
-      }
-
       if (res.data.full_name) {
         router.push("/login");
       }
     } catch (error) {
       setIsLoading(false);
-      const e = error as Error;
-      return toast.error(e.message);
+      return toast.error('Email aleady in use');
     }
   }
 

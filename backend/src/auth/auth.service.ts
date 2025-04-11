@@ -84,13 +84,13 @@ export class AuthService {
         full_name: dto.full_name,
       });
 
-      newUser.wallet = new Wallet({
-        balance: 0
-      }); // Create and attach wallet
+      const newWallet = new Wallet({}); // Create and attach wallet
 
-      const savedUser = await this.userRepository.save(newUser);
+      await this.userRepository.update(newUser, {
+        wallet: newWallet
+      });
 
-      return savedUser;
+      return newUser;
     } catch (error) {
       if (
         error instanceof QueryFailedError &&
