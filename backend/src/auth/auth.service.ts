@@ -69,13 +69,13 @@ export class AuthService {
   async signup(dto: AuthDto) {
     try {
       // Check if the user already exists
-      const existingUser = await this.userRepository.findOne({
-        where: { email: dto.email },
-      });
+      // const existingUser = await this.userRepository.findOne({
+      //   where: { email: dto.email },
+      // });
 
-      if (existingUser) {
-        throw new BadRequestException("Email already in use"); // Better user feedback
-      }
+      // if (existingUser) {
+      //   throw new BadRequestException("Email already in use"); // Better user feedback
+      // }
 
       const hash = await argon2.hash(dto.password);
       const newUser = new User({

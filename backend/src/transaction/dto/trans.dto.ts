@@ -16,7 +16,7 @@ export class TransactionDto{
     status: string;
 
     @IsNumber()
-    @IsNegative()
+    @IsPositive()
     @ApiProperty({ example: 500, description: 'The amount used during transaction' })
     amount: number;
 
