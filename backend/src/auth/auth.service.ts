@@ -20,23 +20,24 @@ export class AuthService {
     private jwt: JwtService,
     private config: ConfigService,
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Wallet)
+    private walletRepository: Repository<Wallet>
   ) {}
   async login(user: User) {
     try {
-    const payload = {
-      sub: user.id,
-      email: user.email,
-    };
+      const payload = {
+        sub: user.id,
+        email: user.email,
+      };
 
-    const secret = this.config.get("JWT_SECRET");
+      const secret = this.config.get("JWT_SECRET");
 
-    const token = this.jwt.sign(payload, {
-      secret: secret,
-    
-    });
+      const token = this.jwt.sign(payload, {
+        secret: secret,
+      });
 
-    return {token };
+      return { token };
     } catch (error) {
       throw error;
     }
@@ -77,27 +78,28 @@ export class AuthService {
         throw new BadRequestException("Email already in use"); // Better user feedback
       }
 
+      const newWallet = this.walletRepository.create({
+        balance: 0
+      }); // Create and attach wallet
+
       const hash = await argon2.hash(dto.password);
-      const newUser = new User({
+      const newUser = this.userRepository.create({
         hash: hash,
         email: dto.email,
         full_name: dto.full_name,
+        wallet: newWallet,
       });
 
-      const newWallet = new Wallet({}); // Create and attach wallet
+      const savedUser = await this.userRepository.save(newUser);
 
-      await this.userRepository.update(newUser, {
-        wallet: newWallet
-      });
-
-      return newUser;
+      return savedUser;
     } catch (error) {
       if (
         error instanceof QueryFailedError &&
-        (error as any).code === 'ER_DUP_ENTRY'
+        (error as any).code === "ER_DUP_ENTRY"
       ) {
         // Ignore the error or handle it gracefully
-        console.warn('Duplicate entry ignored.');
+        console.warn("Duplicate entry ignored.");
       } else {
         // Rethrow or handle other errors
         throw error;
@@ -107,18 +109,16 @@ export class AuthService {
 
   async logout(res: Response) {
     try {
-
-      res.clearCookie('access_token', {
+      res.clearCookie("access_token", {
         httpOnly: true,
-        secure: this.config.get('NODE_ENV') === 'production',
-        sameSite: 'lax',
-        path: '/', // Important: match the same path as when you set the cookie
+        secure: this.config.get("NODE_ENV") === "production",
+        sameSite: "lax",
+        path: "/", // Important: match the same path as when you set the cookie
       });
-    
 
       return {
-        message: 'logout successful'
-      }
+        message: "logout successful",
+      };
     } catch (error) {
       throw error;
     }

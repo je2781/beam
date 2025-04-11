@@ -12,8 +12,8 @@ export class TransactionService {
   ) {}
 
   async getTransactions(userId: string){
-    const trans = await this.transRepository.findBy({
-        id: userId
+    const trans = await this.transRepository.findOne({
+        where: {id: userId}
     });
 
     return {

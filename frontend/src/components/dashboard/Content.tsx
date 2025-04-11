@@ -20,17 +20,6 @@ import mastercardLogo from "../../../public/mastercard.png";
 import "swiper/css";
 
 export default function Content({ data }: any) {
-  const positions = [
-    { top: "72px" },
-    { top: "120px" },
-    { top: "168px" },
-    { top: "216px" },
-    { top: "264px" },
-    { top: "312px" },
-    { top: "360px" },
-    { top: "408px" },
-    { top: "456px" },
-  ];
   let timerId: NodeJS.Timeout | null = null;
 
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -47,8 +36,8 @@ export default function Content({ data }: any) {
   const [email, setEmail] = React.useState("");
   const [amount, setAmount] = React.useState(0);
   const [note, setNote] = React.useState("");
-  const [cvv, setCVV] = React.useState("");
-  const [cardNo, setCardNo] = React.useState("");
+  const [cvv, setCVV] = React.useState('');
+  const [cardNo, setCardNo] = React.useState('');
   const [exp, setExp] = React.useState("");
   const [transferModalHeader, setTransferModalHeader] = React.useState(
     "Withdraw"
@@ -59,6 +48,18 @@ export default function Content({ data }: any) {
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const swiperRef = React.useRef<SwiperType>(null);
+
+  const positions = [
+    { top: "72px" },
+    { top: "120px" },
+    { top: "168px" },
+    { top: "216px" },
+    { top: "264px" },
+    { top: "312px" },
+    { top: "360px" },
+    { top: "408px" },
+    { top: "456px" },
+  ].slice(0, trans.length);
 
   const goToSlide = (index: number) => {
     swiperRef.current?.slideTo(index); // jump to a specific slide
@@ -114,7 +115,10 @@ export default function Content({ data }: any) {
   }, []);
 
   React.useEffect(() => {
-    if ((selectedOption.length > 0 && selectedOption === 'card') || amount > 0) {
+    if (
+      (selectedOption.length > 0 && selectedOption === "card") ||
+      amount > 0
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -358,24 +362,22 @@ export default function Content({ data }: any) {
               </div>
             </div>
           )}
-          {trans.length > 0 && (
-            <div className="w-full h-full relative font-inter">
-              <div className="w-full absolute top-[24px]">
-                <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
-              </div>
-              <div>
-                {positions.map((position, index) => (
-                  <div
-                    key={index}
-                    className={`w-full absolute`}
-                    style={{ top: position.top }}
-                  >
-                    <div className="h-8 border border-primary-100 border-l-0 border-r-0 border-t-0"></div>
-                  </div>
-                ))}
-              </div>
+          <div className="w-full h-full relative font-inter">
+            <div className="w-full absolute top-[24px]">
+              <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
             </div>
-          )}
+            <div>
+              {positions.map((position, index) => (
+                <div
+                  key={index}
+                  className={`w-full absolute`}
+                  style={{ top: position.top }}
+                >
+                  <div className="h-8 border border-primary-100 border-l-0 border-r-0 border-t-0"></div>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="w-full h-full -ml-5 font-inter flex flex-col justify-center">
             {trans.length === 0 ? (
               <div className="w-full h-full flex flex-col justify-center items-center font-inter gap-y-2">
@@ -734,11 +736,9 @@ export default function Content({ data }: any) {
                         const res = await axios.post(
                           `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/fund`,
                           {
-                            bank: {
-                              card_no: cardNo,
-                              cvv,
-                              card_expiry_date: exp,
-                            },
+                            card_no: cardNo,
+                            cvv: Number(cvv),
+                            card_expiry_date: exp,
                             trans_type: "deposit",
                             amount,
                             status: "pending",
@@ -750,6 +750,7 @@ export default function Content({ data }: any) {
                         );
 
                         if (res.data.message === "success") {
+                          setBalance(res.data.wallet_balance);
                           hideModalHandler("add-funds", setIsAddFundsModalOpen);
                         }
                       } catch (error) {
@@ -958,11 +959,9 @@ export default function Content({ data }: any) {
                         const res = await axios.post(
                           `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/${operation}`,
                           {
-                            bank: {
-                              card_no: cardNo,
-                              cvv,
-                              card_expiry_date: exp,
-                            },
+                            card_no: cardNo,
+                            cvv: Number(cvv),
+                            card_expiry_date: exp,
                             amount,
                             note,
                             email,
@@ -981,6 +980,7 @@ export default function Content({ data }: any) {
                         }
 
                         if (res.data.message === "success") {
+                          setBalance(res.data.wallet_balance);
                           hideModalHandler(operation, setIsTransferModalOpen);
                         }
                       } catch (error) {

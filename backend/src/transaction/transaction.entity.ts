@@ -19,7 +19,7 @@ export class Transaction extends AbstractEntity<Transaction> {
   amount: number;
 
   @ManyToOne(() => User, (user) => user.transactions, { onDelete: "CASCADE" })
-  @JoinColumn()
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column({ nullable: true })

@@ -9,6 +9,6 @@ export class Wallet extends AbstractEntity<Wallet> {
   balance: number;
 
   @OneToOne(() => User, (user) => user.wallet, { onDelete: 'CASCADE' })
-  @JoinColumn() 
+  @JoinColumn({ name: 'userId' })
   user: User;
 }
