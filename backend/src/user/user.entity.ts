@@ -9,7 +9,7 @@ export class User extends AbstractEntity<User> {
   @Column()
   full_name?: string;
 
-  @Column({ unique: true}) // Make email unique
+  @Column() // Make email unique
   email: string;
 
   @Column() // Ensure this is nullable
