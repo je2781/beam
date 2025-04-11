@@ -42,7 +42,7 @@ export default function Login() {
         { full_name: user.fullName, email: user.email, password: user.password }
       );
 
-      if (res.data.id) {
+      if (res.data.full_name) {
         router.push("/login");
       } 
     } catch (error) {

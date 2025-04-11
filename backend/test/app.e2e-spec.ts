@@ -18,12 +18,9 @@ describe("AppController (e2e)", () => {
     app = moduleRef.createNestApplication();
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
-    await app.listen(0); // random available port
+    await app.listen(3030); // random available port
 
-    const server = app.getHttpServer();
-    const address = server.address();
-    const port = typeof address === "string" ? address : address?.port;
-    pactum.request.setBaseUrl(`http://localhost:${port}`);
+    pactum.request.setBaseUrl(`http://localhost:3030`);
 
     userService = app.get(UserService);
   });
@@ -91,7 +88,7 @@ describe("AppController (e2e)", () => {
         return pactum
           .spec()
           .get("/users/me")
-          .withHeaders({ Authorization: `Bearer $S{userAt}` })
+          .withCookies('access_token', `$S{userAt}` )
           .expectStatus(200)
           .expectJsonLike({
             user: {
@@ -109,7 +106,7 @@ describe("AppController (e2e)", () => {
       return pactum
         .spec()
         .get("/transactions")
-        .withHeaders({ Authorization: `Bearer $S{userAt}` })
+        .withCookies('access_token', `$S{userAt}` )
         .expectStatus(200)
         .expectJson({ transactions: [], message: "success" });
     });

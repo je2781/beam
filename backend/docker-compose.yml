@@ -11,16 +11,17 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
     volumes:
-      - /var/lib/mysql
+      - beam_db_data:/var/lib/mysql
   test-db:
     image: mysql
     ports:
       - 3308:3308
     restart: always
     environment:
-      MYSQL_DATABASE: myapp_test
-      MYSQL_USER: test_user
-      MYSQL_PASSWORD: test_pass
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
   nestjs:
     build: .
     container_name: nestjs
@@ -38,5 +39,5 @@ services:
       - .:/app
     command: npm run start:dev
 
-
-
+volumes:
+  beam_db_data:
