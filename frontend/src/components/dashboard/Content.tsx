@@ -75,9 +75,16 @@ export default function Content({ data }: any) {
             withCredentials: true,
           }
         );
+
+        //checking for class validator errors
+        if (Array.isArray(result.data.message)) {
+          throw new Error(`${result.data.message[0]}`);
+        }
+
         setTrans(result.data.transactions);
       } catch (error) {
-        return toast.error("failed to retrieve transactions");
+        const e = error as Error;
+        return toast.error(e.message);
       }
     }
     async function getWalletBalance() {
@@ -88,11 +95,17 @@ export default function Content({ data }: any) {
             withCredentials: true,
           }
         );
+        //checking for class validator errors
+        if (Array.isArray(result.data.message)) {
+          throw new Error(`${result.data.message[0]}`);
+        }
+
         if (result.data.message === "success") {
           setBalance(result.data.wallet_balance);
         }
       } catch (error) {
-        return toast.error("failed to retrieve balance");
+        const e = error as Error;
+        return toast.error(e.message);
       }
     }
 
@@ -304,45 +317,47 @@ export default function Content({ data }: any) {
         </div>
         <div className="border-2 border-primary-200 border-b-0 w-2 border-r-0 border-t-0 rotate-180 h-full mx-3" />
         <div className="flex flex-col md:items-start items-center xl:w-[64%] lg:w-[77%] w-full h-[500px] gap-y-2">
-          {trans.length > 0 && <div className="flex flex-col gap-y-5 w-full">
-            <h3 className="text-wallet-history-header-color font-semibold text-[16px]">
-              Transaction History
-            </h3>
-            <div className="inline-flex lg:flex-row md:flex-row lg:justify-between md:justify-between flex-col gap-y-5 lg:gap-y-0 md:gap-y-0 items-center w-full">
-              <div className="inline-flex flex-row flex-wrap gap-y-3 lg:gap-y-0 items-start lg:items-center xl:gap-x-2 gap-x-1">
-                <button className="border cursor-pointer border-primary-100 text-wallet-history-header-secondary-text rounded-md font-medium text-sm px-5 py-1">
-                  3 years
-                </button>
-                <button className="border cursor-pointer border-primary-100 text-wallet-history-header-secondary-text rounded-md font-medium text-sm px-5 py-1">
-                  Approved
-                </button>
-                <button className="border cursor-pointer border-primary-100 text-wallet-history-header-secondary-text rounded-md font-medium text-sm px-5 py-1">
-                  Pending
-                </button>
-                <button
-                  className={`border cursor-pointer border-primary-800 bg-wallet-history-header-secondary-active text-primary-800 rounded-md font-medium text-sm px-5 py-1`}
-                >
-                  History
-                </button>
-              </div>
-              <div className="inline-flex flex-row items-center gap-x-2 text-sm font-medium">
-                <h5 className="text-wallet-history-header-secondary-text">
-                  AddFunds by
-                </h5>
-                <div className="relative inline-block w-20">
-                  <select
-                    className={`border focus:outline-none appearance-none border-primary-100 cursor-pointer shadow-none w-full text-wallet-history-header-secondary-text rounded-md px-5 py-1`}
+          {trans.length > 0 && (
+            <div className="flex flex-col gap-y-5 w-full">
+              <h3 className="text-wallet-history-header-color font-semibold text-[16px]">
+                Transaction History
+              </h3>
+              <div className="inline-flex lg:flex-row md:flex-row lg:justify-between md:justify-between flex-col gap-y-5 lg:gap-y-0 md:gap-y-0 items-center w-full">
+                <div className="inline-flex flex-row flex-wrap gap-y-3 lg:gap-y-0 items-start lg:items-center xl:gap-x-2 gap-x-1">
+                  <button className="border cursor-pointer border-primary-100 text-wallet-history-header-secondary-text rounded-md font-medium text-sm px-5 py-1">
+                    3 years
+                  </button>
+                  <button className="border cursor-pointer border-primary-100 text-wallet-history-header-secondary-text rounded-md font-medium text-sm px-5 py-1">
+                    Approved
+                  </button>
+                  <button className="border cursor-pointer border-primary-100 text-wallet-history-header-secondary-text rounded-md font-medium text-sm px-5 py-1">
+                    Pending
+                  </button>
+                  <button
+                    className={`border cursor-pointer border-primary-800 bg-wallet-history-header-secondary-active text-primary-800 rounded-md font-medium text-sm px-5 py-1`}
                   >
-                    <option hidden>Spot</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                    {/* Replace with your angle-down icon */}
-                    <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                    History
+                  </button>
+                </div>
+                <div className="inline-flex flex-row items-center gap-x-2 text-sm font-medium">
+                  <h5 className="text-wallet-history-header-secondary-text">
+                    AddFunds by
+                  </h5>
+                  <div className="relative inline-block w-20">
+                    <select
+                      className={`border focus:outline-none appearance-none border-primary-100 cursor-pointer shadow-none w-full text-wallet-history-header-secondary-text rounded-md px-5 py-1`}
+                    >
+                      <option hidden>Spot</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                      {/* Replace with your angle-down icon */}
+                      <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>}
+          )}
           {trans.length > 0 && (
             <div className="w-full h-full relative font-inter">
               <div className="w-full absolute top-[24px]">
@@ -570,18 +585,18 @@ export default function Content({ data }: any) {
               </Swiper>
             )}
           </div>
-            {trans.length > 0 && (
-              <PaginationComponent
-                count={count}
-                itemsPerPage={ITEMS_PER_PAGE}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                totalItems={trans.length}
-                setVisibleTrans={setVisibleTrans}
-                setCount={setCount}
-                trans={trans}
-              />
-            )}
+          {trans.length > 0 && (
+            <PaginationComponent
+              count={count}
+              itemsPerPage={ITEMS_PER_PAGE}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalItems={trans.length}
+              setVisibleTrans={setVisibleTrans}
+              setCount={setCount}
+              trans={trans}
+            />
+          )}
         </div>
         <p data-testid="slide-index" className="hidden">
           Current slide: {activeIndex}
@@ -959,6 +974,11 @@ export default function Content({ data }: any) {
                             withCredentials: true,
                           }
                         );
+
+                        //checking for class validator errors
+                        if (Array.isArray(res.data.message)) {
+                          throw new Error(`${res.data.message[0]}`);
+                        }
 
                         if (res.data.message === "success") {
                           hideModalHandler(operation, setIsTransferModalOpen);
