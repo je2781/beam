@@ -18,7 +18,7 @@ export class Transaction extends AbstractEntity<Transaction> {
   @Column({ default: 0 })
   amount: number;
 
-  @ManyToOne(() => User, (user) => user.transactions, { onDelete: "CASCADE", cascade: true })
+  @ManyToOne(() => User, (user) => user.transactions, { onDelete: "CASCADE" })
   @JoinColumn()
   user: User;
 
