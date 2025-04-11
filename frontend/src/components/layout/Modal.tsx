@@ -61,7 +61,7 @@ const AddFundsModalOverlay: React.FC<AddFundsModalOverlayProps> = (props) => {
       id="add-funds"
       aria-orientation="vertical"
       aria-labelledby="toggle-add-funds"
-      className="z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pt-4 fixed top-[15vh] h-fit rounded-2xl"
+      className="z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pt-4 fixed top-[10vh] h-fit rounded-2xl"
     >
       {props.children}
     </main>
@@ -91,7 +91,7 @@ const TransferModalOverlay: React.FC<TransferModalOverlayProps> = (props) => {
       id="transfer"
       aria-orientation="vertical"
       aria-labelledby="toggle-transfer"
-      className={`z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pb-4 pt-14 fixed top-[15vh] ${props.title === 'Transfer' ? 'md:h-[442px] h-[65vh]' : 'md:h-[260px] h-[65vh]'} rounded-2xl`}
+      className={`z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pb-4 pt-14 fixed top-[10vh] ${props.title === 'Transfer' ? 'md:h-[442px] h-[65vh]' : 'md:h-[260px] h-[65vh]'} rounded-2xl`}
     >
       {props.children}
       <h3 className="font-inter font-semibold text-lg text-black absolute left-6 top-5">

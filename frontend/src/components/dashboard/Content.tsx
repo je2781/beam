@@ -754,6 +754,35 @@ export default function Content({ data }: any) {
                     </div>
                     <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
                     <div className="flex flex-col items-start w-full px-6 mt-3">
+                      <label>Amount</label>
+                      <div className="inline-block relative w-full">
+                        <select
+                          onChange={(e) => setAmount(Number(e.target.value))}
+                          className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        >
+                          <option value={100}>{(100).toLocaleString()}</option>
+                          <option value={300}>{(300).toLocaleString()}</option>
+                          <option value={500}>{(500).toLocaleString()}</option>
+                          <option value={1000}>
+                            {(1000).toLocaleString()}
+                          </option>
+                          <option value={5000}>
+                            {(5000).toLocaleString()}
+                          </option>
+                          <option value={10000}>
+                            {(10000).toLocaleString()}
+                          </option>
+                          <option value={100000}>
+                            {(100000).toLocaleString()}
+                          </option>
+                        </select>
+                        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                          {/* Replace with your angle-down icon */}
+                          <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start w-full px-6">
                       <label>Card Details</label>
                       <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
                         <input
