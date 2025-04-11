@@ -23,7 +23,7 @@ export class WalletController{
         return this.walletService.getBalance(userId);
     }
 
-    @HttpCode(HttpStatus.OK)
+    @HttpCode(HttpStatus.CREATED)
     @Post('fund')
     @ApiOperation({ summary: 'Depositing funds' })
     @ApiResponse({ status: 201, description: 'Funds have been deposited', type: Object})
@@ -32,7 +32,7 @@ export class WalletController{
         return this.walletService.fund(userId,  trans);
     }
 
-    @HttpCode(HttpStatus.OK)
+    @HttpCode(HttpStatus.CREATED)
     @Post('transfer')
     @ApiOperation({ summary: 'Transfering funds to another user' })
     @ApiResponse({ status: 201, description: 'Transfer completed', type: Object})
@@ -41,7 +41,7 @@ export class WalletController{
         return this.walletService.transfer(dto, userId);
     }
 
-    @HttpCode(HttpStatus.OK)
+    @HttpCode(HttpStatus.CREATED)
     @Post('withdraw')
     @ApiOperation({ summary: 'Withdrawing funds' })
     @ApiResponse({ status: 201, description: 'Funds deducted', type: Object})

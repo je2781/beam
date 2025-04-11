@@ -719,7 +719,7 @@ export default function Content({ data }: any) {
                         setIsLoading(true);
 
                         const res = await axios.post(
-                          `${process.env.NNEXT_PUBLIC_SERVER_DOMAIN}/wallet/fund`,
+                          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/fund`,
                           {
                             card_no: cardNo,
                             amount,
@@ -760,19 +760,19 @@ export default function Content({ data }: any) {
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
-                          <option value={100}>{(100).toLocaleString()}</option>
-                          <option value={300}>{(300).toLocaleString()}</option>
-                          <option value={500}>{(500).toLocaleString()}</option>
-                          <option value={1000}>
+                          <option value='100'>{(100).toLocaleString()}</option>
+                          <option value='300'>{(300).toLocaleString()}</option>
+                          <option value='500'>{(500).toLocaleString()}</option>
+                          <option value='1000'>
                             {(1000).toLocaleString()}
                           </option>
-                          <option value={5000}>
+                          <option value='5000'>
                             {(5000).toLocaleString()}
                           </option>
-                          <option value={10000}>
+                          <option value='10000'>
                             {(10000).toLocaleString()}
                           </option>
-                          <option value={100000}>
+                          <option value='100000'>
                             {(100000).toLocaleString()}
                           </option>
                         </select>
@@ -880,19 +880,19 @@ export default function Content({ data }: any) {
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
-                          <option value={100}>{(100).toLocaleString()}</option>
-                          <option value={300}>{(300).toLocaleString()}</option>
-                          <option value={500}>{(500).toLocaleString()}</option>
-                          <option value={1000}>
+                          <option value='100'>{(100).toLocaleString()}</option>
+                          <option value='300'>{(300).toLocaleString()}</option>
+                          <option value='500'>{(500).toLocaleString()}</option>
+                          <option value='1000'>
                             {(1000).toLocaleString()}
                           </option>
-                          <option value={5000}>
+                          <option value='5000'>
                             {(5000).toLocaleString()}
                           </option>
-                          <option value={10000}>
+                          <option value='10000'>
                             {(10000).toLocaleString()}
                           </option>
-                          <option value={100000}>
+                          <option value='100000'>
                             {(100000).toLocaleString()}
                           </option>
                         </select>
@@ -940,7 +940,7 @@ export default function Content({ data }: any) {
                             ? "withdraw"
                             : "transfer";
                         const res = await axios.post(
-                          `${process.env.NNEXT_PUBLIC_SERVER_DOMAIN}/wallet/${operation}`,
+                          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/${operation}`,
                           {
                             card_no: cardNo,
                             amount,
