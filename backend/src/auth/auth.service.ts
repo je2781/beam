@@ -7,7 +7,7 @@ import { AuthDto } from "./dto";
 import * as argon2 from "argon2";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-import { Repository } from "typeorm";
+import { QueryFailedError, Repository } from "typeorm";
 import { User } from "../user/user.entity";
 
 import { Response } from "express";
@@ -89,8 +89,17 @@ export class AuthService {
       const savedUser = await this.userRepository.save(newUser);
 
       return savedUser;
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      if (
+        error instanceof QueryFailedError &&
+        (error as any).code === 'ER_DUP_ENTRY'
+      ) {
+        // Ignore the error or handle it gracefully
+        console.warn('Duplicate entry ignored.');
+      } else {
+        // Rethrow or handle other errors
+        throw error;
+      }
     }
   }
 
