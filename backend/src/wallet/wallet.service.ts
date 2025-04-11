@@ -9,6 +9,7 @@ import { TransactionDto } from "../transaction/dto/trans.dto";
 import { Transaction } from "../transaction/transaction.entity";
 
 import { InjectRepository } from "@nestjs/typeorm";
+import { Bank } from "src/user/bank.entity";
 
 @Injectable()
 export class WalletService {
@@ -46,10 +47,25 @@ export class WalletService {
     //updating wallet
     user.wallet.balance = user.wallet.balance + dto.amount;
 
+    //creating bank entry if user doesnt have one
+    if (!user.bank) {
+      const newBank = new Bank({
+        cvv: dto.bank.cvv,
+        card_expiry_date: dto.bank.card_expiry_date,
+        card_no: dto.bank.card_no,
+      });
+
+      //adding new bank to user repo
+      user.bank = newBank;
+    }
+
+    //removing bank details
+    delete dto.bank;
+
     //creating transaction entry
     const newTransaction = new Transaction({
       ...dto,
-      date: new Date(dto.date)
+      date: new Date(dto.date),
     });
     //adding new transaction to user repo
     user.transactions.push(newTransaction);
@@ -80,10 +96,25 @@ export class WalletService {
     //updating wallet
     user.wallet.balance = balance;
 
+    //creating bank entry if user doesnt have one
+    if (!user.bank) {
+      const newBank = new Bank({
+        cvv: dto.bank.cvv,
+        card_expiry_date: dto.bank.card_expiry_date,
+        card_no: dto.bank.card_no,
+      });
+
+      //adding new bank to user repo
+      user.bank = newBank;
+    }
+
+    //removing bank details
+    delete dto.bank;
+
     //creating transaction entry
     const newTransaction = new Transaction({
       ...dto,
-      date: new Date(dto.date)
+      date: new Date(dto.date),
     });
 
     //adding new transaction to user repo
@@ -116,12 +147,27 @@ export class WalletService {
     //updating creditor wallet
     creditor.wallet.balance = balance;
 
+    //creating bank entry if creditor doesnt have one
+    if (!creditor.bank) {
+      const newBank = new Bank({
+        cvv: dto.bank.cvv,
+        card_expiry_date: dto.bank.card_expiry_date,
+        card_no: dto.bank.card_no,
+      });
+
+      //adding new bank to creditor repo
+      creditor.bank = newBank;
+    }
+
+    //removing bank details
+    delete dto.bank;
+
     const debtor = await this.userRepository.findOneBy({
       email: dto.email,
     });
 
     if (!debtor) {
-      throw new UnauthorizedException("User doesn't exist");
+      throw new UnauthorizedException("Your debtor doesn't exist");
     }
     //current balance of debtor
     debtor.wallet.balance = debtor.wallet.balance + dto.amount;
@@ -132,7 +178,7 @@ export class WalletService {
     //creating transaction entry
     const newTransaction = new Transaction({
       ...dto,
-      date: new Date(dto.date)
+      date: new Date(dto.date),
     });
 
     //adding new transaction to creditor

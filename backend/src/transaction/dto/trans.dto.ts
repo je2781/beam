@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsDate, IsEmail, IsNegative, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { Bank } from "../../user/bank.entity";
 
 export class TransactionDto{
     @IsString()
@@ -18,6 +19,13 @@ export class TransactionDto{
     @IsNegative()
     @ApiProperty({ example: 500, description: 'The amount used during transaction' })
     amount: number;
+
+    @ApiProperty({ example: {
+        cvv: 123,
+        card_no: 133839201,
+        exp: '1/5/2029'
+    }, description: 'The bank info involved in the transaction' })
+    bank: Bank;
 
     @IsString()
     @IsOptional()

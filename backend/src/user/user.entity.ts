@@ -1,7 +1,8 @@
-import { Entity, Column, OneToOne, OneToMany, PrimaryColumn } from 'typeorm';
-import { Wallet } from '../wallet/wallet.entity';
+import { Entity, Column, OneToOne, OneToMany } from 'typeorm';
 import { Transaction } from '../transaction/transaction.entity';
 import { AbstractEntity } from '../typeorm/abstract.entity';
+import { Bank } from './bank.entity';
+import { Wallet } from '../wallet/wallet.entity';
 
 @Entity()
 export class User extends AbstractEntity<User> {
@@ -17,12 +18,10 @@ export class User extends AbstractEntity<User> {
   @OneToOne(() => Wallet, (wallet) => wallet.user, { cascade: true })
   wallet: Wallet;
 
+  @OneToOne(() => Bank, (bank) => bank.user, { cascade: true })
+  bank?: Bank;
+
   @OneToMany(() => Transaction, (transaction) => transaction.user, { cascade: true })
   transactions: Transaction[];
 
-  @Column({ nullable: true })
-  bank: string;
-
-  @Column({ nullable: true })
-  acct_no: string;
 }
