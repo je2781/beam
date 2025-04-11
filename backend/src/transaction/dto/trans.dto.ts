@@ -21,9 +21,10 @@ export class TransactionDto{
     amount: number;
 
     @ApiProperty({ example: {
+        id: '8484902-U002202-38902',
         cvv: 123,
         card_no: 133839201,
-        exp: '1/5/2029'
+        card_expiry_date: '1/5/2029'
     }, description: 'The bank info involved in the transaction' })
     bank: Bank;
 
