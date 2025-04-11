@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { Wallet } from './src/wallet/wallet.entity';
 import { Transaction } from './src/transaction/transaction.entity';
 import { User } from './src/user/user.entity';
+import { Bank } from './src/user/bank.entity';
 
 const AppDataSource = new DataSource({
   type: 'mysql',
@@ -15,7 +16,7 @@ const AppDataSource = new DataSource({
   password: process.env.DB_PASS,
   migrations: ['migrations/**'],
   migrationsTableName: 'migrations',
-  entities: [User, Transaction, Wallet],
+  entities: [User, Transaction, Wallet, Bank],
 });
 
 export default AppDataSource;
