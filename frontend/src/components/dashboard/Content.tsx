@@ -42,14 +42,7 @@ export default function Content({ data }: any) {
   const [transferModalHeader, setTransferModalHeader] = React.useState(
     "Withdraw"
   );
-  const [trans, setTrans] = React.useState<any[]>(data.transactions);
-  const [balance, setBalance] = React.useState<number | null>(null);
-  const windowWidth = useWindowWidth();
-  const router = useRouter();
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const swiperRef = React.useRef<SwiperType>(null);
-
-  const positions = [
+  const [dividerPositions, setDividerPositions] = React.useState([
     { top: "72px" },
     { top: "120px" },
     { top: "168px" },
@@ -59,7 +52,13 @@ export default function Content({ data }: any) {
     { top: "360px" },
     { top: "408px" },
     { top: "456px" },
-  ].slice(0, trans.length);
+  ]);
+  const [trans, setTrans] = React.useState<any[]>(data.transactions);
+  const [balance, setBalance] = React.useState<number | null>(null);
+  const windowWidth = useWindowWidth();
+  const router = useRouter();
+  const [buttonDisabled, setButtonDisabled] = React.useState(true);
+  const swiperRef = React.useRef<SwiperType>(null);
 
   const goToSlide = (index: number) => {
     swiperRef.current?.slideTo(index); // jump to a specific slide
@@ -77,12 +76,8 @@ export default function Content({ data }: any) {
           }
         );
 
-        //checking for class validator errors
-        if (Array.isArray(result.data.message)) {
-          throw new Error(`${result.data.message[0]}`);
-        }
-
         setTrans(result.data.transactions);
+        setDividerPositions(prev => prev.slice(0,result.data.transactions.length));
       } catch (error) {
         const e = error as Error;
         return toast.error(e.message);
@@ -367,7 +362,7 @@ export default function Content({ data }: any) {
               <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
             </div>
             <div>
-              {positions.map((position, index) => (
+              {dividerPositions.map((position, index) => (
                 <div
                   key={index}
                   className={`w-full absolute`}
