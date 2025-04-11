@@ -24,7 +24,7 @@ describe("Sidebar", () => {
     });
 
     // Reset any mocked Axios or other API mocks
-    mockedAxios.post.mockResolvedValue({
+    mockedAxios.get.mockResolvedValue({
       data: { message: 'logout successful' },
     });
   });

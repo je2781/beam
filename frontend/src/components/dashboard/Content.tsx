@@ -114,7 +114,7 @@ export default function Content({ data }: any) {
   }, []);
 
   React.useEffect(() => {
-    if (selectedOption.length > 0 || amount > 0) {
+    if ((selectedOption.length > 0 && selectedOption === 'card') || amount > 0) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);

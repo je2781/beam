@@ -84,7 +84,9 @@ export class AuthService {
         full_name: dto.full_name,
       });
 
-      newUser.wallet = new Wallet({}); // Create and attach wallet
+      newUser.wallet = new Wallet({
+        balance: 0
+      }); // Create and attach wallet
 
       const savedUser = await this.userRepository.save(newUser);
 
