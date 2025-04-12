@@ -297,13 +297,16 @@ export default function Content({
         flex flex-col md:items-start items-center xl:w-[62%] lg:w-[75%] w-full gap-y-2"
           style={{
             height: `${
-              trans.length === 0 
+              trans.length === 0
                 ? 300
-                : (trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
-                110
-                <= 500 
-                ? ((trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
-                110)
+                : (trans.length < ITEMS_PER_PAGE
+                    ? trans.length
+                    : ITEMS_PER_PAGE) *
+                    110 <=
+                  500
+                ? (trans.length < ITEMS_PER_PAGE
+                    ? trans.length
+                    : ITEMS_PER_PAGE) * 110
                 : 500
             }px`,
           }}
@@ -771,10 +774,10 @@ export default function Content({
                             )
                           );
                           setTrans(res.data.transactions);
-                          setSelectedOption('');
+                          setSelectedOption("");
+                          setAmount(0);
                           setIsLoading(false);
                           hideModalHandler("add-funds", setIsAddFundsModalOpen);
-                          
                         }
                       } catch (error) {
                         const e = error as Error;
@@ -801,7 +804,9 @@ export default function Content({
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
-                          <option value="" hidden unselectable="on">Select Amount</option>
+                          <option value="" hidden unselectable="on">
+                            Select Amount
+                          </option>
                           <option value="100">{(100).toLocaleString()}</option>
                           <option value="300">{(300).toLocaleString()}</option>
                           <option value="500">{(500).toLocaleString()}</option>
@@ -895,14 +900,25 @@ export default function Content({
             title={transferModalHeader}
             onClose={() => hideModalHandler("transfer", setIsTransferModalOpen)}
           >
-            <div className="w-full h-full">
+            <div
+              className={`w-full h-[65vh] ${
+                transferModalHeader === "Withdraw" && activeIndex === 0
+                  ? "md:h-[220px]"
+                  : transferModalHeader === "Withdraw" && activeIndex > 0
+                  ? "md:h-[484px]"
+                  : "md:h-[484px]"
+              }`}
+            >
               <Swiper
                 slidesPerView={1}
                 onSwiper={(swiper) => (swiperRef.current = swiper)}
                 className="w-full h-full"
               >
                 <SwiperSlide>
-                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full py-8 px-6">
+                  <form className="relative flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full pt-14 pb-3 px-6">
+                    <h3 className="font-inter font-semibold text-lg text-black absolute left-6 top-1">
+                      {transferModalHeader} Details
+                    </h3>
                     {transferModalHeader === "Transfer" && (
                       <div className="flex flex-col items-start w-full">
                         <label>Email</label>
@@ -923,7 +939,9 @@ export default function Content({
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
-                          <option value="" hidden unselectable="on">Select Amount</option>
+                          <option value="" hidden unselectable="on">
+                            Select Amount
+                          </option>
                           <option value="100">{(100).toLocaleString()}</option>
                           <option value="300">{(300).toLocaleString()}</option>
                           <option value="500">{(500).toLocaleString()}</option>
@@ -1033,7 +1051,8 @@ export default function Content({
                             )
                           );
                           setTrans(res.data.transactions);
-                          setSelectedOption('');
+                          setSelectedOption("");
+                          setAmount(0);
                           setIsLoading(false);
                           hideModalHandler(operation, setIsTransferModalOpen);
                         }
@@ -1046,7 +1065,7 @@ export default function Content({
                     className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
                   >
                     <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
-                      <h3 className="font-semibold md:text-[24px] text-[22px] text-black">
+                      <h3 className="font-semibold md:text-[24px] text-[18px] text-black">
                         Payment Details
                       </h3>
                       <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
@@ -1054,7 +1073,40 @@ export default function Content({
                       </h4>
                     </div>
                     <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
-                    <div className="flex flex-col items-start w-full px-6 mt-3">
+                    <div className="flex flex-col items-start w-full px-6 mt-2">
+                      <label>Amount</label>
+                      <div className="inline-block relative w-full">
+                        <select
+                          value={amount}
+                          onChange={(e) => setAmount(Number(e.target.value))}
+                          className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        >
+                          <option value="" hidden unselectable="on">
+                            Select Amount
+                          </option>
+                          <option value="100">{(100).toLocaleString()}</option>
+                          <option value="300">{(300).toLocaleString()}</option>
+                          <option value="500">{(500).toLocaleString()}</option>
+                          <option value="1000">
+                            {(1000).toLocaleString()}
+                          </option>
+                          <option value="5000">
+                            {(5000).toLocaleString()}
+                          </option>
+                          <option value="10000">
+                            {(10000).toLocaleString()}
+                          </option>
+                          <option value="100000">
+                            {(100000).toLocaleString()}
+                          </option>
+                        </select>
+                        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                          {/* Replace with your angle-down icon */}
+                          <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start w-full px-6">
                       <label>Card Details</label>
                       <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
                         <input

@@ -91,17 +91,14 @@ const TransferModalOverlay: React.FC<TransferModalOverlayProps> = (props) => {
       id="transfer"
       aria-orientation="vertical"
       aria-labelledby="toggle-transfer"
-      className={`z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pb-4 pt-14 fixed top-[10vh] ${props.title === 'Transfer' ? 'md:h-[442px] h-[65vh]' : 'md:h-[260px] h-[65vh]'} rounded-2xl`}
+      className={`z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pb-4 pt-4 fixed top-[10vh] rounded-2xl`}
     >
       {props.children}
-      <h3 className="font-inter font-semibold text-lg text-black absolute left-6 top-5">
-        {props.title} Details
-      </h3>
+      
       <i
         className="fa-solid fa-xmark text-xl cursor-pointer text-black absolute top-6 right-6"
         onClick={props.onClick}
       ></i>
-      <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr left-0 right-0 absolute top-16" />
     </main>
   );
 };
