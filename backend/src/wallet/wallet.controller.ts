@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import { GetUser } from "../auth/decorator";
 import { WalletService } from "./wallet.service";
-import { TransactionDto } from "../transaction/dto/trans.dto";
+import { CreateTransactionDto } from "../transaction/dto/create-trans.dto";
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { Wallet } from "./wallet.entity";
 import { JwtGaurd } from "../auth/guard";
@@ -27,8 +27,8 @@ export class WalletController{
     @Post('fund')
     @ApiOperation({ summary: 'Depositing funds' })
     @ApiResponse({ status: 201, description: 'Funds have been deposited', type: Object})
-    @ApiBody({ type: TransactionDto })
-    fund(@GetUser('id') userId: string, @Body() trans: TransactionDto){
+    @ApiBody({ type: CreateTransactionDto })
+    fund(@GetUser('id') userId: string, @Body() trans: CreateTransactionDto){
         return this.walletService.fund(userId,  trans);
     }
 
@@ -36,8 +36,8 @@ export class WalletController{
     @Post('transfer')
     @ApiOperation({ summary: 'Transfering funds to another user' })
     @ApiResponse({ status: 201, description: 'Transfer completed', type: Object})
-    @ApiBody({ type: TransactionDto })
-    transfer(@GetUser('id') userId: string, @Body() dto: TransactionDto){
+    @ApiBody({ type: CreateTransactionDto })
+    transfer(@GetUser('id') userId: string, @Body() dto: CreateTransactionDto){
         return this.walletService.transfer(dto, userId);
     }
 
@@ -45,8 +45,8 @@ export class WalletController{
     @Post('withdraw')
     @ApiOperation({ summary: 'Withdrawing funds' })
     @ApiResponse({ status: 201, description: 'Funds deducted', type: Object})
-    @ApiBody({ type: TransactionDto })
-    withdrawal(@GetUser('id') userId: string, @Body() trans: TransactionDto){
+    @ApiBody({ type: CreateTransactionDto })
+    withdrawal(@GetUser('id') userId: string, @Body() trans: CreateTransactionDto){
         return this.walletService.withdrawal(userId, trans);
     }
 

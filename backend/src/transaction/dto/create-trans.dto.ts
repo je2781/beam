@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsDate, IsEmail, IsNegative, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
 
-export class TransactionDto{
+export class CreateTransactionDto{
     @IsString()
     @ApiProperty({ example: 'withdrawal', description: 'The type of transaction taking place' })
     trans_type: string;
@@ -19,11 +19,10 @@ export class TransactionDto{
     @ApiProperty({ example: 500, description: 'The amount used during transaction' })
     amount: number;
 
-    @IsNumber()
+    @IsString()
     @IsOptional()
-    @IsPositive()
-    @ApiProperty({ example: 500, description: 'The security strip at the back of the card' })
-    cvv?: number;
+    @ApiProperty({ example: '500', description: 'The security strip at the back of the card' })
+    cvv?: string;
 
     @IsString()
     @IsOptional()

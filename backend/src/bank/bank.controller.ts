@@ -4,8 +4,9 @@ import { UpdateBankDto } from './dto/update-bank.dto';
 import { GetUser } from '../auth/decorator';
 import { JwtGaurd } from '../auth/guard';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Bank } from './bank.entity';
 
-@ApiTags('transactions') 
+@ApiTags('bank') 
 @UseGuards(JwtGaurd)
 @Controller('bank')
 export class BankController {
@@ -15,7 +16,7 @@ export class BankController {
   @HttpCode(HttpStatus.OK)
   @Get()
   @ApiOperation({ summary: 'getting current user bank details' })
-  @ApiResponse({ status: 200, description: 'Bank profile retrieved', type: Object})
+  @ApiResponse({ status: 200, description: 'Bank profile retrieved', type: Bank})
   findOne(@GetUser('id') userId: string) {
     return this.bankService.findOne(userId);
   }

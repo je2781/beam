@@ -5,7 +5,7 @@ import {
 } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { User } from "../user/user.entity";
-import { TransactionDto } from "../transaction/dto/trans.dto";
+import { CreateTransactionDto } from "../transaction/dto/create-trans.dto";
 import { Transaction } from "../transaction/entities/transaction.entity";
 
 import { InjectRepository } from "@nestjs/typeorm";
@@ -36,7 +36,7 @@ export class WalletService {
 
     await this.counterRepo.save(counterRow);
 
-    const padded = counterRow.counter.toString().padStart(6, '0');
+    const padded = counterRow.counter.toString().padStart(6, "0");
     return `TXN${padded}`;
   }
 
@@ -56,8 +56,7 @@ export class WalletService {
     };
   }
 
-  async fund(userId: string, dto: TransactionDto) {
-
+  async fund(userId: string, dto: CreateTransactionDto) {
     const user = await this.userRepository.findOne({
       where: { id: userId },
       relations: { wallet: true, bank: true, transactions: true },
@@ -74,7 +73,9 @@ export class WalletService {
         cvv: dto.cvv,
         card_expiry_date: dto.card_expiry_date,
         card_no: dto.card_no,
-        user: user,
+        user: {
+          id: user.id,
+        },
       });
 
       await this.bankRepository.save(newBank);
@@ -104,16 +105,25 @@ export class WalletService {
 
     await this.transRepository.save(newTrans);
 
+    //returning user transactions
+    const userTrans = await this.transRepository.find({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+    });
 
     return {
       message: "success",
-      wallet_balance: user.wallet.balance,
+      user,
+      transactions: userTrans,
     };
   }
 
-  async withdrawal(userId: string, dto: TransactionDto) {
+  async withdrawal(userId: string, dto: CreateTransactionDto) {
     const user = await this.userRepository.findOne({
-      where: {id: userId},
+      where: { id: userId },
       relations: { wallet: true, bank: true, transactions: true },
     });
 
@@ -128,11 +138,12 @@ export class WalletService {
         cvv: dto.cvv,
         card_expiry_date: dto.card_expiry_date,
         card_no: dto.card_no,
-        user: user,
+        user: {
+          id: user.id,
+        },
       });
 
       await this.bankRepository.save(newBank);
-
     }
 
     //updating wallet
@@ -163,16 +174,26 @@ export class WalletService {
 
     await this.transRepository.save(newTrans);
 
+    //returning user transactions
+    const userTrans = await this.transRepository.find({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+    });
+
     return {
       message: "success",
-      wallet_balance: user.wallet.balance,
+      user,
+      transactions: userTrans,
     };
   }
 
-  async transfer(dto: TransactionDto, userId: string) {
+  async transfer(dto: CreateTransactionDto, userId: string) {
     //retrieving creditor details
     const creditor = await this.userRepository.findOne({
-      where: {id: userId},
+      where: { id: userId },
       relations: { wallet: true, bank: true, transactions: true },
     });
 
@@ -186,11 +207,12 @@ export class WalletService {
         cvv: dto.cvv,
         card_expiry_date: dto.card_expiry_date,
         card_no: dto.card_no,
-        user: creditor,
+        user: {
+          id: creditor.id,
+        },
       });
 
       await this.bankRepository.save(newCreditorBank);
-
     }
 
     //updating creditor wallet
@@ -225,7 +247,7 @@ export class WalletService {
 
     //retrieving debtor details
     const debtor = await this.userRepository.findOne({
-      where: {email: dto.email},
+      where: { email: dto.email },
       relations: { wallet: true, bank: true, transactions: true },
     });
 
@@ -239,9 +261,19 @@ export class WalletService {
       await this.userRepository.save(debtor);
     }
 
+    //returning creditor transactions
+    const creditorTrans = await this.transRepository.find({
+      where: {
+        user: {
+          id: creditor.id,
+        },
+      },
+    });
+
     return {
       message: "success",
-      wallet_balance: creditor.wallet.balance,
+      user: creditor,
+      transactions: creditorTrans,
     };
   }
 }

@@ -26,7 +26,12 @@ export class BankService {
       }
     });
 
-    return currentUserBank;
+    return currentUserBank ?? {
+      cvv: '',
+      card_expiry_date: '',
+      card_no: '',
+      acct_no: ''
+    };
   }
 
   update(id: number, updateBankDto: UpdateBankDto) {

@@ -19,25 +19,48 @@ import mastercardLogo from "../../../public/mastercard.png";
 // Import Swiper styles
 import "swiper/css";
 
-export default function Content({ userTransactions, walletBalance, sectionName, bank }: {userTransactions: any[], walletBalance: number, sectionName: string, bank: any}) {
+export default function Content({
+  userTransactions,
+  walletBalance,
+  sectionName,
+  bank,
+}: {
+  userTransactions: any[];
+  walletBalance: number;
+  sectionName: string;
+  bank: any;
+}) {
   let timerId: NodeJS.Timeout | null = null;
-  const positions = [
-    { top: "72px" },
-    { top: "120px" },
-    { top: "168px" },
-    { top: "216px" },
-    { top: "264px" },
-    { top: "312px" },
-    { top: "360px" },
-    { top: "408px" },
-    { top: "456px" },
-  ].slice(0, userTransactions.length)
 
   //limiting the max number of items shown per page
   const ITEMS_PER_PAGE = 9;
-  const [count, setCount] = React.useState<number>(ITEMS_PER_PAGE);
-  const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>(userTransactions.slice(0, ITEMS_PER_PAGE));
-  
+  const [dividerPositions, setDividerPositions] = React.useState(
+    [
+      { top: "72px" },
+      { top: "120px" },
+      { top: "168px" },
+      { top: "216px" },
+      { top: "264px" },
+      { top: "312px" },
+      { top: "360px" },
+      { top: "408px" },
+      { top: "456px" },
+    ].slice(
+      0,
+      userTransactions.length < ITEMS_PER_PAGE
+        ? userTransactions.length
+        : ITEMS_PER_PAGE
+    )
+  );
+
+  const [count, setCount] = React.useState<number>(
+    userTransactions.length < ITEMS_PER_PAGE
+      ? userTransactions.length
+      : ITEMS_PER_PAGE
+  );
+  const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>(
+    userTransactions.slice(0, ITEMS_PER_PAGE)
+  );
   const [currentPage, setCurrentPage] = React.useState(1);
   const [selectedTransId, setSelectedTransId] = React.useState<string | null>(
     null
@@ -181,7 +204,7 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
       <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
 
       <div className="flex lg:flex-row flex-col lg:justify-between gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0 h-full">
-        <div className="flex flex-col gap-y-5 xl:w-[35%] lg:w-[22%] w-full">
+        <div className="flex flex-col gap-y-5 xl:w-[37%] lg:w-[24%] w-full">
           <article className="flex flex-col w-full h-fit bg-wallet-summary-bg pt-7 pb-10">
             <div className="inline-flex flex-col gap-y-4 xl:px-6 px-6 lg:px-4">
               <div className="inline-flex flex-row items-center justify-between">
@@ -267,9 +290,21 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
             </div>
           </div>
         </div>
-        <span className="h-full mx-3 bg-black lg:w-[2%] md:inline-block hidden"></span>
+        <span className="h-[500px] mx-[22px] bg-primary-200 w-px md:inline-block hidden"></span>
         <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0 md:hidden" />
-        <div className="flex flex-col md:items-start items-center xl:w-[63%] lg:w-[76%] w-full h-[500px] gap-y-2">
+        <div
+          className="
+        flex flex-col md:items-start items-center xl:w-[62%] lg:w-[75%] w-full gap-y-2"
+          style={{
+            height: `${
+              (trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
+                110 <=
+                500 &&
+              (trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
+                110
+            }px`,
+          }}
+        >
           {trans.length > 0 && (
             <div className="flex flex-col gap-y-5 w-full">
               <h3 className="text-wallet-history-header-color font-semibold text-[16px]">
@@ -312,19 +347,22 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
             </div>
           )}
           <div className="w-full h-full relative font-inter">
-            {trans.length > 0 && <div className="w-full absolute top-[24px]">
-              <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
-            </div>}
+            {trans.length > 0 && (
+              <div className="w-full absolute top-[24px]">
+                <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
+              </div>
+            )}
             <div>
-              {positions.map((position, index) => (
-                <div
-                  key={index}
-                  className={`w-full absolute`}
-                  style={{ top: position.top }}
-                >
-                  <div className="h-8 border border-primary-100 border-l-0 border-r-0 border-t-0"></div>
-                </div>
-              ))}
+              {trans.length > 0 &&
+                dividerPositions.map((position, index) => (
+                  <div
+                    key={index}
+                    className={`w-full absolute`}
+                    style={{ top: position.top }}
+                  >
+                    <div className="h-8 border border-primary-100 border-l-0 border-r-0 border-t-0"></div>
+                  </div>
+                ))}
             </div>
           </div>
           <div className="w-full h-full -ml-5 font-inter flex flex-col justify-center">
@@ -686,7 +724,7 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                           `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/fund`,
                           {
                             card_no: cardNo,
-                            cvv: Number(cvv),
+                            cvv,
                             card_expiry_date: exp,
                             trans_type: "deposit",
                             amount,
@@ -699,7 +737,37 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                         );
 
                         if (res.data.message === "success") {
-                          setBalance(res.data.wallet_balance);
+                          setBalance(res.data.wallet.balance);
+                          setCVV(res.data.bank.cvv);
+                          setCardNo(res.data.bank.card_no);
+                          setExp(res.data.bank.card_expiry_date);
+                          setCount(
+                            res.data.transactions.length < ITEMS_PER_PAGE
+                              ? res.data.transactions.length
+                              : ITEMS_PER_PAGE
+                          );
+                          setVisibleTrans(
+                            res.data.transactions.slice(0, ITEMS_PER_PAGE)
+                          );
+                          setDividerPositions(
+                            [
+                              { top: "72px" },
+                              { top: "120px" },
+                              { top: "168px" },
+                              { top: "216px" },
+                              { top: "264px" },
+                              { top: "312px" },
+                              { top: "360px" },
+                              { top: "408px" },
+                              { top: "456px" },
+                            ].slice(
+                              0,
+                              res.data.transactions.length < ITEMS_PER_PAGE
+                                ? res.data.transactions.length
+                                : ITEMS_PER_PAGE
+                            )
+                          );
+                          setTrans(res.data.transactions);
                           hideModalHandler("add-funds", setIsAddFundsModalOpen);
                         }
                       } catch (error) {
@@ -711,10 +779,10 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                     className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
                   >
                     <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
-                      <h3 className="font-semibold text-[24px] text-black">
+                      <h3 className="font-semibold md:text-[24px] text-[18px] text-black">
                         Payment Details
                       </h3>
-                      <h4 className="font-normal text-[18px] text-auth">
+                      <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
                         Please confirm the margin details
                       </h4>
                     </div>
@@ -723,6 +791,7 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                       <label>Amount</label>
                       <div className="inline-block relative w-full">
                         <select
+                          value={amount.toString()}
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
@@ -843,6 +912,7 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                       <label>Amount</label>
                       <div className="inline-block relative w-full">
                         <select
+                          value={amount.toString()}
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
@@ -909,7 +979,7 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                           `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/${operation}`,
                           {
                             card_no: cardNo,
-                            cvv: Number(cvv),
+                            cvv,
                             card_expiry_date: exp,
                             amount,
                             note,
@@ -923,13 +993,38 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                           }
                         );
 
-                        //checking for class validator errors
-                        if (Array.isArray(res.data.message)) {
-                          throw new Error(`${res.data.message[0]}`);
-                        }
-
                         if (res.data.message === "success") {
-                          setBalance(res.data.wallet_balance);
+                          setBalance(res.data.wallet.balance);
+                          setCVV(res.data.bank.cvv);
+                          setCardNo(res.data.bank.card_no);
+                          setExp(res.data.bank.card_expiry_date);
+                          setCount(
+                            res.data.transactions.length < ITEMS_PER_PAGE
+                              ? res.data.transactions.length
+                              : ITEMS_PER_PAGE
+                          );
+                          setVisibleTrans(
+                            res.data.transactions.slice(0, ITEMS_PER_PAGE)
+                          );
+                          setDividerPositions(
+                            [
+                              { top: "72px" },
+                              { top: "120px" },
+                              { top: "168px" },
+                              { top: "216px" },
+                              { top: "264px" },
+                              { top: "312px" },
+                              { top: "360px" },
+                              { top: "408px" },
+                              { top: "456px" },
+                            ].slice(
+                              0,
+                              res.data.transactions.length < ITEMS_PER_PAGE
+                                ? res.data.transactions.length
+                                : ITEMS_PER_PAGE
+                            )
+                          );
+                          setTrans(res.data.transactions);
                           hideModalHandler(operation, setIsTransferModalOpen);
                         }
                       } catch (error) {
@@ -941,10 +1036,10 @@ export default function Content({ userTransactions, walletBalance, sectionName, 
                     className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
                   >
                     <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
-                      <h3 className="font-semibold text-[24px] text-black">
+                      <h3 className="font-semibold md:text-[24px] text-[22px] text-black">
                         Payment Details
                       </h3>
-                      <h4 className="font-normal text-[18px] text-auth">
+                      <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
                         Please confirm the margin details
                       </h4>
                     </div>

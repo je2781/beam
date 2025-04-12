@@ -8,7 +8,7 @@ export class Bank extends AbstractEntity<Bank> {
   acct_no?: number;
 
   @Column()
-  cvv: number;
+  cvv: string;
 
   @Column() 
   card_expiry_date: string; 
@@ -17,7 +17,7 @@ export class Bank extends AbstractEntity<Bank> {
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @Column({ unique: true, length: 250 })
+  @Column({ unique: true, length: 250,  })
   card_no: string;
 
 }

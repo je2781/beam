@@ -18,8 +18,8 @@ export class Transaction {
   @Column({ default: 0 })
   amount: number;
 
-  @ManyToOne(() => User, (user) => user.transactions, { onDelete: "CASCADE" })
-  @JoinColumn({ name: 'userId' })
+  @ManyToOne(() => User, (user) => user.transactions, { onDelete: "CASCADE"})
+  @JoinColumn({ name: 'userId'})
   user: User;
 
   @Column({ nullable: true })
