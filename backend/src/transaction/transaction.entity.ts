@@ -1,17 +1,17 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
-  Timestamp,
   ManyToOne,
   JoinColumn,
   PrimaryColumn,
 } from "typeorm";
 import { User } from "../user/user.entity";
-import { AbstractEntity } from "../typeorm/abstract.entity";
 
 @Entity()
-export class Transaction extends AbstractEntity<Transaction> {
+export class Transaction {
+  @PrimaryColumn('char varying')
+  id: string;
+
   @Column()
   trans_type: string;
 

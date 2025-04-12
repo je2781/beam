@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   Res,
   UseGuards,
 } from "@nestjs/common";
@@ -26,7 +27,6 @@ export class AuthController {
   ) {}
 
   
-  @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: "logging in" })
   @ApiResponse({
@@ -35,10 +35,11 @@ export class AuthController {
     type: Object,
   })
   @ApiBody({ type: User })
+  @UseGuards(LocalAuthGuard)
   @Post("login")
   async signin(
     @GetUser() user: User,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
   ) {
     const { token } = await this.authService.login(user);
 

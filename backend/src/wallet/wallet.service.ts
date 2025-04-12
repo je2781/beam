@@ -9,8 +9,8 @@ import { TransactionDto } from "../transaction/dto/trans.dto";
 import { Transaction } from "../transaction/transaction.entity";
 
 import { InjectRepository } from "@nestjs/typeorm";
-import { Bank } from "src/user/bank.entity";
-import { Wallet } from "./wallet.entity";
+import { Bank } from "../user/bank.entity";
+import { TransactionCounter } from "../transaction/transaction-counter.entity";
 
 @Injectable()
 export class WalletService {
@@ -21,9 +21,24 @@ export class WalletService {
     private transRepository: Repository<Transaction>,
     @InjectRepository(Bank)
     private bankRepository: Repository<Bank>,
-    @InjectRepository(Wallet)
-    private walletRepository: Repository<Wallet>
+    @InjectRepository(TransactionCounter)
+    private counterRepo: Repository<TransactionCounter>
   ) {}
+
+  async getNextTransactionId(): Promise<string> {
+    let counterRow = await this.counterRepo.findOne({ where: { id: 1 } });
+
+    if (!counterRow) {
+      counterRow = this.counterRepo.create({ counter: 1 });
+    } else {
+      counterRow.counter += 1;
+    }
+
+    await this.counterRepo.save(counterRow);
+
+    const padded = counterRow.counter.toString().padStart(6, '0');
+    return `TXN${padded}`;
+  }
 
   async getBalance(userId: string) {
     const user = await this.userRepository.findOne({
@@ -79,9 +94,11 @@ export class WalletService {
     delete dto.cvv;
 
     //creating transaction entry
+    const transId = await this.getNextTransactionId();
     const newTrans = this.transRepository.create({
       ...dto,
       date: new Date(dto.date),
+      id: transId,
       user: user,
     });
 
@@ -136,9 +153,11 @@ export class WalletService {
     delete dto.cvv;
 
     //creating transaction entry
+    const transId = await this.getNextTransactionId();
     const newTrans = this.transRepository.create({
       ...dto,
       date: new Date(dto.date),
+      id: transId,
       user: user,
     });
 
@@ -192,9 +211,11 @@ export class WalletService {
     delete dto.cvv;
 
     //creating transaction entry
+    const transId = await this.getNextTransactionId();
     const newCreditorTrans = this.transRepository.create({
       ...dto,
       date: new Date(dto.date),
+      id: transId,
       user: creditor,
     });
 

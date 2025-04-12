@@ -28,6 +28,7 @@ import { UserModule } from "../user/user.module";
     UserModule,
     TypeOrmModule.forFeature([User, Wallet])
   ],
+  exports: [JwtStrategy],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, LocalStrategy],
 })

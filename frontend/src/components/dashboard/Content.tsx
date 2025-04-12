@@ -19,9 +19,25 @@ import mastercardLogo from "../../../public/mastercard.png";
 // Import Swiper styles
 import "swiper/css";
 
-export default function Content({ data }: any) {
+export default function Content({ userTransactions, walletBalance, sectionName }: {userTransactions: any[], walletBalance: number, sectionName: string}) {
   let timerId: NodeJS.Timeout | null = null;
+  const positions = [
+    { top: "72px" },
+    { top: "120px" },
+    { top: "168px" },
+    { top: "216px" },
+    { top: "264px" },
+    { top: "312px" },
+    { top: "360px" },
+    { top: "408px" },
+    { top: "456px" },
+  ].slice(0, userTransactions.length)
 
+  //limiting the max number of items shown per page
+  const ITEMS_PER_PAGE = 9;
+  const [count, setCount] = React.useState<number>(ITEMS_PER_PAGE);
+  const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>([]);
+  
   const [currentPage, setCurrentPage] = React.useState(1);
   const [selectedTransId, setSelectedTransId] = React.useState<string | null>(
     null
@@ -32,29 +48,20 @@ export default function Content({ data }: any) {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [selectedOption, setSelectedOption] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [dataDownloading, setDataDownloading] = React.useState(true);
   const [issuer, setIssuer] = React.useState("MasterCard");
   const [email, setEmail] = React.useState("");
   const [amount, setAmount] = React.useState(0);
   const [note, setNote] = React.useState("");
-  const [cvv, setCVV] = React.useState('');
-  const [cardNo, setCardNo] = React.useState('');
+  const [cvv, setCVV] = React.useState("");
+  const [cardNo, setCardNo] = React.useState("");
   const [exp, setExp] = React.useState("");
   const [transferModalHeader, setTransferModalHeader] = React.useState(
     "Withdraw"
   );
-  const [dividerPositions, setDividerPositions] = React.useState([
-    { top: "72px" },
-    { top: "120px" },
-    { top: "168px" },
-    { top: "216px" },
-    { top: "264px" },
-    { top: "312px" },
-    { top: "360px" },
-    { top: "408px" },
-    { top: "456px" },
-  ]);
-  const [trans, setTrans] = React.useState<any[]>(data.transactions);
-  const [balance, setBalance] = React.useState<number | null>(null);
+
+  const [trans, setTrans] = React.useState<any[]>(userTransactions);
+  const [balance, setBalance] = React.useState<number | null>(walletBalance);
   const windowWidth = useWindowWidth();
   const router = useRouter();
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
@@ -64,50 +71,6 @@ export default function Content({ data }: any) {
     swiperRef.current?.slideTo(index); // jump to a specific slide
     setActiveIndex(index);
   };
-
-  //retrieving ui details
-  React.useEffect(() => {
-    async function getTransactions() {
-      try {
-        const result = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/transactions`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        setTrans(result.data.transactions);
-        setDividerPositions(prev => prev.slice(0,result.data.transactions.length));
-      } catch (error) {
-        const e = error as Error;
-        return toast.error(e.message);
-      }
-    }
-    async function getWalletBalance() {
-      try {
-        const result = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/balance`,
-          {
-            withCredentials: true,
-          }
-        );
-        //checking for class validator errors
-        if (Array.isArray(result.data.message)) {
-          throw new Error(`${result.data.message[0]}`);
-        }
-
-        if (result.data.message === "success") {
-          setBalance(result.data.wallet_balance);
-        }
-      } catch (error) {
-        const e = error as Error;
-        return toast.error(e.message);
-      }
-    }
-
-    getTransactions();
-    getWalletBalance();
-  }, []);
 
   React.useEffect(() => {
     if (
@@ -119,16 +82,6 @@ export default function Content({ data }: any) {
       setButtonDisabled(true);
     }
   }, [setButtonDisabled, selectedOption, amount]);
-
-  //limiting the max number of items shown per page
-  const ITEMS_PER_PAGE = 9;
-  const [count, setCount] = React.useState<number>(ITEMS_PER_PAGE);
-  const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>(
-    trans.slice(
-      (currentPage - 1) * ITEMS_PER_PAGE,
-      ITEMS_PER_PAGE * currentPage
-    )
-  );
 
   //cleaning up asynchronous callback timers
 
@@ -223,7 +176,7 @@ export default function Content({ data }: any) {
       className="xl:pl-[274px] font-inter lg:pl-[192px] xl:pr-12 lg:pr-3 lg:pt-[135px] lg:pb-12 pb-8 pt-[145px] px-5 lg:px-0 min-h-screen flex flex-col gap-y-8"
     >
       <header className="font-bold text-2xl text-primary-850 text-center lg:text-start">
-        {data.sectionName[0].toUpperCase() + data.sectionName.slice(1)}
+        {sectionName[0].toUpperCase() + sectionName.slice(1)}
       </header>
       <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
 
@@ -362,7 +315,7 @@ export default function Content({ data }: any) {
               <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
             </div>
             <div>
-              {dividerPositions.map((position, index) => (
+              {positions.map((position, index) => (
                 <div
                   key={index}
                   className={`w-full absolute`}
@@ -404,7 +357,7 @@ export default function Content({ data }: any) {
                             className={`flex flex-row items-center w-full py-4`}
                           >
                             <li className="w-full">
-                              <h5 className="text-start">{trans.trans_id}</h5>
+                              <h5 className="text-start">{trans.id}</h5>
                             </li>
                           </ul>
                         );

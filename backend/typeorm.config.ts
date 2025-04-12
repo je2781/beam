@@ -6,6 +6,7 @@ import { Wallet } from './src/wallet/wallet.entity';
 import { Transaction } from './src/transaction/transaction.entity';
 import { User } from './src/user/user.entity';
 import { Bank } from './src/user/bank.entity';
+import { TransactionCounter } from './src/transaction/transaction-counter.entity';
 
 const AppDataSource = new DataSource({
   type: 'mysql',
@@ -16,7 +17,7 @@ const AppDataSource = new DataSource({
   password: process.env.DB_PASS,
   migrations: ['migrations/**'],
   migrationsTableName: 'migrations',
-  entities: [User, Transaction, Wallet, Bank],
+  entities: [User, Transaction, Wallet, Bank, TransactionCounter],
 });
 
 export default AppDataSource;

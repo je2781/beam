@@ -13,7 +13,11 @@ export class TransactionService {
 
   async getTransactions(userId: string){
     const trans = await this.transRepository.find({
-        where: {id: userId}
+        where: {
+          user: {
+            id: userId
+          }
+        }
     });
 
     return {
