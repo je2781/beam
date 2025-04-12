@@ -13,7 +13,7 @@ const DashboardComponent = dynamic(
 export async function getContentData() {
   const token = (await cookies()).get('access_token')?.value;
 
-  const [transRes, balanceRes] = await Promise.all([
+  const [transRes, balanceRes, bankRes] = await Promise.all([
     fetch(`${process.env.SERVER_DOMAIN}/transactions`, {
       cache: "no-store",
       headers: {
@@ -28,27 +28,36 @@ export async function getContentData() {
         'Content-Type': 'application/json'
       }
     }),
+    fetch(`${process.env.SERVER_DOMAIN}/bank`, {
+      cache: "no-store",
+      headers: {
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      }
+    }),
   ]);
 
-  const [transData, balanceData] = await Promise.all([
+  const [transData, balanceData, bankData] = await Promise.all([
     transRes.json(),
     balanceRes.json(),
+    bankRes.json()
   ]);
 
-  return [transData.transactions, balanceData.wallet_balance];
+  return [transData.transactions, balanceData.wallet_balance, bankData];
 }
 
 export default async function WalletPage() {
-  const [transactions, balance] = await getContentData();
+  const [transactions, balance, bank] = await getContentData();
 
   const dashboardProps: {
     transactions: any[],
-    balance: number
+    balance: number,
+    bank: any
   } = {
     transactions,
     balance,
+    bank
   };
 
-  console.log(dashboardProps);
   return <DashboardComponent {...dashboardProps} />;
 }

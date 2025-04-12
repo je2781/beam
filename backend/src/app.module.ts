@@ -6,6 +6,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { WalletModule } from './wallet/wallet.module';
+import { BankModule } from './bank/bank.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { WalletModule } from './wallet/wallet.module';
     UserModule,
     AuthModule,
     TransactionModule,
-    WalletModule
+    WalletModule,
+    BankModule
   ],
   controllers: [],
   providers: [],

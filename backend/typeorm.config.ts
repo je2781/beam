@@ -3,10 +3,10 @@ dotenv.config({ path: '.env' });
 
 import { DataSource } from 'typeorm';
 import { Wallet } from './src/wallet/wallet.entity';
-import { Transaction } from './src/transaction/transaction.entity';
+import { Transaction } from './src/transaction/entities/transaction.entity';
 import { User } from './src/user/user.entity';
-import { Bank } from './src/user/bank.entity';
-import { TransactionCounter } from './src/transaction/transaction-counter.entity';
+import { Bank } from './src/bank/bank.entity';
+import { TransactionCounter } from './src/transaction/entities/transaction-counter.entity';
 
 const AppDataSource = new DataSource({
   type: 'mysql',

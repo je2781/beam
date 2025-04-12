@@ -6,11 +6,11 @@ import {
 import { Repository } from "typeorm";
 import { User } from "../user/user.entity";
 import { TransactionDto } from "../transaction/dto/trans.dto";
-import { Transaction } from "../transaction/transaction.entity";
+import { Transaction } from "../transaction/entities/transaction.entity";
 
 import { InjectRepository } from "@nestjs/typeorm";
-import { Bank } from "../user/bank.entity";
-import { TransactionCounter } from "../transaction/transaction-counter.entity";
+import { Bank } from "../bank/bank.entity";
+import { TransactionCounter } from "../transaction/entities/transaction-counter.entity";
 
 @Injectable()
 export class WalletService {

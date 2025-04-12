@@ -7,7 +7,7 @@ import Content from "./Content";
 import trans from '../../../public/transactions.json';
 import React from "react";
 
-export default function Dashboard({transactions, balance}: {transactions: any[], balance: number}) {
+export default function Dashboard({transactions, balance, bank}: {transactions: any[], balance: number, bank: any}) {
   const pathName = usePathname();
   const [hide, setHide] = React.useState<boolean>(false);
 
@@ -15,7 +15,7 @@ export default function Dashboard({transactions, balance}: {transactions: any[],
     <div className="bg-auth/1 relative">
       <Header username="Magnartis LTD" activeSection={pathName.slice(1)} hide={hide} onHide={setHide}/>
       <Sidebar activeSection={pathName.slice(1)} hide={hide} onHide={setHide}/>
-      <Content userTransactions={transactions} walletBalance={balance} sectionName={pathName.slice(1)}/>
+      <Content userTransactions={transactions} walletBalance={balance} sectionName={pathName.slice(1)} bank={bank}/>
     </div>
   );
 }

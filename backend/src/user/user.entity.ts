@@ -1,7 +1,7 @@
 import { Entity, Column, OneToOne, OneToMany } from 'typeorm';
-import { Transaction } from '../transaction/transaction.entity';
+import { Transaction } from '../transaction/entities/transaction.entity';
 import { AbstractEntity } from '../typeorm/abstract.entity';
-import { Bank } from './bank.entity';
+import { Bank } from '../bank/bank.entity';
 import { Wallet } from '../wallet/wallet.entity';
 
 @Entity()

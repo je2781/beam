@@ -5,11 +5,11 @@ import {
   JoinColumn,
   PrimaryColumn,
 } from "typeorm";
-import { User } from "../user/user.entity";
+import { User } from "../../user/user.entity";
 
 @Entity()
 export class Transaction {
-  @PrimaryColumn('char varying')
+  @PrimaryColumn()
   id: string;
 
   @Column()

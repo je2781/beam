@@ -1,6 +1,6 @@
 import { Entity, Column, OneToOne, JoinColumn} from 'typeorm';
 import { AbstractEntity } from '../typeorm/abstract.entity';
-import { User } from './user.entity';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Bank extends AbstractEntity<Bank> {

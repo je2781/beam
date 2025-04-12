@@ -19,7 +19,7 @@ import mastercardLogo from "../../../public/mastercard.png";
 // Import Swiper styles
 import "swiper/css";
 
-export default function Content({ userTransactions, walletBalance, sectionName }: {userTransactions: any[], walletBalance: number, sectionName: string}) {
+export default function Content({ userTransactions, walletBalance, sectionName, bank }: {userTransactions: any[], walletBalance: number, sectionName: string, bank: any}) {
   let timerId: NodeJS.Timeout | null = null;
   const positions = [
     { top: "72px" },
@@ -36,7 +36,7 @@ export default function Content({ userTransactions, walletBalance, sectionName }
   //limiting the max number of items shown per page
   const ITEMS_PER_PAGE = 9;
   const [count, setCount] = React.useState<number>(ITEMS_PER_PAGE);
-  const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>([]);
+  const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>(userTransactions.slice(0, ITEMS_PER_PAGE));
   
   const [currentPage, setCurrentPage] = React.useState(1);
   const [selectedTransId, setSelectedTransId] = React.useState<string | null>(
@@ -53,9 +53,9 @@ export default function Content({ userTransactions, walletBalance, sectionName }
   const [email, setEmail] = React.useState("");
   const [amount, setAmount] = React.useState(0);
   const [note, setNote] = React.useState("");
-  const [cvv, setCVV] = React.useState("");
-  const [cardNo, setCardNo] = React.useState("");
-  const [exp, setExp] = React.useState("");
+  const [cvv, setCVV] = React.useState(bank.cvv);
+  const [cardNo, setCardNo] = React.useState(bank.card_no);
+  const [exp, setExp] = React.useState(bank.card_expiry_date);
   const [transferModalHeader, setTransferModalHeader] = React.useState(
     "Withdraw"
   );
@@ -180,8 +180,8 @@ export default function Content({ userTransactions, walletBalance, sectionName }
       </header>
       <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
 
-      <div className="flex lg:flex-row flex-col gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0">
-        <div className="flex flex-col gap-y-5 xl:w-[36%] lg:w-[23%] w-full">
+      <div className="flex lg:flex-row flex-col lg:justify-between gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0 h-full">
+        <div className="flex flex-col gap-y-5 xl:w-[35%] lg:w-[22%] w-full">
           <article className="flex flex-col w-full h-fit bg-wallet-summary-bg pt-7 pb-10">
             <div className="inline-flex flex-col gap-y-4 xl:px-6 px-6 lg:px-4">
               <div className="inline-flex flex-row items-center justify-between">
@@ -267,8 +267,9 @@ export default function Content({ userTransactions, walletBalance, sectionName }
             </div>
           </div>
         </div>
-        <div className="border-2 border-primary-200 border-b-0 w-2 border-r-0 border-t-0 rotate-180 h-full mx-3" />
-        <div className="flex flex-col md:items-start items-center xl:w-[64%] lg:w-[77%] w-full h-[500px] gap-y-2">
+        <span className="h-full mx-3 bg-black lg:w-[2%] md:inline-block hidden"></span>
+        <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0 md:hidden" />
+        <div className="flex flex-col md:items-start items-center xl:w-[63%] lg:w-[76%] w-full h-[500px] gap-y-2">
           {trans.length > 0 && (
             <div className="flex flex-col gap-y-5 w-full">
               <h3 className="text-wallet-history-header-color font-semibold text-[16px]">
@@ -311,9 +312,9 @@ export default function Content({ userTransactions, walletBalance, sectionName }
             </div>
           )}
           <div className="w-full h-full relative font-inter">
-            <div className="w-full absolute top-[24px]">
+            {trans.length > 0 && <div className="w-full absolute top-[24px]">
               <div className="h-8 border border-primary-100 border-l-0 border-r-0"></div>
-            </div>
+            </div>}
             <div>
               {positions.map((position, index) => (
                 <div

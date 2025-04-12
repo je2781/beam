@@ -5,7 +5,7 @@ import { TransactionDto } from "../transaction/dto/trans.dto";
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { Wallet } from "./wallet.entity";
 import { JwtGaurd } from "../auth/guard";
-import { Transaction } from "../transaction/transaction.entity";
+import { Transaction } from "../transaction/entities/transaction.entity";
 
 @ApiTags('wallet') // Groups endpoints under "wallet" in Swagger UI
 @UseGuards(JwtGaurd)
