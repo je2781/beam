@@ -796,7 +796,7 @@ export default function Content({
                       </h4>
                     </div>
                     <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
-                    <div className="flex flex-col items-start w-full px-6 mt-3">
+                    <div className="flex flex-col items-start w-full px-6 mt-2">
                       <label>Amount</label>
                       <div className="inline-block relative w-full">
                         <select
