@@ -604,6 +604,7 @@ export default function Content({
                 slidesPerView={1}
                 onSwiper={(swiper) => (swiperRef.current = swiper)}
                 className="w-full h-full"
+                allowTouchMove={false}
               >
                 <SwiperSlide>
                   <form className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] w-full h-full pb-3 font-inter">
@@ -901,21 +902,24 @@ export default function Content({
             onClose={() => hideModalHandler("transfer", setIsTransferModalOpen)}
           >
             <div
-              className={`w-full h-[65vh] ${
+              className={`w-full ${
                 transferModalHeader === "Withdraw" && activeIndex === 0
-                  ? "md:h-[220px]"
+                  ? "md:h-[220px] h-[25vh]"
                   : transferModalHeader === "Withdraw" && activeIndex > 0
-                  ? "md:h-[484px]"
-                  : "md:h-[484px]"
+                  ? "md:h-[484px] h-[54vh]"
+                  : transferModalHeader === "Transfer" && activeIndex === 0
+                  ? "md:h-[397px] h-[44vh]"
+                  : "md:h-[484px] h-[54vh]"
               }`}
             >
               <Swiper
                 slidesPerView={1}
+                allowTouchMove={false}
                 onSwiper={(swiper) => (swiperRef.current = swiper)}
                 className="w-full h-full"
               >
                 <SwiperSlide>
-                  <form className="relative flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full pt-14 pb-3 px-6">
+                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full pt-14 pb-3 px-6">
                     <h3 className="font-inter font-semibold text-lg text-black absolute left-6 top-1">
                       {transferModalHeader} Details
                     </h3>
@@ -1066,7 +1070,7 @@ export default function Content({
                   >
                     <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
                       <h3 className="font-semibold md:text-[24px] text-[18px] text-black">
-                        Payment Details
+                        {transferModalHeader === 'Transfer' ? 'Transfer' : 'Withdraw'} Details
                       </h3>
                       <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
                         Please confirm the margin details
@@ -1162,7 +1166,7 @@ export default function Content({
                         type="submit"
                         className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
                       >
-                        {isLoading ? "Processing" : "Pay Now"}
+                        {isLoading ? "Processing" : transferModalHeader === 'Transfer' ? 'Transfer' : "Withdraw"}&nbsp;Now
                       </button>
                     </div>
                   </form>
