@@ -297,11 +297,14 @@ export default function Content({
         flex flex-col md:items-start items-center xl:w-[62%] lg:w-[75%] w-full gap-y-2"
           style={{
             height: `${
-              (trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
-                110 <=
-                500 &&
-              (trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
+              trans.length === 0 
+                ? 300
+                : (trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
                 110
+                <= 500 
+                ? ((trans.length < ITEMS_PER_PAGE ? trans.length : ITEMS_PER_PAGE) *
+                110)
+                : 500
             }px`,
           }}
         >
@@ -737,10 +740,10 @@ export default function Content({
                         );
 
                         if (res.data.message === "success") {
-                          setBalance(res.data.wallet.balance);
-                          setCVV(res.data.bank.cvv);
-                          setCardNo(res.data.bank.card_no);
-                          setExp(res.data.bank.card_expiry_date);
+                          setBalance(res.data.user.wallet.balance);
+                          setCVV(res.data.user.bank.cvv);
+                          setCardNo(res.data.user.bank.card_no);
+                          setExp(res.data.user.bank.card_expiry_date);
                           setCount(
                             res.data.transactions.length < ITEMS_PER_PAGE
                               ? res.data.transactions.length
@@ -768,7 +771,10 @@ export default function Content({
                             )
                           );
                           setTrans(res.data.transactions);
+                          setSelectedOption('');
+                          setIsLoading(false);
                           hideModalHandler("add-funds", setIsAddFundsModalOpen);
+                          
                         }
                       } catch (error) {
                         const e = error as Error;
@@ -791,10 +797,11 @@ export default function Content({
                       <label>Amount</label>
                       <div className="inline-block relative w-full">
                         <select
-                          value={amount.toString()}
+                          value={amount}
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
+                          <option value="" hidden unselectable="on">Select Amount</option>
                           <option value="100">{(100).toLocaleString()}</option>
                           <option value="300">{(300).toLocaleString()}</option>
                           <option value="500">{(500).toLocaleString()}</option>
@@ -912,10 +919,11 @@ export default function Content({
                       <label>Amount</label>
                       <div className="inline-block relative w-full">
                         <select
-                          value={amount.toString()}
+                          value={amount}
                           onChange={(e) => setAmount(Number(e.target.value))}
                           className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
                         >
+                          <option value="" hidden unselectable="on">Select Amount</option>
                           <option value="100">{(100).toLocaleString()}</option>
                           <option value="300">{(300).toLocaleString()}</option>
                           <option value="500">{(500).toLocaleString()}</option>
@@ -994,10 +1002,10 @@ export default function Content({
                         );
 
                         if (res.data.message === "success") {
-                          setBalance(res.data.wallet.balance);
-                          setCVV(res.data.bank.cvv);
-                          setCardNo(res.data.bank.card_no);
-                          setExp(res.data.bank.card_expiry_date);
+                          setBalance(res.data.user.wallet.balance);
+                          setCVV(res.data.user.bank.cvv);
+                          setCardNo(res.data.user.bank.card_no);
+                          setExp(res.data.user.bank.card_expiry_date);
                           setCount(
                             res.data.transactions.length < ITEMS_PER_PAGE
                               ? res.data.transactions.length
@@ -1025,6 +1033,8 @@ export default function Content({
                             )
                           );
                           setTrans(res.data.transactions);
+                          setSelectedOption('');
+                          setIsLoading(false);
                           hideModalHandler(operation, setIsTransferModalOpen);
                         }
                       } catch (error) {

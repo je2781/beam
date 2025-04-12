@@ -73,11 +73,11 @@ export class WalletService {
         cvv: dto.cvv,
         card_expiry_date: dto.card_expiry_date,
         card_no: dto.card_no,
-        user: {
-          id: user.id,
-        },
+        user,
       });
 
+      user.bank = newBank;
+      await this.userRepository.save(user);
       await this.bankRepository.save(newBank);
     }
 
@@ -100,7 +100,7 @@ export class WalletService {
       ...dto,
       date: new Date(dto.date),
       id: transId,
-      user: user,
+      user,
     });
 
     await this.transRepository.save(newTrans);
@@ -138,13 +138,16 @@ export class WalletService {
         cvv: dto.cvv,
         card_expiry_date: dto.card_expiry_date,
         card_no: dto.card_no,
-        user: {
-          id: user.id,
-        },
       });
 
+      user.bank = newBank;
+      await this.userRepository.save(user);
       await this.bankRepository.save(newBank);
     }
+    //removing bank details
+    delete dto.card_expiry_date;
+    delete dto.card_no;
+    delete dto.cvv;
 
     //updating wallet
     if (user.wallet) {
@@ -157,11 +160,6 @@ export class WalletService {
       user.wallet.balance = balance;
       await this.userRepository.save(user);
     }
-
-    //removing bank details
-    delete dto.card_expiry_date;
-    delete dto.card_no;
-    delete dto.cvv;
 
     //creating transaction entry
     const transId = await this.getNextTransactionId();
@@ -207,11 +205,11 @@ export class WalletService {
         cvv: dto.cvv,
         card_expiry_date: dto.card_expiry_date,
         card_no: dto.card_no,
-        user: {
-          id: creditor.id,
-        },
+        user: creditor,
       });
 
+      creditor.bank = newCreditorBank;
+      await this.userRepository.save(creditor);
       await this.bankRepository.save(newCreditorBank);
     }
 

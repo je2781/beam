@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, UseGuards, HttpCode, HttpStatus } from '@nestjs/common';
 import { BankService } from './bank.service';
-import { UpdateBankDto } from './dto/update-bank.dto';
 import { GetUser } from '../auth/decorator';
 import { JwtGaurd } from '../auth/guard';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';

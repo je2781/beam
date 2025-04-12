@@ -18,15 +18,14 @@ export class UserService {
     try {
       const user = await this.userRepository.findOne({
         where: { id: userId },
+        relations: {bank: true}
       });
   
       if (!user) {
         throw new UnauthorizedException("credentials incorrect");
       }
   
-      return {
-        ...user
-      };
+      return user;
     } catch (error) {
       throw error;
     }
