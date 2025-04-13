@@ -1,6 +1,6 @@
 [
   {
-    "trans_id": "TXN123450",
+    "id": "TXN123450",
     "trans_type": "liquidation",
     "amount": 200000,
     "status": "approved",

@@ -5,14 +5,15 @@ import mockTransData from "../../../__mocks__/mockData.json";
 import Content from "../../../components/dashboard/Content";
 import React from "react";
 
-
 jest.mock("swiper/react", () => ({
   Swiper: ({ children }: { children: React.ReactNode }) => {
     // Mock the Swiper component
-    return <div data-testid="mock-swiper">
-      {children}
-      <button>Continue</button>
-    </div>
+    return (
+      <div data-testid="mock-swiper">
+        {children}
+        <button>Continue</button>
+      </div>
+    );
   },
   SwiperSlide: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="mock-swiper-slide">{children}</div>
@@ -48,7 +49,15 @@ describe("Wallet", () => {
   it("renders content component", () => {
     render(
       <Content
-        data={{ transactions: transData, sectionName: "wallet" }}
+        userTransactions={transData}
+        sectionName={"wallet"}
+        walletBalance={200}
+        bank={{
+          card_expiry_date: "2/5/2028",
+          card_no: "78490220300",
+          cvv: "123",
+          acct_no: "74829011",
+        }}
       ></Content>
     );
     // Ensure it returns an array of elements
@@ -60,7 +69,17 @@ describe("Wallet", () => {
 
   it("opens add funds modal when 'Add Funds' button is clicked", () => {
     render(
-      <Content data={{ transactions: transData, sectionName: "wallet" }} />
+      <Content
+        userTransactions={transData}
+        sectionName={"wallet"}
+        walletBalance={200}
+        bank={{
+          card_expiry_date: "2/5/2028",
+          card_no: "78490220300",
+          cvv: "123",
+          acct_no: "74829011",
+        }}
+      />
     );
 
     const openAddFundsButton = screen.getByTestId("toggle-add-funds");
