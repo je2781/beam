@@ -34,7 +34,7 @@ export class CreateTransactionDto{
     @ApiProperty({ example: '3/4/2038', description: 'The date the card becomes invalid' })
     card_expiry_date?: string;
 
-    @IsEmail()
+    @IsString()
     @IsOptional()
     @ApiProperty({ example: 'test@test.com', description: 'The email of the debtor' })
     email?: string;

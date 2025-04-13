@@ -39,6 +39,7 @@ export class AuthService {
 
       return { token };
     } catch (error) {
+      throw error;
     }
   }
 
@@ -62,6 +63,7 @@ export class AuthService {
 
       return user;
     } catch (error) {
+      throw error;
     }
   }
 
@@ -100,6 +102,7 @@ export class AuthService {
         console.warn("Duplicate entry ignored.");
       } else {
         // Rethrow or handle other errors
+        throw error;
       }
     }
   }

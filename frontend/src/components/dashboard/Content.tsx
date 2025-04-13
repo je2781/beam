@@ -36,15 +36,15 @@ export default function Content({
   const ITEMS_PER_PAGE = 9;
   const [dividerPositions, setDividerPositions] = React.useState(
     [
-      { top: "72px" },
-      { top: "120px" },
-      { top: "168px" },
-      { top: "216px" },
-      { top: "264px" },
-      { top: "312px" },
-      { top: "360px" },
-      { top: "408px" },
-      { top: "456px" },
+      { top: "71px" },
+      { top: "119px" },
+      { top: "167px" },
+      { top: "215px" },
+      { top: "263px" },
+      { top: "313px" },
+      { top: "362px" },
+      { top: "410px" },
+      { top: "458px" },
     ].slice(
       0,
       userTransactions.length < ITEMS_PER_PAGE
@@ -164,6 +164,9 @@ export default function Content({
     setModalState: React.Dispatch<React.SetStateAction<boolean>>,
     fadeOut?: string
   ) => {
+    //reseting index of swiper
+    setActiveIndex(0);
+
     const modal = document.querySelector(`#${modalId}`) as HTMLElement;
 
     if (modal) {
@@ -185,6 +188,8 @@ export default function Content({
     } else {
       setModalState(false);
     }
+
+    
   };
 
   //navigating to details page
@@ -302,7 +307,7 @@ export default function Content({
                     ? trans.length
                     : ITEMS_PER_PAGE) *
                     110 <=
-                  500
+                  400
                 ? (trans.length < ITEMS_PER_PAGE
                     ? trans.length
                     : ITEMS_PER_PAGE) * 110
@@ -598,7 +603,7 @@ export default function Content({
 
         {isAddFundsModalOpen && ( 
           <AddFundsModal onClose={() => {}}>
-            <div className={`w-full ${activeIndex === 0 ? 'h-[400px]' : 'h-[509px]'}`}>
+            <div className={`w-full ${activeIndex === 0 ? 'h-[384px]' : 'h-[500px]'}`}>
               <Swiper
                 slidesPerView={1}
                 onSwiper={(swiper) => (swiperRef.current = swiper)}
@@ -902,11 +907,11 @@ export default function Content({
             <div
               className={`w-full ${
                 transferModalHeader === "Withdraw" && activeIndex === 0
-                  ? "md:h-[244px] h-[239px]"
+                  ? "h-[239px]"
                   : transferModalHeader === "Withdraw" && activeIndex > 0
                   ? "md:h-[484px] h-[478px]"
                   : transferModalHeader === "Transfer" && activeIndex === 0
-                  ? "md:h-[416px] h-[417px]"
+                  ? "h-[416px]"
                   : "md:h-[484px] h-[478px]"
               }`}
             >
