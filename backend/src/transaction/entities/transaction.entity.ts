@@ -28,4 +28,7 @@ export class Transaction {
   @Column()
   date: Date;
 
+  @Column({ type: 'json', nullable: true })
+  transfer_details: Record<string, any>;
+
 }

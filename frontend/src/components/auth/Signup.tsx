@@ -23,9 +23,9 @@ export default function Login() {
 
   useEffect(() => {
     if (
-      user.email.includes("@") &&
+      user.email.length > 0 &&
       user.password.length > 0 &&
-      user.fullName.length > 5
+      user.fullName.length > 3
     ) {
       setButtonDisabled(false);
     } else {
@@ -42,12 +42,15 @@ export default function Login() {
         { full_name: user.fullName, email: user.email, password: user.password }
       );
 
-      if (res.data.full_name) {
+      if (!Array.isArray(res.data.message)) {
         router.push("/login");
+      } else {
+        throw new Error(`${res.data.message[0]}`);
       }
     } catch (error) {
       setIsLoading(false);
-      return toast.error('Email aleady in use');
+      const e = error as Error;
+      return toast.error(e.message);
     }
   }
 
@@ -78,7 +81,9 @@ export default function Login() {
         </header>
         <div className="inline-flex flex-col lg:items-start md:items-center gap-y-1 lg:w-[75%] xl:w-[70%] md:w-[85%] w-full">
           <div className="w-full lg:w-[75%] xl:w-[70%] md:w-[85%] md:items-start inline-flex flex-col">
-            <label htmlFor="name" className="text-base font-normal">Full Name</label>
+            <label htmlFor="name" className="text-base font-normal">
+              Full Name
+            </label>
           </div>
           <input
             className={`w-full lg:w-[75%] xl:w-[70%] md:w-[85%] px-3 py-2 bg-transparent h-12 border-[0.5px] border-primary-400 focus:outline-none focus:border-primary-800 focus:border-2 placeholder:font-inter placeholder:text-sm rounded-xl`}
@@ -91,7 +96,9 @@ export default function Login() {
         </div>
         <div className="inline-flex flex-col lg:items-start md:items-center gap-y-1 lg:w-[75%] xl:w-[70%] md:w-[85%] w-full">
           <div className="w-full lg:w-[75%] xl:w-[70%] md:w-[85%] md:items-start inline-flex flex-col">
-            <label htmlFor="email" className="text-base font-normal">Email Address</label>
+            <label htmlFor="email" className="text-base font-normal">
+              Email Address
+            </label>
           </div>
           <input
             className={`w-full lg:w-[75%] xl:w-[70%] md:w-[85%] px-3 py-2 bg-transparent h-12 border-[0.5px] border-primary-400 focus:outline-none focus:border-primary-800 focus:border-2 placeholder:font-inter placeholder:text-sm rounded-xl`}
@@ -104,7 +111,9 @@ export default function Login() {
         </div>
         <div className="inline-flex flex-col lg:items-start md:items-center gap-y-1 w-full lg:w-[75%] xl:w-[70%] md:w-[85%]">
           <div className="w-full lg:w-[75%] xl:w-[70%] md:w-[85%] md:items-start inline-flex flex-col">
-            <label htmlFor="password" className="text-base font-normal">Password</label>
+            <label htmlFor="password" className="text-base font-normal">
+              Password
+            </label>
           </div>
           <div className="w-full lg:w-[75%] xl:w-[70%] md:w-[85%] focus-within:border-2 h-12 focus-within:border-primary-800 pr-4 border-[0.5px] border-primary-400 py-2 flex flex-row items-center bg-transparent rounded-xl justify-between">
             <input
@@ -118,7 +127,7 @@ export default function Login() {
             <span
               className="cursor-pointer"
               aria-label="show"
-              role='menuitem'
+              role="menuitem"
               onClick={() => setIsVisible((prevState) => !prevState)}
             >
               <i className="fa-solid fa-eye-slash text-lg text-primary-700/60"></i>

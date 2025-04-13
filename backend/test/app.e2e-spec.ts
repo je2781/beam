@@ -11,7 +11,7 @@ describe("AppController (e2e)", () => {
   let app: INestApplication;
   let userService: UserService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -24,6 +24,7 @@ describe("AppController (e2e)", () => {
     pactum.request.setBaseUrl(`http://localhost:4000`);
 
     userService = app.get(UserService);
+    
   });
 
   afterEach(async() => {
@@ -79,7 +80,10 @@ describe("AppController (e2e)", () => {
         return pactum
           .spec()
           .post("/auth/login")
-          .withBody(signupDto)
+          .withBody({
+            email: signupDto.email,
+            password: signupDto.password
+          })
           .expectStatus(201)
           .stores("userAt", "access_token");
       });

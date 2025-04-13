@@ -8,15 +8,12 @@ import React from "react";
 jest.mock("swiper/react", () => ({
   Swiper: ({ children }: { children: React.ReactNode }) => {
     // Mock the Swiper component
-    return (
-      <div data-testid="mock-swiper">
-        {children}
-        <button>Continue</button>
-      </div>
-    );
+    return <div data-testid="mock-swiper">{children}</div>;
   },
   SwiperSlide: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="mock-swiper-slide">{children}</div>
+    <div data-testid="mock-swiper-slide">
+      {children} <button>Continue</button>
+    </div>
   ),
 }));
 

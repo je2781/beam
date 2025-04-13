@@ -22,7 +22,8 @@ export class WalletService {
     @InjectRepository(Bank)
     private bankRepository: Repository<Bank>,
     @InjectRepository(TransactionCounter)
-    private counterRepo: Repository<TransactionCounter>
+    private counterRepo: Repository<TransactionCounter>,
+  
   ) {}
 
   async getNextTransactionId(): Promise<string> {
@@ -102,7 +103,8 @@ export class WalletService {
       id: transId,
       user,
     });
-
+    user.transactions.push(newTrans);
+    await this.userRepository.save(user);
     await this.transRepository.save(newTrans);
 
     //returning user transactions
@@ -144,10 +146,12 @@ export class WalletService {
       await this.userRepository.save(user);
       await this.bankRepository.save(newBank);
     }
-    //removing bank details
+    //removing operation details
     delete dto.card_expiry_date;
     delete dto.card_no;
     delete dto.cvv;
+    delete dto.email;
+    delete dto.note;
 
     //updating wallet
     if (user.wallet) {
@@ -167,9 +171,11 @@ export class WalletService {
       ...dto,
       date: new Date(dto.date),
       id: transId,
-      user: user,
+      user,
     });
 
+    user.transactions.push(newTrans);
+    await this.userRepository.save(user);
     await this.transRepository.save(newTrans);
 
     //returning user transactions
@@ -225,10 +231,11 @@ export class WalletService {
       await this.userRepository.save(creditor);
     }
 
-    //removing bank details
+    //removing operation details
     delete dto.card_expiry_date;
     delete dto.card_no;
     delete dto.cvv;
+
 
     //creating transaction entry
     const transId = await this.getNextTransactionId();
@@ -237,8 +244,14 @@ export class WalletService {
       date: new Date(dto.date),
       id: transId,
       user: creditor,
+      transfer_details: {
+        email: dto.email,
+        note: dto.note
+      }
     });
 
+    creditor.transactions.push(newCreditorTrans);
+    await this.userRepository.save(creditor);
     await this.transRepository.save(newCreditorTrans);
 
     //-----------------------------------------------------------------------------//

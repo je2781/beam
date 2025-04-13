@@ -11,12 +11,13 @@ import { TransactionCounter } from './src/transaction/entities/transaction-count
 const AppDataSource = new DataSource({
   type: 'mysql',
   host: process.env.DB_HOST,
-  port: process.env.NODE_ENV === 'development' ? Number(process.env.DB_PORT) : Number(process.env.DB_TEST_PORT),
+  port:Number(process.env.DB_PORT),
   database: process.env.DB_NAME,
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   migrations: ['migrations/**'],
   migrationsTableName: 'migrations',
+  synchronize:  process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test',
   entities: [User, Transaction, Wallet, Bank, TransactionCounter],
 });
 

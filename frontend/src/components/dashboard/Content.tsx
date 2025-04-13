@@ -71,7 +71,6 @@ export default function Content({
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [selectedOption, setSelectedOption] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
-  const [dataDownloading, setDataDownloading] = React.useState(true);
   const [issuer, setIssuer] = React.useState("MasterCard");
   const [email, setEmail] = React.useState("");
   const [amount, setAmount] = React.useState(0);
@@ -98,7 +97,7 @@ export default function Content({
   React.useEffect(() => {
     if (
       (selectedOption.length > 0 && selectedOption === "card") ||
-      amount > 0
+      amount > 0 
     ) {
       setButtonDisabled(false);
     } else {
@@ -597,9 +596,9 @@ export default function Content({
           Current slide: {activeIndex}
         </p>
 
-        {isAddFundsModalOpen && (
+        {isAddFundsModalOpen && ( 
           <AddFundsModal onClose={() => {}}>
-            <div className="w-full h-full">
+            <div className={`w-full ${activeIndex === 0 ? 'h-[400px]' : 'h-[509px]'}`}>
               <Swiper
                 slidesPerView={1}
                 onSwiper={(swiper) => (swiperRef.current = swiper)}
@@ -710,7 +709,7 @@ export default function Content({
                           buttonDisabled
                             ? "cursor-not-allowed"
                             : "cursor-pointer hover:ring-1 ring-secondary-400"
-                        }  mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md px-5 py-3 bg-secondary-400`}
+                        }  mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md py-3 bg-secondary-400`}
                         onClick={() => {
                           goToSlide(1);
                         }}
@@ -884,7 +883,7 @@ export default function Content({
                     <div className="inline-block w-full px-6 mt-5">
                       <button
                         type="submit"
-                        className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
+                        className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md py-3 bg-secondary-400"
                       >
                         {isLoading ? "Processing" : "Pay Now"}
                       </button>
@@ -898,18 +897,17 @@ export default function Content({
 
         {isTransferModalOpen && (
           <TransferModal
-            title={transferModalHeader}
             onClose={() => hideModalHandler("transfer", setIsTransferModalOpen)}
           >
             <div
               className={`w-full ${
                 transferModalHeader === "Withdraw" && activeIndex === 0
-                  ? "md:h-[220px] h-[25vh]"
+                  ? "md:h-[244px] h-[239px]"
                   : transferModalHeader === "Withdraw" && activeIndex > 0
-                  ? "md:h-[484px] h-[54vh]"
+                  ? "md:h-[484px] h-[478px]"
                   : transferModalHeader === "Transfer" && activeIndex === 0
-                  ? "md:h-[397px] h-[44vh]"
-                  : "md:h-[484px] h-[54vh]"
+                  ? "md:h-[416px] h-[417px]"
+                  : "md:h-[484px] h-[478px]"
               }`}
             >
               <Swiper
@@ -919,80 +917,94 @@ export default function Content({
                 className="w-full h-full"
               >
                 <SwiperSlide>
-                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full pt-14 pb-3 px-6">
-                    <h3 className="font-inter font-semibold text-lg text-black absolute left-6 top-1">
+                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full pb-3">
+          
+                    <div className="flex flex-row justify-between items-center w-full px-6">
+                      <h3 className="font-inter font-semibold text-lg text-black w-full">
                       {transferModalHeader} Details
-                    </h3>
-                    {transferModalHeader === "Transfer" && (
+
+                      </h3>
+                      <i
+                        className="fa-solid fa-xmark text-xl cursor-pointer text-black"
+                        onClick={() =>
+                          hideModalHandler("transfer", setIsTransferModalOpen)
+                        }
+                      ></i>
+                    </div>
+                    <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
+                    <div className="flex flex-col px-6 w-full gap-y-4 mt-4">
+
+                      {transferModalHeader === "Transfer" && (
+                        <div className="flex flex-col items-start w-full">
+                          <label>Email</label>
+                          <input
+                            type="text"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="test@test.com"
+                            className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                          />
+                        </div>
+                      )}
                       <div className="flex flex-col items-start w-full">
-                        <label>Email</label>
-                        <input
-                          type="text"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="Email"
-                          className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                        />
-                      </div>
-                    )}
-                    <div className="flex flex-col items-start w-full">
-                      <label>Amount</label>
-                      <div className="inline-block relative w-full">
-                        <select
-                          value={amount}
-                          onChange={(e) => setAmount(Number(e.target.value))}
-                          className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                        >
-                          <option value="" hidden unselectable="on">
-                            Select Amount
-                          </option>
-                          <option value="100">{(100).toLocaleString()}</option>
-                          <option value="300">{(300).toLocaleString()}</option>
-                          <option value="500">{(500).toLocaleString()}</option>
-                          <option value="1000">
-                            {(1000).toLocaleString()}
-                          </option>
-                          <option value="5000">
-                            {(5000).toLocaleString()}
-                          </option>
-                          <option value="10000">
-                            {(10000).toLocaleString()}
-                          </option>
-                          <option value="100000">
-                            {(100000).toLocaleString()}
-                          </option>
-                        </select>
-                        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                          {/* Replace with your angle-down icon */}
-                          <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                        <label>Amount</label>
+                        <div className="inline-block relative w-full">
+                          <select
+                            value={amount}
+                            onChange={(e) => setAmount(Number(e.target.value))}
+                            className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                          >
+                            <option value="" hidden unselectable="on">
+                              Select Amount
+                            </option>
+                            <option value="100">{(100).toLocaleString()}</option>
+                            <option value="300">{(300).toLocaleString()}</option>
+                            <option value="500">{(500).toLocaleString()}</option>
+                            <option value="1000">
+                              {(1000).toLocaleString()}
+                            </option>
+                            <option value="5000">
+                              {(5000).toLocaleString()}
+                            </option>
+                            <option value="10000">
+                              {(10000).toLocaleString()}
+                            </option>
+                            <option value="100000">
+                              {(100000).toLocaleString()}
+                            </option>
+                          </select>
+                          <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                            {/* Replace with your angle-down icon */}
+                            <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                          </div>
                         </div>
                       </div>
+                      {transferModalHeader === "Transfer" && (
+                        <div className="flex flex-col items-start w-full">
+                          <label>Note</label>
+                          <textarea
+                            onChange={(e) => setNote(e.target.value)}
+                            value={note}
+                            placeholder="Give a description to classify the transfer.."
+                            className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                          ></textarea>
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        disabled={buttonDisabled}
+                        onClick={() => {
+                          goToSlide(1);
+                        }}
+                        className={`${
+                          buttonDisabled
+                            ? "cursor-not-allowed"
+                            : "cursor-pointer hover:ring-1 ring-secondary-400"
+                        } w-full mt-9 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md py-3 bg-secondary-400`}
+                      >
+                        Continue
+                      </button>
                     </div>
-                    {transferModalHeader === "Transfer" && (
-                      <div className="flex flex-col items-start w-full">
-                        <label>Note</label>
-                        <textarea
-                          onChange={(e) => setNote(e.target.value)}
-                          value={note}
-                          placeholder="Give a description to classify the transfer.."
-                          className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                        ></textarea>
-                      </div>
-                    )}
-                    <button
-                      type="button"
-                      disabled={buttonDisabled}
-                      onClick={() => {
-                        goToSlide(1);
-                      }}
-                      className={`${
-                        buttonDisabled
-                          ? "cursor-not-allowed"
-                          : "cursor-pointer hover:ring-1 ring-secondary-400"
-                      } w-full mt-9 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md px-7 py-3 bg-secondary-400`}
-                    >
-                      Continue
-                    </button>
                   </form>
                 </SwiperSlide>
                 <SwiperSlide>

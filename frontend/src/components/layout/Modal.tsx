@@ -61,7 +61,7 @@ const AddFundsModalOverlay: React.FC<AddFundsModalOverlayProps> = (props) => {
       id="add-funds"
       aria-orientation="vertical"
       aria-labelledby="toggle-add-funds"
-      className="z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pt-4 fixed top-[10vh] h-fit rounded-2xl"
+      className="z-50 bg-white lg:w-[40%] lg:left-[30%] w-[85%] left-[7.5%] flex-col shadow-xl flex pt-4 fixed top-[10vh] rounded-2xl"
     >
       {props.children}
     </main>
@@ -91,14 +91,11 @@ const TransferModalOverlay: React.FC<TransferModalOverlayProps> = (props) => {
       id="transfer"
       aria-orientation="vertical"
       aria-labelledby="toggle-transfer"
-      className={`z-50 bg-white lg:w-[40%] lg:left-[30%] w-[80%] left-[10%] flex-col shadow-xl flex pb-4 pt-4 fixed top-[10vh] rounded-2xl`}
+      className={`z-50 bg-white lg:w-[40%] lg:left-[30%] w-[85%] left-[7.5%] flex-col shadow-xl flex pb-4 pt-4 fixed top-[10vh] rounded-2xl`}
     >
       {props.children}
       
-      <i
-        className="fa-solid fa-xmark text-xl cursor-pointer text-black absolute top-6 right-6"
-        onClick={props.onClick}
-      ></i>
+     
     </main>
   );
 };
@@ -107,7 +104,7 @@ export const TransferModal: React.FC<TransferModalProps> = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <BackDrop onClick={props.onClose} />,
+        <BackDrop onClick={() => {}} />,
         document.getElementById("backdrop-root")!
       )}
 
@@ -115,7 +112,6 @@ export const TransferModal: React.FC<TransferModalProps> = (props) => {
         <TransferModalOverlay
           onClick={props.onClose}
           styleClasses={props.styleClasses}
-          title={props.title}
         >
           {props.children}
         </TransferModalOverlay>,

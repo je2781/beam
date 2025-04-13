@@ -20,7 +20,7 @@ export default function Login() {
   const [isVisible, setIsVisible] = React.useState(false);
 
   useEffect(() => {
-    if (user.email.includes("@") && user.password.length > 0) {
+    if (user.email.length > 0 && user.password.length > 0) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -32,26 +32,30 @@ export default function Login() {
       setIsLoading(true);
 
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/login`,{
+        `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/login`,
+        {
           email: user.email,
-          password: user.password
+          password: user.password,
         },
         {
-          withCredentials: true // ⬅️ critical
+          withCredentials: true, // ⬅️ critical
         }
       );
 
-      if (res.data.message === 'success') {
-        toast.success("Login successful!", {
-          duration: 2000,
-        });
-        router.push("/wallet");
+      if (!Array.isArray(res.data.message)) {
+          toast.success("Login successful!", {
+            duration: 2000,
+          });
+          router.push("/wallet");
         
-      } 
+      }else{
+        throw new Error(`${res.data.message[0]}`);
+
+      }
     } catch (error) {
       setIsLoading(false);
       const e = error as Error;
-      return toast.error('credentials are invalid');
+      return toast.error(e.message);
     }
   }
 
@@ -63,7 +67,7 @@ export default function Login() {
           e.preventDefault();
           onLogin();
         }}
-        test-id='login-form'
+        test-id="login-form"
         className="flex flex-col gap-y-6 bg-transparent lg:w-[75%] xl:w-[70%] h-full w-full items-center font-inter p-6 lg:px-0 "
       >
         <header className="mb-3 inline-flex flex-col lg:items-start items-center lg:w-[75%] xl:w-[70%] w-full">
@@ -80,7 +84,9 @@ export default function Login() {
         </header>
         <div className="inline-flex flex-col lg:items-start md:items-center gap-y-1 lg:w-[75%] xl:w-[70%] md:w-[85%] w-full">
           <div className="w-full lg:w-[75%] xl:w-[70%] md:w-[85%] md:items-start inline-flex flex-col">
-            <label htmlFor="email" className="text-base font-normal">Email Address</label>
+            <label htmlFor="email" className="text-base font-normal">
+              Email Address
+            </label>
           </div>
           <input
             className={`w-full lg:w-[75%] xl:w-[70%] md:w-[85%] px-3 py-2 bg-transparent h-12 border-[0.5px] border-primary-400 focus:outline-none focus:border-primary-800 focus:border-2 placeholder:font-inter placeholder:text-sm rounded-xl`}
@@ -93,7 +99,9 @@ export default function Login() {
         </div>
         <div className="inline-flex flex-col lg:items-start md:items-center gap-y-1 w-full lg:w-[75%] xl:w-[70%] md:w-[85%]">
           <div className="w-full lg:w-[75%] xl:w-[70%] md:w-[85%] md:items-start inline-flex flex-col">
-            <label htmlFor="password" className="text-base font-normal">Password</label>
+            <label htmlFor="password" className="text-base font-normal">
+              Password
+            </label>
           </div>
           <div className="w-full lg:w-[75%] xl:w-[70%] md:w-[85%] focus-within:border-2 h-12 focus-within:border-primary-800 pr-4 border-[0.5px] border-primary-400 py-2 flex flex-row items-center bg-transparent rounded-xl justify-between">
             <input
@@ -107,7 +115,7 @@ export default function Login() {
             <span
               className="cursor-pointer"
               aria-label="show"
-              role='menuitem'
+              role="menuitem"
               onClick={() => setIsVisible((prevState) => !prevState)}
             >
               <i className="fa-solid fa-eye-slash text-lg text-primary-700/60"></i>
