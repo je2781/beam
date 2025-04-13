@@ -90,7 +90,9 @@ describe("Wallet", () => {
 
     //expect add funds modal to appear
     const mockSlider = screen.getByTestId("mock-swiper");
+    const fundsModal = screen.getByTestId("add-funds-modal");
     expect(mockSlider).toBeInTheDocument();
+    expect(fundsModal).toBeInTheDocument();
 
     // expect(goToSlide).toHaveBeenCalled();
   });
