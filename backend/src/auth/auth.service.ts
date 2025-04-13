@@ -56,7 +56,7 @@ export class AuthService {
       const isMatch = await argon2.verify(user.hash!, dto.password);
 
       if (!isMatch) {
-        throw new UnauthorizedException();
+        throw new UnauthorizedException("Credentials are not valid.");
       }
 
       delete user.hash;

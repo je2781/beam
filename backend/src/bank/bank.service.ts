@@ -18,20 +18,24 @@ export class BankService {
   }
 
   async findOne(userId: string) {
-    const currentUserBank = await this.bankRepository.findOne({
-      where: {
-        user: {
-          id: userId
+    try {
+      const currentUserBank = await this.bankRepository.findOne({
+        where: {
+          user: {
+            id: userId
+          }
         }
-      }
-    });
-
-    return currentUserBank ?? {
-      cvv: '',
-      card_expiry_date: '',
-      card_no: '',
-      acct_no: ''
-    };
+      });
+  
+      return currentUserBank ?? {
+        cvv: '',
+        card_expiry_date: '',
+        card_no: '',
+        acct_no: ''
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   update(id: number, updateBankDto: UpdateBankDto) {

@@ -5,6 +5,7 @@ import { AppModule } from "./../src/app.module";
 import { AuthDto } from "../src/auth/dto";
 import { EditUserDto } from "../src/user/dto";
 import { UserService } from "../src/user/user.service";
+import { after } from "node:test";
 
 describe("AppController (e2e)", () => {
   let app: INestApplication;
@@ -18,16 +19,19 @@ describe("AppController (e2e)", () => {
     app = moduleRef.createNestApplication();
     app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
     await app.init();
-    await app.listen(3030); // random available port
+    await app.listen(4000); // random available port
 
-    pactum.request.setBaseUrl(`http://localhost:3030`);
+    pactum.request.setBaseUrl(`http://localhost:4000`);
 
     userService = app.get(UserService);
   });
 
-  afterEach(async () => {
+  afterEach(async() => {
     await app.close();
+
   });
+
+
   afterAll(async () => {
     await userService.deleteUser("test300@test.com");
   });
@@ -45,7 +49,8 @@ describe("AppController (e2e)", () => {
           .spec()
           .post("/auth/register")
           .withBody({ password: signupDto.password })
-          .expectStatus(400);
+          .expectStatus(400)
+          .inspect();
       });
 
       it("should throw an error if password is empty", () => {
@@ -53,7 +58,9 @@ describe("AppController (e2e)", () => {
           .spec()
           .post("/auth/register")
           .withBody({ email: signupDto.email })
-          .expectStatus(400);
+          .expectStatus(400)
+          .inspect();
+
       });
 
       it("should signup", () => {
@@ -61,7 +68,9 @@ describe("AppController (e2e)", () => {
           .spec()
           .post("/auth/register")
           .withBody(signupDto)
-          .expectStatus(201);
+          .expectStatus(201)
+          .inspect();
+
       });
     });
 
@@ -71,7 +80,7 @@ describe("AppController (e2e)", () => {
           .spec()
           .post("/auth/login")
           .withBody(signupDto)
-          .expectStatus(200)
+          .expectStatus(201)
           .stores("userAt", "access_token");
       });
     });
@@ -88,7 +97,9 @@ describe("AppController (e2e)", () => {
         return pactum
           .spec()
           .get("/users/me")
-          .withCookies('access_token', `$S{userAt}` )
+          .withHeaders({
+            Authorization: `Bearer $S{userAt}`,
+          })
           .expectStatus(200)
           .expectJsonLike({
             user: {
@@ -96,7 +107,9 @@ describe("AppController (e2e)", () => {
               full_name: "John Doe",
             },
             message: "success",
-          });
+          })
+          .inspect();
+
       });
     });
   });
@@ -106,9 +119,13 @@ describe("AppController (e2e)", () => {
       return pactum
         .spec()
         .get("/transactions")
-        .withCookies('access_token', `$S{userAt}` )
+        .withHeaders({
+            Authorization: `Bearer $S{userAt}`,
+          })
         .expectStatus(200)
-        .expectJson({ transactions: [], message: "success" });
+        .expectJson({ transactions: [], message: "success" })
+        .inspect();
+
     });
   });
 });

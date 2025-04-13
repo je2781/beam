@@ -12,7 +12,8 @@ export class TransactionService {
   ) {}
 
   async getTransactions(userId: string){
-    const trans = await this.transRepository.find({
+    try {
+      const trans = await this.transRepository.find({
         where: {
           user: {
             id: userId
@@ -24,5 +25,8 @@ export class TransactionService {
       message: 'success',
       transactions: trans
     };
+    } catch (error) {
+      throw error;
+    }
   }
 }
