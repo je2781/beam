@@ -393,7 +393,7 @@ export default function Content({
                   <article className="flex flex-col gap-y-3 p-6 h-full w-full">
                     <header className="w-full">
                       <ul className="flex flex-row font-medium text-[12px] w-full text-primary-800">
-                        {articleHeaderTemplate("w-full", "Transaction ID")}
+                        {articleHeaderTemplate("w-full", `${ windowWidth < 576 ? 'Trans ID' : 'Transaction ID'}`)}
                       </ul>
                     </header>
                     <ul className="flex flex-col font-normal text-[11px] text-wallet-history-item">

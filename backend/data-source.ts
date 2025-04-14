@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config({ path: '.env' });
+dotenv.config({ path: '.env.test' });
 
 import { DataSource } from 'typeorm';
 import { Wallet } from './src/wallet/wallet.entity';
@@ -10,13 +10,18 @@ import { TransactionCounter } from './src/transaction/entities/transaction-count
 
 const AppDataSource = new DataSource({
   type: 'mysql',
-  host:  process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
+  host: process.env.DB_HOST,
+  port:Number(process.env.DB_PORT),
   database: process.env.DB_NAME,
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
-  migrations: ['migrations/**'],
-  migrationsTableName: 'migrations',
+  logging: false,
+  extra: {
+    connectionLimit: 10
+  },
+  migrations: ['migrations_test/**'],
+  migrationsTableName: 'migrations_test',
+  synchronize:  false,
   entities: [User, Transaction, Wallet, Bank, TransactionCounter],
 });
 

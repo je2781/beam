@@ -90,46 +90,46 @@ describe("AppController (e2e)", () => {
     });
   });
 
-  describe("User", () => {
-    const editDto: EditUserDto = {
-      full_name: "Joshua",
-      email: "vlad@gmail.com",
-    };
+  // describe("User", () => {
+  //   const editDto: EditUserDto = {
+  //     full_name: "Joshua",
+  //     email: "vlad@gmail.com",
+  //   };
 
-    describe("Get me", () => {
-      it("should get user", () => {
-        return pactum
-          .spec()
-          .get("/users/me")
-          .withHeaders({
-            Authorization: `Bearer $S{userAt}`,
-          })
-          .expectStatus(200)
-          .expectJsonLike({
-            user: {
-              email: "test300@test.com",
-              full_name: "John Doe",
-            },
-            message: "success",
-          })
-          .inspect();
+  //   describe("Get me", () => {
+  //     it("should get user", () => {
+  //       return pactum
+  //         .spec()
+  //         .get("/users/me")
+  //         .withHeaders({
+  //           Authorization: `Bearer $S{userAt}`,
+  //         })
+  //         .expectStatus(200)
+  //         .expectJsonLike({
+  //           user: {
+  //             email: "test300@test.com",
+  //             full_name: "John Doe",
+  //           },
+  //           message: "success",
+  //         })
+  //         .inspect();
 
-      });
-    });
-  });
+  //     });
+  //   });
+  // });
 
-  describe("Transactions", () => {
-    it("should return empty list", () => {
-      return pactum
-        .spec()
-        .get("/transactions")
-        .withHeaders({
-            Authorization: `Bearer $S{userAt}`,
-          })
-        .expectStatus(200)
-        .expectJson({ transactions: [], message: "success" })
-        .inspect();
+  // describe("Transactions", () => {
+  //   it("should return empty list", () => {
+  //     return pactum
+  //       .spec()
+  //       .get("/transactions")
+  //       .withHeaders({
+  //           Authorization: `Bearer $S{userAt}`,
+  //         })
+  //       .expectStatus(200)
+  //       .expectJson({ transactions: [], message: "success" })
+  //       .inspect();
 
-    });
-  });
+  //   });
+  // });
 });

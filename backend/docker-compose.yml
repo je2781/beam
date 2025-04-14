@@ -14,6 +14,7 @@ services:
       - beam_db_data:/var/lib/mysql
   test-db:
     image: mysql
+    env_file: .env.test
     ports:
       - 3308:3308
     restart: always
@@ -28,7 +29,7 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_HOST: mysql
+      DB_HOST: ${DB_HOST}
       DB_PORT: ${DB_PORT}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
