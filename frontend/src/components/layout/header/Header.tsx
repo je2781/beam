@@ -70,7 +70,7 @@ export default function Header({
   }, [setIsMobileModalOpen, windowWidth]);
 
   return (
-    <nav className="lg:pl-[18.5%] xl:pl-[274px] md:pl-[4%] pl-[6%] lg:pr-0 xl:pr-[23px] md:pr-[4%] pr-[6%] lg:py-[1.6%] md:py-[3%] py-[6%] flex flex-row items-start justify-between w-full fixed h-[100px] top-0 left-0 z-5 bg-white border border-primary-200 border-t-0 border-l-0 border-r-0">
+    <nav className="lg:pl-[18.5%] xl:pl-[274px] md:pl-[4%] pl-[6%] lg:pr-0 xl:pr-[23px] md:pr-[4%] pr-[6%] lg:py-[1.6%] md:py-[3%] py-[6%] flex flex-row items-start justify-between w-full fixed h-[100px] top-0 left-0 z-5 bg-white border border-primary-100 border-t-0 border-l-0 border-r-0">
       <div className="flex flex-row xl:gap-x-34 lg:gap-x-8 items-center xl:w-[55%] lg:w-[57%] w-full justify-between">
         <Image
           src={Logo}

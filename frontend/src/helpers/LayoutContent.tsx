@@ -20,7 +20,7 @@ export function SideBarList(
 ) {
   return (
     <div className="flex flex-col items-start lg:gap-y-9 font-inter w-full">
-      <header className="lg:inline-flex hidden justify-start items-center w-full flex-row gap-x-3 border border-primary-200 h-[60px] pl-6 pb-10 border-t-0 border-l-0 border-r-0">
+      <header className="lg:inline-flex hidden justify-start items-center w-full flex-row gap-x-3 border border-primary-100 h-[60px] pl-6 pb-10 border-t-0 border-l-0 border-r-0">
         <Image src={Logo} alt="logo" width={48} height={48} />
         <h1 className="font-bold text-sm text-white">BEAM</h1>
       </header>

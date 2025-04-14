@@ -97,7 +97,7 @@ export default function Content({
   React.useEffect(() => {
     if (
       (selectedOption.length > 0 && selectedOption === "card") ||
-      amount > 0 
+      amount > 0
     ) {
       setButtonDisabled(false);
     } else {
@@ -188,8 +188,6 @@ export default function Content({
     } else {
       setModalState(false);
     }
-
-    
   };
 
   //navigating to details page
@@ -205,7 +203,7 @@ export default function Content({
       <header className="font-bold text-2xl text-primary-850 text-center lg:text-start">
         {sectionName[0].toUpperCase() + sectionName.slice(1)}
       </header>
-      <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
+      <hr className="border border-primary-100 border-l-0 border-r-0 border-t-0" />
 
       <div className="flex lg:flex-row flex-col lg:justify-between gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0 h-full">
         <div className="flex flex-col gap-y-5 xl:w-[37%] lg:w-[24%] w-full">
@@ -294,8 +292,8 @@ export default function Content({
             </div>
           </div>
         </div>
-        <span className="h-[500px] mx-[22px] bg-primary-200 w-px md:inline-block hidden"></span>
-        <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0 md:hidden" />
+        <span className="h-screen mx-[22px] bg-primary-100 w-px lg:inline-block hidden"></span>
+        <hr className="border border-primary-100 border-l-0 border-r-0 border-t-0 lg:hidden" />
         <div
           className="
         flex flex-col md:items-start items-center xl:w-[62%] lg:w-[75%] w-full gap-y-2"
@@ -316,7 +314,7 @@ export default function Content({
           }}
         >
           {trans.length > 0 && (
-            <div className="flex flex-col gap-y-5 w-full">
+            <div className="flex flex-col gap-y-5 w-full h-20%]">
               <h3 className="text-wallet-history-header-color font-semibold text-[16px]">
                 Transaction History
               </h3>
@@ -375,7 +373,7 @@ export default function Content({
                 ))}
             </div>
           </div>
-          <div className="w-full h-full -ml-5 font-inter flex flex-col justify-center">
+          <div className="w-full h-full -ml-5 font-inter flex flex-col justify-center h-[60%]">
             {trans.length === 0 ? (
               <div className="w-full h-full flex flex-col justify-center items-center font-inter gap-y-2">
                 <i className="fa-regular fa-face-sad-tear text-5xl text-secondary-400"></i>
@@ -601,598 +599,600 @@ export default function Content({
           Current slide: {activeIndex}
         </p>
 
-        {isAddFundsModalOpen && ( 
-          <AddFundsModal onClose={() => {}}>
-            <div className={`w-full ${activeIndex === 0 ? 'h-[384px]' : 'h-[500px]'}`}>
-              <Swiper
-                slidesPerView={1}
-                onSwiper={(swiper) => (swiperRef.current = swiper)}
-                className="w-full h-full"
-                allowTouchMove={false}
-              >
-                <SwiperSlide>
-                  <form className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] w-full h-full pb-3 font-inter">
-                    <div className="flex flex-row justify-between items-center w-full px-6">
-                      <h3 className="font-inter font-semibold text-lg text-black w-full">
-                        Payment Option
-                      </h3>
-                      <i
-                        className="fa-solid fa-xmark text-xl cursor-pointer text-black"
-                        onClick={() =>
-                          hideModalHandler("add-funds", setIsAddFundsModalOpen)
-                        }
-                      ></i>
-                    </div>
-                    <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
-                    <div className="flex flex-col px-6 w-full gap-y-4 mt-4">
-                      <div
-                        className={`flex flex-row items-center w-full justify-between border ${
-                          selectedOption === "bank"
-                            ? "border-primary-850"
-                            : "border-primary-200"
-                        } p-4 rounded-xl`}
-                      >
-                        <div className="inline-flex flex-row items-center gap-x-3">
-                          <i
-                            className={`fa-solid fa-building-columns text-[20px] ${
-                              selectedOption === "bank"
-                                ? "text-primary-850"
-                                : "text-primary-400"
-                            }`}
-                          ></i>
-                          <h4
-                            className={`${
-                              selectedOption === "bank"
-                                ? "text-primary-850"
-                                : "text-primary-400"
-                            } text-base font-semibold`}
-                          >
-                            Bank Transfer
-                          </h4>
-                        </div>
-
-                        <input
-                          type="radio"
-                          value="bank"
-                          checked={selectedOption === "bank"}
-                          onChange={(e) => setSelectedOption(e.target.value)}
-                          className="cursor-pointer border border-primary-300 checked:bg-primary-850 checked:border-primary-850"
-                        />
-                      </div>
-                      <div
-                        className={`flex flex-row items-center w-full justify-between border ${
-                          selectedOption === "card"
-                            ? "border-primary-850"
-                            : "border-primary-200"
-                        } p-4 rounded-xl`}
-                      >
-                        <div className="inline-flex flex-row items-center gap-x-3">
-                          <i
-                            className={`fa-solid fa-credit-card text-[20px] ${
-                              selectedOption === "bank"
-                                ? "text-primary-850"
-                                : "text-primary-400"
-                            }`}
-                          ></i>
-
-                          <h4
-                            className={`${
-                              selectedOption === "card"
-                                ? "text-primary-850"
-                                : "text-primary-400"
-                            } text-base font-semibold`}
-                          >
-                            Add {windowWidth < 768 ? "" : "Debit/Credit"} Card
-                          </h4>
-                        </div>
-
-                        <input
-                          type="radio"
-                          value="card"
-                          checked={selectedOption === "card"}
-                          onChange={(e) => setSelectedOption(e.target.value)}
-                          className="cursor-pointer border border-primary-300 checked:bg-primary-850 checked:border-primary-850"
-                        />
-                      </div>
-                      <div className={`p-4`}>
-                        <div className="inline-flex flex-row items-center gap-x-3">
-                          <i
-                            className={`fa-solid fa-circle-plus text-[20px] text-primary-400`}
-                          ></i>
-
-                          <h4
-                            className={`text-primary-400 text-base font-semibold`}
-                          >
-                            Add Payment Method
-                          </h4>
-                        </div>
-                      </div>
-                      <button
-                        disabled={buttonDisabled}
-                        type="button"
-                        className={`${
-                          buttonDisabled
-                            ? "cursor-not-allowed"
-                            : "cursor-pointer hover:ring-1 ring-secondary-400"
-                        }  mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md py-3 bg-secondary-400`}
-                        onClick={() => {
-                          goToSlide(1);
-                        }}
-                      >
-                        Continue
-                      </button>
-                    </div>
-                  </form>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <form
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      try {
-                        setIsLoading(true);
-
-                        const res = await axios.post(
-                          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/fund`,
-                          {
-                            card_no: cardNo,
-                            cvv,
-                            card_expiry_date: exp,
-                            trans_type: "deposit",
-                            amount,
-                            status: "pending",
-                            date: new Date().toISOString(),
-                          },
-                          {
-                            withCredentials: true,
-                          }
-                        );
-
-                        if (res.data.message === "success") {
-                          setBalance(res.data.user.wallet.balance);
-                          setCVV(res.data.user.bank.cvv);
-                          setCardNo(res.data.user.bank.card_no);
-                          setExp(res.data.user.bank.card_expiry_date);
-                          setCount(
-                            res.data.transactions.length < ITEMS_PER_PAGE
-                              ? res.data.transactions.length
-                              : ITEMS_PER_PAGE
-                          );
-                          setVisibleTrans(
-                            res.data.transactions.slice(0, ITEMS_PER_PAGE)
-                          );
-                          setDividerPositions(
-                            [
-                              { top: "72px" },
-                              { top: "120px" },
-                              { top: "168px" },
-                              { top: "216px" },
-                              { top: "264px" },
-                              { top: "312px" },
-                              { top: "360px" },
-                              { top: "408px" },
-                              { top: "456px" },
-                            ].slice(
-                              0,
-                              res.data.transactions.length < ITEMS_PER_PAGE
-                                ? res.data.transactions.length
-                                : ITEMS_PER_PAGE
-                            )
-                          );
-                          setTrans(res.data.transactions);
-                          setSelectedOption("");
-                          setAmount(0);
-                          setIsLoading(false);
-                          hideModalHandler("add-funds", setIsAddFundsModalOpen);
-                        }
-                      } catch (error) {
-                        const e = error as Error;
-                        setIsLoading(false);
-                        return toast.error(e.message);
-                      }
-                    }}
-                    className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
-                  >
-                    <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
-                      <h3 className="font-semibold md:text-[24px] text-[18px] text-black">
-                        Payment Details
-                      </h3>
-                      <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
-                        Please confirm the margin details
-                      </h4>
-                    </div>
-                    <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
-                    <div className="flex flex-col items-start w-full px-6 mt-2">
-                      <label>Amount</label>
-                      <div className="inline-block relative w-full">
-                        <select
-                          value={amount}
-                          onChange={(e) => setAmount(Number(e.target.value))}
-                          className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                        >
-                          <option value="" hidden unselectable="on">
-                            Select Amount
-                          </option>
-                          <option value="100">{(100).toLocaleString()}</option>
-                          <option value="300">{(300).toLocaleString()}</option>
-                          <option value="500">{(500).toLocaleString()}</option>
-                          <option value="1000">
-                            {(1000).toLocaleString()}
-                          </option>
-                          <option value="5000">
-                            {(5000).toLocaleString()}
-                          </option>
-                          <option value="10000">
-                            {(10000).toLocaleString()}
-                          </option>
-                          <option value="100000">
-                            {(100000).toLocaleString()}
-                          </option>
-                        </select>
-                        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                          {/* Replace with your angle-down icon */}
-                          <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start w-full px-6">
-                      <label>Card Details</label>
-                      <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
-                        <input
-                          type="text"
-                          value={cardNo}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // Remove non-digit characters
-                            setCardNo(value);
-                            const detectedIssuer = detectIssuer(value);
-                            setIssuer(detectedIssuer);
-                          }}
-                          placeholder="5399"
-                          className="w-full placeholder:primary-200 focus:outline-none bg-transparent placeholder:font-inter placeholder:font-normal px-3 py-2"
-                        />
-                        {issuer === "MasterCard" ? (
-                          <Image
-                            width={28}
-                            height={24}
-                            src={mastercardLogo}
-                            alt="card"
-                          />
-                        ) : (
-                          <Image
-                            width={28}
-                            height={24}
-                            src={visaLogo}
-                            alt="card"
-                          />
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start w-full px-6">
-                      <label>Expiry date</label>
-                      <input
-                        type="date"
-                        value={exp}
-                        onChange={(e) => setExp(e.target.value)}
-                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                      />
-                    </div>
-                    <div className="flex flex-col items-start w-full px-6">
-                      <label>CVV</label>
-                      <input
-                        type="text"
-                        onChange={(e) => setCVV(e.target.value)}
-                        value={cvv}
-                        placeholder="546"
-                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                      />
-                    </div>
-                    <div className="inline-block w-full px-6 mt-5">
-                      <button
-                        type="submit"
-                        className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md py-3 bg-secondary-400"
-                      >
-                        {isLoading ? "Processing" : "Pay Now"}
-                      </button>
-                    </div>
-                  </form>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-          </AddFundsModal>
-        )}
-
-        {isTransferModalOpen && (
-          <TransferModal
-            onClose={() => hideModalHandler("transfer", setIsTransferModalOpen)}
-          >
-            <div
-              className={`w-full ${
-                transferModalHeader === "Withdraw" && activeIndex === 0
-                  ? "h-[239px]"
-                  : transferModalHeader === "Withdraw" && activeIndex > 0
-                  ? "md:h-[484px] h-[478px]"
-                  : transferModalHeader === "Transfer" && activeIndex === 0
-                  ? "h-[416px]"
-                  : "md:h-[484px] h-[478px]"
-              }`}
-            >
-              <Swiper
-                slidesPerView={1}
-                allowTouchMove={false}
-                onSwiper={(swiper) => (swiperRef.current = swiper)}
-                className="w-full h-full"
-              >
-                <SwiperSlide>
-                  <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full pb-3">
-          
-                    <div className="flex flex-row justify-between items-center w-full px-6">
-                      <h3 className="font-inter font-semibold text-lg text-black w-full">
-                      {transferModalHeader} Details
-
-                      </h3>
-                      <i
-                        className="fa-solid fa-xmark text-xl cursor-pointer text-black"
-                        onClick={() =>
-                          hideModalHandler("transfer", setIsTransferModalOpen)
-                        }
-                      ></i>
-                    </div>
-                    <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
-                    <div className="flex flex-col px-6 w-full gap-y-4 mt-4">
-
-                      {transferModalHeader === "Transfer" && (
-                        <div className="flex flex-col items-start w-full">
-                          <label>Email</label>
-                          <input
-                            type="text"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="test@test.com"
-                            className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                          />
-                        </div>
-                      )}
-                      <div className="flex flex-col items-start w-full">
-                        <label>Amount</label>
-                        <div className="inline-block relative w-full">
-                          <select
-                            value={amount}
-                            onChange={(e) => setAmount(Number(e.target.value))}
-                            className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                          >
-                            <option value="" hidden unselectable="on">
-                              Select Amount
-                            </option>
-                            <option value="100">{(100).toLocaleString()}</option>
-                            <option value="300">{(300).toLocaleString()}</option>
-                            <option value="500">{(500).toLocaleString()}</option>
-                            <option value="1000">
-                              {(1000).toLocaleString()}
-                            </option>
-                            <option value="5000">
-                              {(5000).toLocaleString()}
-                            </option>
-                            <option value="10000">
-                              {(10000).toLocaleString()}
-                            </option>
-                            <option value="100000">
-                              {(100000).toLocaleString()}
-                            </option>
-                          </select>
-                          <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                            {/* Replace with your angle-down icon */}
-                            <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
-                          </div>
-                        </div>
-                      </div>
-                      {transferModalHeader === "Transfer" && (
-                        <div className="flex flex-col items-start w-full">
-                          <label>Note</label>
-                          <textarea
-                            onChange={(e) => setNote(e.target.value)}
-                            value={note}
-                            placeholder="Give a description to classify the transfer.."
-                            className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                          ></textarea>
-                        </div>
-                      )}
-                      <button
-                        type="button"
-                        disabled={buttonDisabled}
-                        onClick={() => {
-                          goToSlide(1);
-                        }}
-                        className={`${
-                          buttonDisabled
-                            ? "cursor-not-allowed"
-                            : "cursor-pointer hover:ring-1 ring-secondary-400"
-                        } w-full mt-9 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md py-3 bg-secondary-400`}
-                      >
-                        Continue
-                      </button>
-                    </div>
-                  </form>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <form
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      try {
-                        setIsLoading(true);
-                        const operation =
-                          amount > 0 && note.length === 0 && email.length === 0
-                            ? "withdraw"
-                            : "transfer";
-                        const res = await axios.post(
-                          `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/${operation}`,
-                          {
-                            card_no: cardNo,
-                            cvv,
-                            card_expiry_date: exp,
-                            amount,
-                            note,
-                            email,
-                            trans_type: operation,
-                            status: "approved",
-                            date: new Date().toISOString(),
-                          },
-                          {
-                            withCredentials: true,
-                          }
-                        );
-
-                        if (res.data.message === "success") {
-                          setBalance(res.data.user.wallet.balance);
-                          setCVV(res.data.user.bank.cvv);
-                          setCardNo(res.data.user.bank.card_no);
-                          setExp(res.data.user.bank.card_expiry_date);
-                          setCount(
-                            res.data.transactions.length < ITEMS_PER_PAGE
-                              ? res.data.transactions.length
-                              : ITEMS_PER_PAGE
-                          );
-                          setVisibleTrans(
-                            res.data.transactions.slice(0, ITEMS_PER_PAGE)
-                          );
-                          setDividerPositions(
-                            [
-                              { top: "72px" },
-                              { top: "120px" },
-                              { top: "168px" },
-                              { top: "216px" },
-                              { top: "264px" },
-                              { top: "312px" },
-                              { top: "360px" },
-                              { top: "408px" },
-                              { top: "456px" },
-                            ].slice(
-                              0,
-                              res.data.transactions.length < ITEMS_PER_PAGE
-                                ? res.data.transactions.length
-                                : ITEMS_PER_PAGE
-                            )
-                          );
-                          setTrans(res.data.transactions);
-                          setSelectedOption("");
-                          setAmount(0);
-                          setIsLoading(false);
-                          hideModalHandler(operation, setIsTransferModalOpen);
-                        }
-                      } catch (error) {
-                        const e = error as Error;
-                        setIsLoading(false);
-                        return toast.error(e.message);
-                      }
-                    }}
-                    className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
-                  >
-                    <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
-                      <h3 className="font-semibold md:text-[24px] text-[18px] text-black">
-                        {transferModalHeader === 'Transfer' ? 'Transfer' : 'Withdraw'} Details
-                      </h3>
-                      <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
-                        Please confirm the margin details
-                      </h4>
-                    </div>
-                    <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
-                    <div className="flex flex-col items-start w-full px-6 mt-2">
-                      <label>Amount</label>
-                      <div className="inline-block relative w-full">
-                        <select
-                          value={amount}
-                          onChange={(e) => setAmount(Number(e.target.value))}
-                          className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                        >
-                          <option value="" hidden unselectable="on">
-                            Select Amount
-                          </option>
-                          <option value="100">{(100).toLocaleString()}</option>
-                          <option value="300">{(300).toLocaleString()}</option>
-                          <option value="500">{(500).toLocaleString()}</option>
-                          <option value="1000">
-                            {(1000).toLocaleString()}
-                          </option>
-                          <option value="5000">
-                            {(5000).toLocaleString()}
-                          </option>
-                          <option value="10000">
-                            {(10000).toLocaleString()}
-                          </option>
-                          <option value="100000">
-                            {(100000).toLocaleString()}
-                          </option>
-                        </select>
-                        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-                          {/* Replace with your angle-down icon */}
-                          <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start w-full px-6">
-                      <label>Card Details</label>
-                      <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
-                        <input
-                          type="text"
-                          value={cardNo}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // Remove non-digit characters
-                            setCardNo(value);
-                            const detectedIssuer = detectIssuer(value);
-                            setIssuer(detectedIssuer);
-                          }}
-                          placeholder="5399"
-                          className="w-full placeholder:primary-200 focus:outline-none bg-transparent placeholder:font-inter placeholder:font-normal px-3 py-2"
-                        />
-                        {issuer === "MasterCard" ? (
-                          <Image
-                            width={28}
-                            height={24}
-                            src={mastercardLogo}
-                            alt="card"
-                          />
-                        ) : (
-                          <Image
-                            width={28}
-                            height={24}
-                            src={visaLogo}
-                            alt="card"
-                          />
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-start w-full px-6">
-                      <label>Expiry date</label>
-                      <input
-                        type="date"
-                        value={exp}
-                        onChange={(e) => setExp(e.target.value)}
-                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                      />
-                    </div>
-                    <div className="flex flex-col items-start w-full px-6">
-                      <label>CVV</label>
-                      <input
-                        type="text"
-                        onChange={(e) => setCVV(e.target.value)}
-                        value={cvv}
-                        placeholder="546"
-                        className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
-                      />
-                    </div>
-                    <div className="inline-block w-full px-6 mt-5">
-                      <button
-                        type="submit"
-                        className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
-                      >
-                        {isLoading ? "Processing" : transferModalHeader === 'Transfer' ? 'Transfer' : "Withdraw"}&nbsp;Now
-                      </button>
-                    </div>
-                  </form>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-          </TransferModal>
-        )}
       </div>
+        <hr className="border border-primary-100 border-l-0 border-r-0 border-b-0 w-full lg:block hidden" />
+      {isAddFundsModalOpen && (
+        <AddFundsModal onClose={() => {}}>
+          <div
+            className={`w-full ${
+              activeIndex === 0 ? "h-[384px]" : "h-[500px]"
+            }`}
+          >
+            <Swiper
+              slidesPerView={1}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              className="w-full h-full"
+              allowTouchMove={false}
+            >
+              <SwiperSlide>
+                <form className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] w-full h-full pb-3 font-inter">
+                  <div className="flex flex-row justify-between items-center w-full px-6">
+                    <h3 className="font-inter font-semibold text-lg text-black w-full">
+                      Payment Option
+                    </h3>
+                    <i
+                      className="fa-solid fa-xmark text-xl cursor-pointer text-black"
+                      onClick={() =>
+                        hideModalHandler("add-funds", setIsAddFundsModalOpen)
+                      }
+                    ></i>
+                  </div>
+                  <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
+                  <div className="flex flex-col px-6 w-full gap-y-4 mt-4">
+                    <div
+                      className={`flex flex-row items-center w-full justify-between border ${
+                        selectedOption === "bank"
+                          ? "border-primary-850"
+                          : "border-primary-200"
+                      } p-4 rounded-xl`}
+                    >
+                      <div className="inline-flex flex-row items-center gap-x-3">
+                        <i
+                          className={`fa-solid fa-building-columns text-[20px] ${
+                            selectedOption === "bank"
+                              ? "text-primary-850"
+                              : "text-primary-400"
+                          }`}
+                        ></i>
+                        <h4
+                          className={`${
+                            selectedOption === "bank"
+                              ? "text-primary-850"
+                              : "text-primary-400"
+                          } text-base font-semibold`}
+                        >
+                          Bank Transfer
+                        </h4>
+                      </div>
+
+                      <input
+                        type="radio"
+                        value="bank"
+                        checked={selectedOption === "bank"}
+                        onChange={(e) => setSelectedOption(e.target.value)}
+                        className="cursor-pointer border border-primary-300 checked:bg-primary-850 checked:border-primary-850"
+                      />
+                    </div>
+                    <div
+                      className={`flex flex-row items-center w-full justify-between border ${
+                        selectedOption === "card"
+                          ? "border-primary-850"
+                          : "border-primary-200"
+                      } p-4 rounded-xl`}
+                    >
+                      <div className="inline-flex flex-row items-center gap-x-3">
+                        <i
+                          className={`fa-solid fa-credit-card text-[20px] ${
+                            selectedOption === "bank"
+                              ? "text-primary-850"
+                              : "text-primary-400"
+                          }`}
+                        ></i>
+
+                        <h4
+                          className={`${
+                            selectedOption === "card"
+                              ? "text-primary-850"
+                              : "text-primary-400"
+                          } text-base font-semibold`}
+                        >
+                          Add {windowWidth < 768 ? "" : "Debit/Credit"} Card
+                        </h4>
+                      </div>
+
+                      <input
+                        type="radio"
+                        value="card"
+                        checked={selectedOption === "card"}
+                        onChange={(e) => setSelectedOption(e.target.value)}
+                        className="cursor-pointer border border-primary-300 checked:bg-primary-850 checked:border-primary-850"
+                      />
+                    </div>
+                    <div className={`p-4`}>
+                      <div className="inline-flex flex-row items-center gap-x-3">
+                        <i
+                          className={`fa-solid fa-circle-plus text-[20px] text-primary-400`}
+                        ></i>
+
+                        <h4
+                          className={`text-primary-400 text-base font-semibold`}
+                        >
+                          Add Payment Method
+                        </h4>
+                      </div>
+                    </div>
+                    <button
+                      disabled={buttonDisabled}
+                      type="button"
+                      className={`${
+                        buttonDisabled
+                          ? "cursor-not-allowed"
+                          : "cursor-pointer hover:ring-1 ring-secondary-400"
+                      }  mt-5 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md py-3 bg-secondary-400`}
+                      onClick={() => {
+                        goToSlide(1);
+                      }}
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </form>
+              </SwiperSlide>
+              <SwiperSlide>
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    try {
+                      setIsLoading(true);
+
+                      const res = await axios.post(
+                        `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/fund`,
+                        {
+                          card_no: cardNo,
+                          cvv,
+                          card_expiry_date: exp,
+                          trans_type: "deposit",
+                          amount,
+                          status: "pending",
+                          date: new Date().toISOString(),
+                        },
+                        {
+                          withCredentials: true,
+                        }
+                      );
+
+                      if (res.data.message === "success") {
+                        setBalance(res.data.user.wallet.balance);
+                        setCVV(res.data.user.bank.cvv);
+                        setCardNo(res.data.user.bank.card_no);
+                        setExp(res.data.user.bank.card_expiry_date);
+                        setCount(
+                          res.data.transactions.length < ITEMS_PER_PAGE
+                            ? res.data.transactions.length
+                            : ITEMS_PER_PAGE
+                        );
+                        setVisibleTrans(
+                          res.data.transactions.slice(0, ITEMS_PER_PAGE)
+                        );
+                        setDividerPositions(
+                          [
+                            { top: "72px" },
+                            { top: "120px" },
+                            { top: "168px" },
+                            { top: "216px" },
+                            { top: "264px" },
+                            { top: "312px" },
+                            { top: "360px" },
+                            { top: "408px" },
+                            { top: "456px" },
+                          ].slice(
+                            0,
+                            res.data.transactions.length < ITEMS_PER_PAGE
+                              ? res.data.transactions.length
+                              : ITEMS_PER_PAGE
+                          )
+                        );
+                        setTrans(res.data.transactions);
+                        setSelectedOption("");
+                        setAmount(0);
+                        setIsLoading(false);
+                        hideModalHandler("add-funds", setIsAddFundsModalOpen);
+                      }
+                    } catch (error) {
+                      const e = error as Error;
+                      setIsLoading(false);
+                      return toast.error(e.message);
+                    }
+                  }}
+                  className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
+                >
+                  <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
+                    <h3 className="font-semibold md:text-[24px] text-[18px] text-black">
+                      Payment Details
+                    </h3>
+                    <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
+                      Please confirm the margin details
+                    </h4>
+                  </div>
+                  <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
+                  <div className="flex flex-col items-start w-full px-6 mt-2">
+                    <label>Amount</label>
+                    <div className="inline-block relative w-full">
+                      <select
+                        value={amount}
+                        onChange={(e) => setAmount(Number(e.target.value))}
+                        className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                      >
+                        <option value="" hidden unselectable="on">
+                          Select Amount
+                        </option>
+                        <option value="100">{(100).toLocaleString()}</option>
+                        <option value="300">{(300).toLocaleString()}</option>
+                        <option value="500">{(500).toLocaleString()}</option>
+                        <option value="1000">{(1000).toLocaleString()}</option>
+                        <option value="5000">{(5000).toLocaleString()}</option>
+                        <option value="10000">
+                          {(10000).toLocaleString()}
+                        </option>
+                        <option value="100000">
+                          {(100000).toLocaleString()}
+                        </option>
+                      </select>
+                      <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                        {/* Replace with your angle-down icon */}
+                        <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start w-full px-6">
+                    <label>Card Details</label>
+                    <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
+                      <input
+                        type="text"
+                        value={cardNo}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, ""); // Remove non-digit characters
+                          setCardNo(value);
+                          const detectedIssuer = detectIssuer(value);
+                          setIssuer(detectedIssuer);
+                        }}
+                        placeholder="5399"
+                        className="w-full placeholder:primary-200 focus:outline-none bg-transparent placeholder:font-inter placeholder:font-normal px-3 py-2"
+                      />
+                      {issuer === "MasterCard" ? (
+                        <Image
+                          width={28}
+                          height={24}
+                          src={mastercardLogo}
+                          alt="card"
+                        />
+                      ) : (
+                        <Image
+                          width={28}
+                          height={24}
+                          src={visaLogo}
+                          alt="card"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start w-full px-6">
+                    <label>Expiry date</label>
+                    <input
+                      type="date"
+                      value={exp}
+                      onChange={(e) => setExp(e.target.value)}
+                      className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                    />
+                  </div>
+                  <div className="flex flex-col items-start w-full px-6">
+                    <label>CVV</label>
+                    <input
+                      type="text"
+                      onChange={(e) => setCVV(e.target.value)}
+                      value={cvv}
+                      placeholder="546"
+                      className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                    />
+                  </div>
+                  <div className="inline-block w-full px-6 mt-5">
+                    <button
+                      type="submit"
+                      className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md py-3 bg-secondary-400"
+                    >
+                      {isLoading ? "Processing" : "Pay Now"}
+                    </button>
+                  </div>
+                </form>
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </AddFundsModal>
+      )}
+
+      {isTransferModalOpen && (
+        <TransferModal
+          onClose={() => hideModalHandler("transfer", setIsTransferModalOpen)}
+        >
+          <div
+            className={`w-full ${
+              transferModalHeader === "Withdraw" && activeIndex === 0
+                ? "h-[239px]"
+                : transferModalHeader === "Withdraw" && activeIndex > 0
+                ? "md:h-[484px] h-[478px]"
+                : transferModalHeader === "Transfer" && activeIndex === 0
+                ? "h-[416px]"
+                : "md:h-[484px] h-[478px]"
+            }`}
+          >
+            <Swiper
+              slidesPerView={1}
+              allowTouchMove={false}
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              className="w-full h-full"
+            >
+              <SwiperSlide>
+                <form className="flex flex-col gap-y-4 text-primary-400 font-medium text-[16px] font-inter w-full h-full pb-3">
+                  <div className="flex flex-row justify-between items-center w-full px-6">
+                    <h3 className="font-inter font-semibold text-lg text-black w-full">
+                      {transferModalHeader} Details
+                    </h3>
+                    <i
+                      className="fa-solid fa-xmark text-xl cursor-pointer text-black"
+                      onClick={() =>
+                        hideModalHandler("transfer", setIsTransferModalOpen)
+                      }
+                    ></i>
+                  </div>
+                  <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
+                  <div className="flex flex-col px-6 w-full gap-y-4 mt-4">
+                    {transferModalHeader === "Transfer" && (
+                      <div className="flex flex-col items-start w-full">
+                        <label>Email</label>
+                        <input
+                          type="text"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="test@test.com"
+                          className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        />
+                      </div>
+                    )}
+                    <div className="flex flex-col items-start w-full">
+                      <label>Amount</label>
+                      <div className="inline-block relative w-full">
+                        <select
+                          value={amount}
+                          onChange={(e) => setAmount(Number(e.target.value))}
+                          className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        >
+                          <option value="" hidden unselectable="on">
+                            Select Amount
+                          </option>
+                          <option value="100">{(100).toLocaleString()}</option>
+                          <option value="300">{(300).toLocaleString()}</option>
+                          <option value="500">{(500).toLocaleString()}</option>
+                          <option value="1000">
+                            {(1000).toLocaleString()}
+                          </option>
+                          <option value="5000">
+                            {(5000).toLocaleString()}
+                          </option>
+                          <option value="10000">
+                            {(10000).toLocaleString()}
+                          </option>
+                          <option value="100000">
+                            {(100000).toLocaleString()}
+                          </option>
+                        </select>
+                        <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                          {/* Replace with your angle-down icon */}
+                          <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                        </div>
+                      </div>
+                    </div>
+                    {transferModalHeader === "Transfer" && (
+                      <div className="flex flex-col items-start w-full">
+                        <label>Note</label>
+                        <textarea
+                          onChange={(e) => setNote(e.target.value)}
+                          value={note}
+                          placeholder="Give a description to classify the transfer.."
+                          className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                        ></textarea>
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      disabled={buttonDisabled}
+                      onClick={() => {
+                        goToSlide(1);
+                      }}
+                      className={`${
+                        buttonDisabled
+                          ? "cursor-not-allowed"
+                          : "cursor-pointer hover:ring-1 ring-secondary-400"
+                      } w-full mt-9 w-full text-black text-[16px] font-semibold border border-secondary-400 rounded-md py-3 bg-secondary-400`}
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </form>
+              </SwiperSlide>
+              <SwiperSlide>
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    try {
+                      setIsLoading(true);
+                      const operation =
+                        amount > 0 && note.length === 0 && email.length === 0
+                          ? "withdraw"
+                          : "transfer";
+                      const res = await axios.post(
+                        `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/wallet/${operation}`,
+                        {
+                          card_no: cardNo,
+                          cvv,
+                          card_expiry_date: exp,
+                          amount,
+                          note,
+                          email,
+                          trans_type: operation,
+                          status: "approved",
+                          date: new Date().toISOString(),
+                        },
+                        {
+                          withCredentials: true,
+                        }
+                      );
+
+                      if (res.data.message === "success") {
+                        setBalance(res.data.user.wallet.balance);
+                        setCVV(res.data.user.bank.cvv);
+                        setCardNo(res.data.user.bank.card_no);
+                        setExp(res.data.user.bank.card_expiry_date);
+                        setCount(
+                          res.data.transactions.length < ITEMS_PER_PAGE
+                            ? res.data.transactions.length
+                            : ITEMS_PER_PAGE
+                        );
+                        setVisibleTrans(
+                          res.data.transactions.slice(0, ITEMS_PER_PAGE)
+                        );
+                        setDividerPositions(
+                          [
+                            { top: "72px" },
+                            { top: "120px" },
+                            { top: "168px" },
+                            { top: "216px" },
+                            { top: "264px" },
+                            { top: "312px" },
+                            { top: "360px" },
+                            { top: "408px" },
+                            { top: "456px" },
+                          ].slice(
+                            0,
+                            res.data.transactions.length < ITEMS_PER_PAGE
+                              ? res.data.transactions.length
+                              : ITEMS_PER_PAGE
+                          )
+                        );
+                        setTrans(res.data.transactions);
+                        setSelectedOption("");
+                        setAmount(0);
+                        setIsLoading(false);
+                        hideModalHandler(operation, setIsTransferModalOpen);
+                      }
+                    } catch (error) {
+                      const e = error as Error;
+                      setIsLoading(false);
+                      return toast.error(e.message);
+                    }
+                  }}
+                  className="flex flex-col gap-y-4 text-primary-400 items-start font-medium text-[16px] font-inter w-full h-full pb-3"
+                >
+                  <div className="inline-flex flex-col items-start gap-y-0 font-inter px-6">
+                    <h3 className="font-semibold md:text-[24px] text-[18px] text-black">
+                      {transferModalHeader === "Transfer"
+                        ? "Transfer"
+                        : "Withdraw"}{" "}
+                      Details
+                    </h3>
+                    <h4 className="font-normal md:text-[18px] text-[16px] text-auth">
+                      Please confirm the margin details
+                    </h4>
+                  </div>
+                  <hr className="border border-l-0 border-r-0 border-t-0 border-modal-hr w-full" />
+                  <div className="flex flex-col items-start w-full px-6 mt-2">
+                    <label>Amount</label>
+                    <div className="inline-block relative w-full">
+                      <select
+                        value={amount}
+                        onChange={(e) => setAmount(Number(e.target.value))}
+                        className="cursor-pointer w-full placeholder:primary-200 appearance-none focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                      >
+                        <option value="" hidden unselectable="on">
+                          Select Amount
+                        </option>
+                        <option value="100">{(100).toLocaleString()}</option>
+                        <option value="300">{(300).toLocaleString()}</option>
+                        <option value="500">{(500).toLocaleString()}</option>
+                        <option value="1000">{(1000).toLocaleString()}</option>
+                        <option value="5000">{(5000).toLocaleString()}</option>
+                        <option value="10000">
+                          {(10000).toLocaleString()}
+                        </option>
+                        <option value="100000">
+                          {(100000).toLocaleString()}
+                        </option>
+                      </select>
+                      <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+                        {/* Replace with your angle-down icon */}
+                        <i className="fa-solid fa-angle-down text-wallet-history-header-secondary-text"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start w-full px-6">
+                    <label>Card Details</label>
+                    <div className="w-full focus-within:border h-10 focus-within:border-primary-200 pr-4 text-sm border border-primary-400/20 py-2 flex flex-row items-center bg-transparent rounded-md justify-between">
+                      <input
+                        type="text"
+                        value={cardNo}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, ""); // Remove non-digit characters
+                          setCardNo(value);
+                          const detectedIssuer = detectIssuer(value);
+                          setIssuer(detectedIssuer);
+                        }}
+                        placeholder="5399"
+                        className="w-full placeholder:primary-200 focus:outline-none bg-transparent placeholder:font-inter placeholder:font-normal px-3 py-2"
+                      />
+                      {issuer === "MasterCard" ? (
+                        <Image
+                          width={28}
+                          height={24}
+                          src={mastercardLogo}
+                          alt="card"
+                        />
+                      ) : (
+                        <Image
+                          width={28}
+                          height={24}
+                          src={visaLogo}
+                          alt="card"
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start w-full px-6">
+                    <label>Expiry date</label>
+                    <input
+                      type="date"
+                      value={exp}
+                      onChange={(e) => setExp(e.target.value)}
+                      className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                    />
+                  </div>
+                  <div className="flex flex-col items-start w-full px-6">
+                    <label>CVV</label>
+                    <input
+                      type="text"
+                      onChange={(e) => setCVV(e.target.value)}
+                      value={cvv}
+                      placeholder="546"
+                      className="w-full placeholder:primary-200 focus:outline-none focus:border-primary-200 bg-transparent placeholder:font-inter placeholder:font-normal text-sm px-3 py-2 rounded-md border border-primary-400/20"
+                    />
+                  </div>
+                  <div className="inline-block w-full px-6 mt-5">
+                    <button
+                      type="submit"
+                      className="cursor-pointer w-full text-black text-[16px] font-semibold border border-secondary-400 hover:ring-1 ring-secondary-400 rounded-md px-5 py-3 bg-secondary-400"
+                    >
+                      {isLoading
+                        ? "Processing"
+                        : transferModalHeader === "Transfer"
+                        ? "Transfer"
+                        : "Withdraw"}
+                      &nbsp;Now
+                    </button>
+                  </div>
+                </form>
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </TransferModal>
+      )}
     </main>
   );
 }

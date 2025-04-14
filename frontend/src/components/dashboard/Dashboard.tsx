@@ -12,10 +12,10 @@ export default function Dashboard({transactions, balance, bank}: {transactions: 
   const [hide, setHide] = React.useState<boolean>(false);
 
   return (
-    <div className="bg-auth/1 relative">
+    <>
       <Header username="Magnartis LTD" activeSection={pathName.slice(1)} hide={hide} onHide={setHide}/>
       <Sidebar activeSection={pathName.slice(1)} hide={hide} onHide={setHide}/>
       <Content userTransactions={transactions} walletBalance={balance} sectionName={pathName.slice(1)} bank={bank}/>
-    </div>
+    </>
   );
 }

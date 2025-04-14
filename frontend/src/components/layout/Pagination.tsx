@@ -25,7 +25,7 @@ export default function PaginationComponent({
   const isActivePage = currentPage;
 
   return (
-    <footer className="flex lg:flex-row flex-col items-center text-[12px] font-medium lg:justify-between gap-y-7 lg:gap-0 lg:w-full w-fit h-[30px] z-10 font-inter">
+    <footer className="flex md:flex-row flex-col items-center text-[12px] font-medium md:justify-between gap-y-7 md:gap-0 md:w-full w-fit h-[20%] font-inter">
       <div className="text-primary-800 inline-flex flex-row items-center gap-x-2 h-full">
         <h6>Showing</h6>
         <div className="inline-flex flex-row items-center gap-x-2 bg-primary-300/10 w-[60px] h-[30px] px-2 rounded-xs">
@@ -84,7 +84,7 @@ export default function PaginationComponent({
           <span
             className={`${
               isActivePage === 1
-                ? "border border-wallet-pagination-active rounded-lg py-2 px-3 text-primary-800"
+                ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
                 : "text-wallet-history-header-secondary-text"
             } font-inter`}
           >
@@ -98,7 +98,7 @@ export default function PaginationComponent({
           <span
             className={`${
               isActivePage === previousPage
-                ? "border border-wallet-pagination-active rounded-lg py-2 px-3 text-primary-800"
+                ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
                 : "text-wallet-history-header-secondary-text"
             } font-inter`}
           >
@@ -108,7 +108,7 @@ export default function PaginationComponent({
         <span
           className={`${
             isActivePage === currentPage
-              ? "border border-wallet-pagination-active rounded-lg py-2 px-3 text-primary-800"
+              ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
               : "text-wallet-history-header-secondary-text"
           }  font-inter`}
         >
@@ -121,7 +121,7 @@ export default function PaginationComponent({
           <span
             className={`${
               isActivePage === nextPage
-                ? "border border-wallet-pagination-active rounded-lg py-2 px-3 text-primary-800"
+                ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
                 : "text-wallet-history-header-secondary-text"
             } font-inter`}
           >
@@ -132,7 +132,7 @@ export default function PaginationComponent({
           <span
             className={`${
               isActivePage === lastPage
-                ? "border border-wallet-pagination-active rounded-lg py-2 px-3 text-primary-800"
+                ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
                 : "text-wallet-history-header-secondary-text"
             } font-inter`}
           >
@@ -157,7 +157,7 @@ export default function PaginationComponent({
               currentPage > 0 && currentPage !== 1
                 ? "border-wallet-history-header-secondary-text"
                 : "border-primary-100"
-            } cursor-pointer rounded-lg border w-fit h-fit py-3 px-4`}
+            } cursor-pointer rounded-md border w-fit h-fit py-3 px-4`}
           >
             <i
               className={`${
@@ -186,7 +186,7 @@ export default function PaginationComponent({
               currentPage < lastPage
                 ? "border-wallet-history-header-secondary-text"
                 : "border-primary-100"
-            } cursor-pointer rounded-lg border w-fit h-fit py-3 px-4`}
+            } cursor-pointer rounded-md border w-fit h-fit py-3 px-4`}
           >
             <i
               className={`${
