@@ -7,6 +7,7 @@ export interface PaginationProps {
   totalItems: number;
   setVisibleTrans: React.Dispatch<React.SetStateAction<any[]>>;
   trans: any[];
+  setDividerPositions: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 export interface TransferModalProps {

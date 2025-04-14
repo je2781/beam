@@ -12,9 +12,10 @@ export default function PaginationComponent({
   totalItems,
   setVisibleTrans,
   trans,
+  setDividerPositions,
 }: PaginationProps) {
   //setting limits to items shown
-  const [max, setMax] = React.useState<number>(itemsPerPage);
+  const [max, setMax] = React.useState<number>(trans.length < itemsPerPage ? trans.length : itemsPerPage);
   const min = 1;
 
   const hasPreviousPage = currentPage > 1;
@@ -42,6 +43,19 @@ export default function PaginationComponent({
                   //updating user data
                   setVisibleTrans(trans.slice(0, newNumber));
 
+                  setDividerPositions(
+                    [
+                      { top: "71px" },
+                      { top: "119px" },
+                      { top: "167px" },
+                      { top: "215px" },
+                      { top: "263px" },
+                      { top: "313px" },
+                      { top: "362px" },
+                      { top: "410px" },
+                      { top: "458px" },
+                    ].slice(0, newNumber)
+                  );
                   setCount(newNumber);
                 }
               }
@@ -56,6 +70,19 @@ export default function PaginationComponent({
                   //updating user data
 
                   setVisibleTrans(trans.slice(0, Math.min(count + 1, max)));
+                  setDividerPositions(
+                    [
+                      { top: "71px" },
+                      { top: "119px" },
+                      { top: "167px" },
+                      { top: "215px" },
+                      { top: "263px" },
+                      { top: "313px" },
+                      { top: "362px" },
+                      { top: "410px" },
+                      { top: "458px" },
+                    ].slice(0, Math.min(count + 1, max))
+                  );
                   setCount((prev: number) => Math.min(prev + 1, max));
                 }
               }}
@@ -69,6 +96,19 @@ export default function PaginationComponent({
                   //updating user data
 
                   setVisibleTrans(trans.slice(0, Math.max(count - 1, min)));
+                  setDividerPositions(
+                    [
+                      { top: "71px" },
+                      { top: "119px" },
+                      { top: "167px" },
+                      { top: "215px" },
+                      { top: "263px" },
+                      { top: "313px" },
+                      { top: "362px" },
+                      { top: "410px" },
+                      { top: "458px" },
+                    ].slice(0, Math.max(count - 1, min))
+                  );
                   setCount((prev: number) => Math.max(prev - 1, min));
                 }
               }}
@@ -179,6 +219,19 @@ export default function PaginationComponent({
               //updating user and page data
               setVisibleTrans(visibleTrans);
               setCurrentPage((prev: number) => prev + 1);
+              setDividerPositions(
+                [
+                  { top: "71px" },
+                  { top: "119px" },
+                  { top: "167px" },
+                  { top: "215px" },
+                  { top: "263px" },
+                  { top: "313px" },
+                  { top: "362px" },
+                  { top: "410px" },
+                  { top: "458px" },
+                ].slice(0, visibleTrans.length)
+              );
               setCount(visibleTrans.length);
               setMax(visibleTrans.length);
             }}

@@ -592,6 +592,7 @@ export default function Content({
               setVisibleTrans={setVisibleTrans}
               setCount={setCount}
               trans={trans}
+              setDividerPositions={setDividerPositions}
             />
           )}
         </div>
