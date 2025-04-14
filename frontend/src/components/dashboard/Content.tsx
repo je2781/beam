@@ -203,10 +203,10 @@ export default function Content({
       <header className="font-bold text-2xl text-primary-850 text-center lg:text-start">
         {sectionName[0].toUpperCase() + sectionName.slice(1)}
       </header>
-      <hr className="border border-primary-100 border-l-0 border-r-0 border-t-0" />
+      <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0" />
 
       <div className="flex lg:flex-row flex-col lg:justify-between gap-y-6 lg:gap-y-0 w-full lg:pr-3 xl:pr-0 h-full">
-        <div className="flex flex-col gap-y-5 xl:w-[37%] lg:w-[24%] w-full">
+        <div className="flex flex-col gap-y-5 xl:w-[37%] lg:w-[22%] w-full">
           <article className="flex flex-col w-full h-fit bg-wallet-summary-bg pt-7 pb-10">
             <div className="inline-flex flex-col gap-y-4 xl:px-6 px-6 lg:px-4">
               <div className="inline-flex flex-row items-center justify-between">
@@ -292,11 +292,11 @@ export default function Content({
             </div>
           </div>
         </div>
-        <span className="h-screen mx-[22px] bg-primary-100 w-px lg:inline-block hidden"></span>
-        <hr className="border border-primary-100 border-l-0 border-r-0 border-t-0 lg:hidden" />
+        <span className="h-screen xl:mx-[22px] mx-[10px] bg-primary-200 w-px lg:block hidden"></span>
+        <hr className="border border-primary-200 border-l-0 border-r-0 border-t-0 lg:hidden" />
         <div
           className="
-        flex flex-col md:items-start items-center xl:w-[62%] lg:w-[75%] w-full gap-y-2"
+        flex flex-col md:items-start items-center xl:w-[62%] lg:w-[78%] w-full gap-y-2"
           style={{
             height: `${
               trans.length === 0
@@ -601,7 +601,7 @@ export default function Content({
         </p>
 
       </div>
-        <hr className="border border-primary-100 border-l-0 border-r-0 border-b-0 w-full lg:block hidden" />
+        <hr className="border border-primary-200 border-l-0 border-r-0 border-b-0 w-full lg:mt-4 xl:mt-0 lg:block hidden" />
       {isAddFundsModalOpen && (
         <AddFundsModal onClose={() => {}}>
           <div
