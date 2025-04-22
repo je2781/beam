@@ -41,7 +41,7 @@ describe("Dashbaord", () => {
     isActivePage: 1,
   };
   it("renders the wallet page when path is 'wallet'", () => {
-    (usePathname as jest.Mock).mockReturnValue("/wallet?page=1");
+    (usePathname as jest.Mock).mockReturnValue("/wallet");
 
     render(
       <Dashboard
