@@ -22,8 +22,7 @@ export class WalletService {
     @InjectRepository(Bank)
     private bankRepository: Repository<Bank>,
     @InjectRepository(TransactionCounter)
-    private counterRepo: Repository<TransactionCounter>,
-  
+    private counterRepo: Repository<TransactionCounter>
   ) {}
 
   async getNextTransactionId(): Promise<string> {
@@ -84,6 +83,11 @@ export class WalletService {
 
     //updating wallet
     if (user.wallet) {
+      //checking for unauthorized access
+      if (user.wallet.user.id !== userId) {
+        throw new ForbiddenException("No permissions");
+      }
+
       const balance = user.wallet.balance + dto.amount;
 
       user.wallet.balance = balance;
@@ -155,6 +159,10 @@ export class WalletService {
 
     //updating wallet
     if (user.wallet) {
+      //checking for unauthorized access
+      if (user.wallet.user.id !== userId) {
+        throw new ForbiddenException("No permissions");
+      }
       const balance = user.wallet.balance - dto.amount;
       //checking funds in wallet
       if (balance < 0) {
@@ -221,6 +229,10 @@ export class WalletService {
 
     //updating creditor wallet
     if (creditor.wallet) {
+      //checking for unauthorized access
+      if (creditor.wallet.user.id !== userId) {
+        throw new ForbiddenException("No permissions");
+      }
       const balance = creditor.wallet.balance - dto.amount;
       //checking  funds in wallet
       if (balance < 0) {
@@ -236,7 +248,6 @@ export class WalletService {
     delete dto.card_no;
     delete dto.cvv;
 
-
     //creating transaction entry
     const transId = await this.getNextTransactionId();
     const newCreditorTrans = this.transRepository.create({
@@ -246,8 +257,8 @@ export class WalletService {
       user: creditor,
       transfer_details: {
         email: dto.email,
-        note: dto.note
-      }
+        note: dto.note,
+      },
     });
 
     creditor.transactions.push(newCreditorTrans);
@@ -268,6 +279,10 @@ export class WalletService {
 
     //updating debtor wallet
     if (debtor.wallet) {
+      //checking for unauthorized access
+      if (debtor.wallet.user.id !== debtor.id) {
+        throw new ForbiddenException("No permissions");
+      }
       debtor.wallet.balance += dto.amount;
       await this.userRepository.save(debtor);
     }
