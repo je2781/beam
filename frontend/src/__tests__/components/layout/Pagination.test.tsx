@@ -20,6 +20,7 @@ describe("Pagination Component", () => {
     setCurrentPage = jest.fn();
 
     setVisibleTrans = jest.fn();
+    
     setDividerPositions = jest.fn();
   });
 
@@ -64,9 +65,9 @@ describe("Pagination Component", () => {
         previousPage={0}
         isActivePage={1}
         setCurrentPage={setCurrentPage}
+        setDividerPositions={setDividerPositions}
         totalItems={trans.length}
         setVisibleTrans={setVisibleTrans}
-        setDividerPositions={setDividerPositions}
         trans={trans}
       />
     );
@@ -99,9 +100,9 @@ describe("Pagination Component", () => {
         previousPage={1}
         isActivePage={2}
         setCurrentPage={setCurrentPage}
+        setDividerPositions={setDividerPositions}
         totalItems={trans.length}
         setVisibleTrans={setVisibleTrans}
-        setDividerPositions={setDividerPositions}
         trans={trans}
       />
     );
