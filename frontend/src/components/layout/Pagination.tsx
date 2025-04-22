@@ -7,7 +7,13 @@ export default function PaginationComponent({
   count,
   setCount,
   itemsPerPage,
+  hasPreviousPage,
   currentPage,
+  hasNextPage,
+  lastPage,
+  nextPage,
+  previousPage,
+  isActivePage,
   setCurrentPage,
   totalItems,
   setVisibleTrans,
@@ -18,12 +24,6 @@ export default function PaginationComponent({
   const [max, setMax] = React.useState<number>(trans.length < itemsPerPage ? trans.length : itemsPerPage);
   const min = 1;
 
-  const hasPreviousPage = currentPage > 1;
-  const hasNextPage = totalItems > currentPage * itemsPerPage;
-  const lastPage = Math.ceil(totalItems / itemsPerPage);
-  const nextPage = currentPage + 1;
-  const previousPage = currentPage - 1;
-  const isActivePage = currentPage;
 
   return (
     <footer className="flex md:flex-row flex-col items-center text-[12px] font-medium md:justify-between gap-y-7 md:gap-0 md:w-full w-fit h-[20%] font-inter">

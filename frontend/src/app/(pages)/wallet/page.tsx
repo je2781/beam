@@ -43,18 +43,18 @@ export async function getContentData() {
     bankRes.json()
   ]);
 
-  return [transData.transactions, balanceData.wallet_balance, bankData];
+  return [transData, balanceData.wallet_balance, bankData];
 }
 
 export default async function WalletPage() {
-  const [transactions, balance, bank] = await getContentData();
+  const [transData, balance, bank] = await getContentData();
 
   const dashboardProps: {
-    transactions: any[],
+    transData: any,
     balance: number,
     bank: any
   } = {
-    transactions,
+    transData,
     balance,
     bank
   };
