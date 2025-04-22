@@ -9,7 +9,6 @@ import Switch from "@/components/ui/Switch";
 import React from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import useAuth from "@/store/useAuth";
 
 export function SideBarList(
   router: AppRouterInstance,
@@ -62,6 +61,14 @@ export function SideBarList(
                             } catch (error) {
                               return toast.error("session logout failed");
                             }
+                          } else if (
+                            Object.keys(nestedlistItem)[0] === 'Wallet'
+                          ) {
+                            router.push(
+                              `/${Object.keys(nestedlistItem)[0]
+                                .replace(" ", "")
+                                .toLowerCase()}?page=1`
+                            );
                           } else {
                             router.push(
                               `/${Object.keys(nestedlistItem)[0]

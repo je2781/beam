@@ -2,7 +2,6 @@
 
 import { PaginationProps } from "@/interfaces/interfaces";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 export default function PaginationComponent({
@@ -22,8 +21,6 @@ export default function PaginationComponent({
   trans,
   setDividerPositions,
 }: PaginationProps) {
-  const router = useRouter();
-  const path = usePathname();
 
   //setting limits to items shown
   const [max, setMax] = React.useState<number>(
@@ -128,13 +125,7 @@ export default function PaginationComponent({
       <div className="no-underline space-x-4 text-center h-full text-wallet-history-header-secondary-text font-normal">
         {currentPage !== 1 && (
           <Link
-            href="#"
-            onClick={async (e) => {
-              e.preventDefault();
-              // Programmatically navigate to the base route (without ?page=1)
-
-              router.push(path);
-            }}
+            href="?page=1"
             className={`${
               isActivePage === 1
                 ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"

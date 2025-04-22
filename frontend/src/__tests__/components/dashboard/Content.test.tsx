@@ -1,6 +1,6 @@
 import { act, render } from "@testing-library/react";
 import { screen, fireEvent } from "@testing-library/dom";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import mockTransData from "../../../__mocks__/mockData.json";
 import Content from "../../../components/dashboard/Content";
 import React from "react";
@@ -18,9 +18,13 @@ jest.mock("swiper/react", () => ({
 }));
 
 // Mocking useRouter
-jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
-}));
+jest.mock('next/navigation', () => {
+  return {
+    useRouter: jest.fn(),
+    usePathname: jest.fn(() => '/wallet'),
+  };
+});
+
 
 const mockRouterPush = jest.fn();
 (useRouter as jest.Mock).mockReturnValue({ push: mockRouterPush });
