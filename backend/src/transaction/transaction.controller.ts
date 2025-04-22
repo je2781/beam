@@ -17,8 +17,8 @@ export class TransactionController{
     @Get()
     @ApiOperation({ summary: 'getting transactions' })
     @ApiResponse({ status: 200, description: 'Transactions retrieved', type: Array})
-    getTransactions(@GetUser('id') userId: string, @Query('page') page: string){
-        return this.transService.getTransactions(userId, page);
+    getTransactions(@GetUser('id') userId: string){
+        return this.transService.getTransactions(userId);
     }
 
 

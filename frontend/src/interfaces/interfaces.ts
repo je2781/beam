@@ -2,13 +2,7 @@ export interface PaginationProps {
   count: number;
   setCount: React.Dispatch<React.SetStateAction<number>>;
   itemsPerPage: number;
-  hasPreviousPage: boolean,
-  currentPage: number,
-  hasNextPage: boolean,
-  lastPage: number,
-  nextPage: number,
-  previousPage: number,
-  isActivePage: number,
+  currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   totalItems: number;
   setVisibleTrans: React.Dispatch<React.SetStateAction<any[]>>;

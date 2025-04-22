@@ -41,21 +41,12 @@ jest.mock("../../../components/layout/Modal", () => ({
 }));
 
 describe("Wallet", () => {
-  const trans = Array.isArray(mockTransData) ? mockTransData : [];
-  const transData = {
-    currentPage: 1,
-    hasPreviousPage: false,
-    hasNextPage: trans.length > 10,
-    lastPage: Math.ceil(trans.length / 10),
-    nextPage: 2,
-    previousPage: 0,
-    isActivePage: 1,
-  };
+  const transData = Array.isArray(mockTransData) ? mockTransData : [];
 
   it("renders content component", () => {
     render(
       <Content
-        data={{ ...transData, transactions: trans }}
+        userTransactions={transData}
         sectionName={"wallet"}
         walletBalance={200}
         bank={{
@@ -76,7 +67,7 @@ describe("Wallet", () => {
   it("opens add funds modal when 'Add Funds' button is clicked", () => {
     render(
       <Content
-        data={{ ...transData, transactions: trans }}
+        userTransactions={transData}
         sectionName={"wallet"}
         walletBalance={200}
         bank={{
