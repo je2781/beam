@@ -153,7 +153,7 @@ describe("Pagination Component", () => {
 
     const updaterFunction = setCount.mock.calls[0][0]; // Get the first argument of the first call
     expect(updaterFunction(1)).toBe(2); // If count was 1, it should return 2
-    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 2)); // visible users for the current page
+    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 2)); // visible transactions for the current page
   });
 
   it("updates count when the down arrow is clicked", () => {
@@ -188,6 +188,6 @@ describe("Pagination Component", () => {
 
     const updaterFunction = setCount.mock.calls[0][0]; // Get the first argument of the first call
     expect(updaterFunction(2)).toBe(1); // If count was 2, it should return 1
-    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 1)); // visible users for the current page
+    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 1)); // visible transactions for the current page
   });
 });
