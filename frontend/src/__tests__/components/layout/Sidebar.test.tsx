@@ -46,11 +46,11 @@ describe("Sidebar", () => {
       <Sidebar activeSection="customers" onHide={jest.fn()} hide={false} />
     );
     //retrieves list item with h4 text 'Users'
-    const sidebarListItem = screen.getByText(/wallet/i).closest("li");
+    const sidebarListItem = screen.getByText(/wallet(?:\?page=1)?/i).closest("li");
 
     fireEvent.click(sidebarListItem!);
 
-    expect(mockRouterPush).toHaveBeenCalledWith("/wallet");
+    expect(mockRouterPush).toHaveBeenCalledWith("/wallet?page=1");
 
     expect(sidebarListItem).toBeInTheDocument();
   });

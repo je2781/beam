@@ -6,6 +6,7 @@ describe("Pagination Component", () => {
   let setCount: jest.Mock;
   let setCurrentPage: jest.Mock;
   let setVisibleTrans: jest.Mock;
+  let setDividerPositions: jest.Mock;
 
   const trans = Array.from({ length: 100 }, (_, i) => ({
     id: i + 1,
@@ -19,6 +20,7 @@ describe("Pagination Component", () => {
     setCurrentPage = jest.fn();
 
     setVisibleTrans = jest.fn();
+    setDividerPositions = jest.fn();
   });
 
   it("renders the pagination component with correct initial state", () => {
@@ -26,8 +28,15 @@ describe("Pagination Component", () => {
       <Pagination
         count={1}
         setCount={setCount}
+        setDividerPositions={setDividerPositions}
         itemsPerPage={10}
         currentPage={1}
+        hasPreviousPage={false}
+        hasNextPage={trans.length > 10}
+        lastPage={Math.ceil(trans.length / 10)}
+        nextPage={2}
+        previousPage={0}
+        isActivePage={1}
         setCurrentPage={setCurrentPage}
         totalItems={trans.length}
         setVisibleTrans={setVisibleTrans}
@@ -41,16 +50,23 @@ describe("Pagination Component", () => {
     expect(screen.getByText("1")).toBeInTheDocument(); // Current page
   });
 
-  it("updates users when the next page button is clicked", () => {
+  it("updates users and current page when the next page button is clicked", () => {
     render(
       <Pagination
         count={1}
         setCount={setCount}
         itemsPerPage={10}
         currentPage={1}
+        hasPreviousPage={false}
+        hasNextPage={trans.length > 10}
+        lastPage={Math.ceil(trans.length / 10)}
+        nextPage={2}
+        previousPage={0}
+        isActivePage={1}
         setCurrentPage={setCurrentPage}
         totalItems={trans.length}
         setVisibleTrans={setVisibleTrans}
+        setDividerPositions={setDividerPositions}
         trans={trans}
       />
     );
@@ -69,16 +85,23 @@ describe("Pagination Component", () => {
     expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(10, 20)); // Users for the next page
   });
 
-  it("updates users when the previous page button is clicked", () => {
+  it("updates users and current page when the previous page button is clicked", () => {
     render(
       <Pagination
         count={1}
         setCount={setCount}
         itemsPerPage={10}
+        hasPreviousPage={true}
         currentPage={2}
+        hasNextPage={trans.length > 20}
+        lastPage={Math.ceil(trans.length / 10)}
+        nextPage={3}
+        previousPage={1}
+        isActivePage={2}
         setCurrentPage={setCurrentPage}
         totalItems={trans.length}
         setVisibleTrans={setVisibleTrans}
+        setDividerPositions={setDividerPositions}
         trans={trans}
       />
     );
@@ -103,11 +126,19 @@ describe("Pagination Component", () => {
         count={1}
         setCount={setCount}
         itemsPerPage={10}
+        hasPreviousPage={false}
         currentPage={1}
+        hasNextPage={trans.length > 10}
+        lastPage={Math.ceil(trans.length / 10)}
+        nextPage={2}
+        previousPage={0}
+        isActivePage={1}
         setCurrentPage={setCurrentPage}
         totalItems={trans.length}
         setVisibleTrans={setVisibleTrans}
         trans={trans}
+        setDividerPositions={setDividerPositions}
+
       />
     );
 
@@ -122,7 +153,7 @@ describe("Pagination Component", () => {
 
     const updaterFunction = setCount.mock.calls[0][0]; // Get the first argument of the first call
     expect(updaterFunction(1)).toBe(2); // If count was 1, it should return 2
-    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 2)); // Users for the current page
+    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 2)); // visible transactions for the current page
   });
 
   it("updates count when the down arrow is clicked", () => {
@@ -132,9 +163,16 @@ describe("Pagination Component", () => {
         setCount={setCount}
         itemsPerPage={10}
         currentPage={1}
+        hasPreviousPage={false}
+        hasNextPage={trans.length > 10}
+        lastPage={Math.ceil(trans.length / 10)}
+        nextPage={2}
+        previousPage={0}
+        isActivePage={1}
         setCurrentPage={setCurrentPage}
         totalItems={trans.length}
         setVisibleTrans={setVisibleTrans}
+        setDividerPositions={setDividerPositions}
         trans={trans}
       />
     );
@@ -150,6 +188,6 @@ describe("Pagination Component", () => {
 
     const updaterFunction = setCount.mock.calls[0][0]; // Get the first argument of the first call
     expect(updaterFunction(2)).toBe(1); // If count was 2, it should return 1
-    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 1)); // Users for the current page
+    expect(setVisibleTrans).toHaveBeenCalledWith(trans.slice(0, 1)); // visible transactions for the current page
   });
 });

@@ -1,29 +1,35 @@
 "use client";
 
 import { PaginationProps } from "@/interfaces/interfaces";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 export default function PaginationComponent({
   count,
   setCount,
   itemsPerPage,
+  hasPreviousPage,
   currentPage,
+  hasNextPage,
+  lastPage,
+  nextPage,
+  previousPage,
+  isActivePage,
   setCurrentPage,
   totalItems,
   setVisibleTrans,
   trans,
   setDividerPositions,
 }: PaginationProps) {
-  //setting limits to items shown
-  const [max, setMax] = React.useState<number>(trans.length < itemsPerPage ? trans.length : itemsPerPage);
-  const min = 1;
+  const router = useRouter();
+  const path = usePathname();
 
-  const hasPreviousPage = currentPage > 1;
-  const hasNextPage = totalItems > currentPage * itemsPerPage;
-  const lastPage = Math.ceil(totalItems / itemsPerPage);
-  const nextPage = currentPage + 1;
-  const previousPage = currentPage - 1;
-  const isActivePage = currentPage;
+  //setting limits to items shown
+  const [max, setMax] = React.useState<number>(
+    trans.length < itemsPerPage ? trans.length : itemsPerPage
+  );
+  const min = 1;
 
   return (
     <footer className="flex md:flex-row flex-col items-center text-[12px] font-medium md:justify-between gap-y-7 md:gap-0 md:w-full w-fit h-[20%] font-inter">
@@ -121,7 +127,14 @@ export default function PaginationComponent({
       </div>
       <div className="no-underline space-x-4 text-center h-full text-wallet-history-header-secondary-text font-normal">
         {currentPage !== 1 && (
-          <span
+          <Link
+            href="#"
+            onClick={async (e) => {
+              e.preventDefault();
+              // Programmatically navigate to the base route (without ?page=1)
+
+              router.push(path);
+            }}
             className={`${
               isActivePage === 1
                 ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
@@ -129,13 +142,14 @@ export default function PaginationComponent({
             } font-inter`}
           >
             1
-          </span>
+          </Link>
         )}
         {hasPreviousPage && previousPage > 1 && previousPage !== 2 && (
           <span className="font-inter text-primary-400/40">...</span>
         )}
         {hasPreviousPage && previousPage > 1 && (
-          <span
+          <Link
+            href={`?page=${previousPage}`}
             className={`${
               isActivePage === previousPage
                 ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
@@ -143,9 +157,10 @@ export default function PaginationComponent({
             } font-inter`}
           >
             {previousPage}
-          </span>
+          </Link>
         )}
-        <span
+        <Link
+          href={`?page=${currentPage}`}
           className={`${
             isActivePage === currentPage
               ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
@@ -153,12 +168,13 @@ export default function PaginationComponent({
           }  font-inter`}
         >
           {currentPage}
-        </span>
+        </Link>
         {hasNextPage && nextPage + 3 < lastPage && (
           <span className="font-inter text-primary-400/40">...</span>
         )}
         {hasNextPage && nextPage !== lastPage && (
-          <span
+          <Link
+            href={`?page=${nextPage}`}
             className={`${
               isActivePage === nextPage
                 ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
@@ -166,10 +182,11 @@ export default function PaginationComponent({
             } font-inter`}
           >
             {lastPage - 1}
-          </span>
+          </Link>
         )}
         {lastPage !== currentPage && (
-          <span
+          <Link
+            href={`?page=${lastPage}`}
             className={`${
               isActivePage === lastPage
                 ? "border border-wallet-pagination-active rounded-md py-2 px-3 text-primary-800"
@@ -177,7 +194,7 @@ export default function PaginationComponent({
             } font-inter`}
           >
             {lastPage}
-          </span>
+          </Link>
         )}
         <div className="inline-flex flex-row">
           <button

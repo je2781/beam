@@ -46,7 +46,7 @@ export default function Login() {
           toast.success("Login successful!", {
             duration: 2000,
           });
-          router.push("/wallet");
+          router.push("/wallet?page=1");
         
       }else{
         throw new Error(`${res.data.message[0]}`);

@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
 
 
   if (isPublicPath && token) {
-    return NextResponse.redirect(new URL("/wallet", request.nextUrl), {
+    return NextResponse.redirect(new URL("/wallet?page=1", request.nextUrl), {
       status: 302,
     });
   }
@@ -26,12 +26,3 @@ export function middleware(request: NextRequest) {
   }
 }
 
-// See "Matching Paths" below to learn more
-export const config = {
-  matcher: [
-    "/",
-    "/wallet",
-    "/login",
-    "/signup",
-  ],
-};

@@ -90,7 +90,7 @@ describe("Login", () => {
     });
 
     waitFor(() => {
-      expect(mockRouterPush).toHaveBeenCalledWith("/wallet");
+      expect(mockRouterPush).toHaveBeenCalledWith("/wallet?page=1");
     });
   });
 

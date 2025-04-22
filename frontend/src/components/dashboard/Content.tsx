@@ -20,12 +20,12 @@ import mastercardLogo from "../../../public/mastercard.png";
 import "swiper/css";
 
 export default function Content({
-  userTransactions,
+  data,
   walletBalance,
   sectionName,
   bank,
 }: {
-  userTransactions: any[];
+  data: any;
   walletBalance: number;
   sectionName: string;
   bank: any;
@@ -47,19 +47,19 @@ export default function Content({
       { top: "458px" },
     ].slice(
       0,
-      userTransactions.length < ITEMS_PER_PAGE
-        ? userTransactions.length
+      data.transactions.length < ITEMS_PER_PAGE
+        ? data.transactions.length
         : ITEMS_PER_PAGE
     )
   );
 
   const [count, setCount] = React.useState<number>(
-    userTransactions.length < ITEMS_PER_PAGE
-      ? userTransactions.length
+    data.transactions.length < ITEMS_PER_PAGE
+      ? data.transactions.length
       : ITEMS_PER_PAGE
   );
   const [visibleTrans, setVisibleTrans] = React.useState<Array<any>>(
-    userTransactions.slice(0, ITEMS_PER_PAGE)
+    data.transactions.slice(0, ITEMS_PER_PAGE)
   );
   const [currentPage, setCurrentPage] = React.useState(1);
   const [selectedTransId, setSelectedTransId] = React.useState<string | null>(
@@ -82,7 +82,7 @@ export default function Content({
     "Withdraw"
   );
 
-  const [trans, setTrans] = React.useState<any[]>(userTransactions);
+  const [trans, setTrans] = React.useState<any[]>(data.transactions);
   const [balance, setBalance] = React.useState<number | null>(walletBalance);
   const windowWidth = useWindowWidth();
   const router = useRouter();
@@ -585,10 +585,16 @@ export default function Content({
           {trans.length > 0 && (
             <PaginationComponent
               count={count}
-              itemsPerPage={ITEMS_PER_PAGE}
-              currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              itemsPerPage={ITEMS_PER_PAGE}
               totalItems={trans.length}
+              hasPreviousPage={data.hasPreviousPage}
+              currentPage={data.currentPage}
+              hasNextPage={data.hasNextPage}
+              lastPage={data.lastPage}
+              nextPage={data.nextPage}
+              previousPage={data.previousPage}
+              isActivePage={data.isActivePage}
               setVisibleTrans={setVisibleTrans}
               setCount={setCount}
               trans={trans}
