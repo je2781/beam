@@ -48,7 +48,7 @@ export function SideBarList(
                         onClick={async () => {
                           if (Object.keys(nestedlistItem)[0] === "Logout") {
                             try {
-                              const res = await axios.get(
+                              const res = await axios.post(
                                 `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/auth/logout`,
                                 {
                                   withCredentials: true,

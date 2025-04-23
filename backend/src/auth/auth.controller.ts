@@ -67,10 +67,10 @@ export class AuthController {
     return this.authService.signup(dto);
   }
 
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: "ending current session" })
-  @ApiResponse({ status: 200, description: "Logout successful" , type: Object})
-  @Get("logout")
+  @ApiResponse({ status: 201, description: "Logout successful" , type: Object})
+  @Post("logout")
   logout(@Res({ passthrough: true }) res: Response) {
     return this.authService.logout(res);
   }
