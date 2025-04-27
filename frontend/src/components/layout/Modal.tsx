@@ -13,7 +13,7 @@ import {
 const BackDrop: React.FC<BackDropProps> = (props) => {
   return (
     <div
-      className="w-full h-[100vh] top-0 left-0 fixed bg-black/70 z-30"
+      className="w-full h-full top-0 left-0 fixed bg-black/70 z-30"
       onClick={props.onClick}
     ></div>
   );
@@ -27,7 +27,7 @@ const MobileModalOverlay: React.FC<MobileModalOverlayProps> = (props) => {
       aria-labelledby="toggle-button"
       className={`${
         props.classes ? props.classes : "bg-primary-850 pt-[70px]"
-      } z-[45] px-3 w-4/5 flex-col pb-12 gap-y-12 h-screen items-center flex fixed top-0 left-0 overflow-y-auto scrollbar-hidden hover:scrollbar-hover`}
+      } z-[45] px-3 w-4/5 flex-col pb-12 gap-y-12 h-full items-center flex fixed top-0 left-0 overflow-y-auto scrollbar-hidden hover:scrollbar-hover`}
     >
       {props.children}
       <i
